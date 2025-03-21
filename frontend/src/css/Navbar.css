@@ -1,0 +1,80 @@
+.navbar-container {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+
+.nav-icon {
+  cursor: pointer;
+  padding: 8px;
+  transition: opacity 0.2s;
+}
+
+.nav-icon:hover {
+  opacity: 0.7;
+}
+
+.search-input {
+  min-width: 200px;
+}
+
+.dropdown-menu {
+  border-radius: 0;
+  margin-top: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Hiệu ứng mượt mà */
+  opacity: 0;
+  transform: translateY(10px);
+  display: none; /* Ẩn mặc định */
+}
+
+/* Hiển thị dropdown khi có class 'show' */
+.dropdown-menu.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-link {
+  padding: 1rem !important;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: #666 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .search-input {
+    min-width: 150px; /* Giảm chiều rộng trên mobile */
+  }
+
+  .nav-link {
+    padding: 0.5rem !important; /* Giảm padding trên mobile */
+  }
+
+  .dropdown-menu {
+    transform: none; /* Loại bỏ hiệu ứng transform trên mobile */
+    opacity: 1; /* Đảm bảo hiển thị rõ ràng khi click */
+  }
+
+  .navbar-nav {
+    text-align: center; /* Căn giữa menu trên mobile */
+  }
+}
+
+@media (max-width: 576px) {
+  .logo-img {
+    height: 30px; /* Giảm kích thước logo trên mobile */
+  }
+
+  .search-input {
+    min-width: 120px; /* Giảm thêm chiều rộng trên màn hình rất nhỏ */
+  }
+}

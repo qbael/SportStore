@@ -1,0 +1,15 @@
+.video-container {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .video-container video {
+    object-fit: cover; /* Đảm bảo video bao phủ toàn bộ khung */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .video-container {
+      height: 50vh; /* Giảm chiều cao trên màn hình nhỏ */
+    }
+  }
