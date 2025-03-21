@@ -6,7 +6,6 @@ import './css/Navbar.css'
 import './css/video.css'
 
 function App() {
-
   return (
     <>
         <Navbar />
@@ -14,3 +13,4 @@ function App() {
     </>
   )
 }
+export default App
