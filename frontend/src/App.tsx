@@ -5,7 +5,7 @@ import Navbar from './components/Navbar.tsx'
 import './css/Navbar.css'
 import './css/video.css'
 
-function App() {
+export default function App() {
 
   return (
     <>
