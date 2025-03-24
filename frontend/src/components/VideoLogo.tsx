@@ -1,4 +1,3 @@
-import React from 'react';
 import video from '../assets/video/videologo.mp4';
 
 export default function VideoLogo() {
@@ -11,7 +10,6 @@ export default function VideoLogo() {
         </video>
       </div>
       <div className="content-below text-center py-4">
-        sss
       </div>
     </div>
   );
