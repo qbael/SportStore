@@ -1,4 +1,4 @@
-import video from '../assets/video/videologo.mp4';
+import video from '../../assets/video/videologo.mp4';
 
 export default function VideoLogo() {
   return (

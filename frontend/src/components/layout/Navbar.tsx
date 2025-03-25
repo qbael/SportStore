@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import logo from '../assets/img/logo.jpg';
+import logo from '../../assets/img/logo.jpg';
 
 // Định nghĩa interface cho submenu item
 interface SubMenuItem {
