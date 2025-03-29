@@ -22,7 +22,7 @@ public class ChucVu {
     private int id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tenchucvu")
+    @Column(name = "tenchucvu", unique = true, nullable = false)
     private TenChucVu tenChucVu;
 
     @OneToMany(mappedBy = "chucVu", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -3,12 +3,33 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Home from './pages/Home.tsx'
 import './css/Navbar.css'
 import './css/video.css'
+import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
+import Navbar from "./components/layout/Navbar.tsx";
+import Footer from "./components/layout/Footer.tsx";
+import Notification from "./components/ui/Notification.tsx";
 
-function App() {
-  return (
-    <>
-       <Home />
-    </>
-  )
+const Layout = () => {
+    const hideLayout = useLocation().pathname === '/admin';
+    return (
+        <div className="container-fluid p-0">
+            <Notification/>
+            {!hideLayout && <Navbar/>}
+            <div>
+                <Routes>
+                    <Route path='/' element={<Home/>}/>
+                </Routes>
+            </div>
+            {!hideLayout && <Footer/>}
+        </div>
+    );
 }
-export default App
+
+export const App = () => {
+    return (
+        <>
+            <BrowserRouter>
+                <Layout/>
+            </BrowserRouter>
+        </>
+    )
+}

@@ -24,7 +24,7 @@ export default function Navbar() {
       label: 'CẦU LÔNG',
       submenu: [
         { label: 'Vợt cầu lông', link: '#vot-cau-long' },
-        { label: 'Quả cầu lông', link: '#qua-cau-long' },
+        { label: 'Quần áo cầu lông', link: '#qua-cau-long' },
         { label: 'Giày cầu lông', link: '#giay-cau-long' },
       ],
     },
@@ -32,11 +32,15 @@ export default function Navbar() {
       label: 'BÓNG BÀN',
       submenu: [
         { label: 'Vợt bóng bàn', link: '#vot-bong-ban' },
-        { label: 'Bàn bóng bàn', link: '#ban-bong-ban' },
-        { label: 'Bóng bàn', link: '#bong-ban' },
+        { label: 'Quần áo bóng bàn', link: '#ban-bong-ban' },
+        { label: 'Giày bóng bàn', link: '#bong-ban' },
       ],
     },
-    { label: 'TENNIS', submenu: [] },
+    { label: 'TENNIS', submenu: [
+        { label: 'Vợt tennis', link: '#vot-tennis' },
+        { label: 'Quần áo tennis', link: '#bong-tennis' },
+        { label: 'Giày tennis', link: '#giay-tennis' },
+      ] },
   ];
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,6 +108,8 @@ export default function Navbar() {
                 <li
                   key={index}
                   className={`nav-item ${item.submenu.length > 0 ? 'dropdown' : ''}`}
+                  onMouseEnter={() => handleDropdownToggle(index)}
+                  onMouseLeave={() => handleDropdownToggle(index)}
                 >
                   {item.submenu.length > 0 ? (
                     <>
@@ -112,7 +118,6 @@ export default function Navbar() {
                         href="#"
                         id={`dropdown${index}`}
                         role="button"
-                        onClick={() => handleDropdownToggle(index)} // Xử lý click để mở/đóng
                         aria-expanded={openDropdown === index}
                       >
                         {item.label}
@@ -152,18 +157,18 @@ export default function Navbar() {
                   placeholder="Search"
                   className="form-control search-input"
                 />
-                <button type="submit" className="btn btn-dark search-button">
+                <button type="submit" className="btn btn-toolbar search-button">
                   🔍
                 </button>
               </form>
               <div className="icons d-flex gap-3">
-                <span className="nav-icon" role="img" aria-label="user">
+                <span className="nav-icon btn" role="img" aria-label="user">
                   👤
                 </span>
-                <span className="nav-icon" role="img" aria-label="heart">
+                <span className="nav-icon btn" role="img" aria-label="heart">
                   ❤️
                 </span>
-                <span className="nav-icon" role="img" aria-label="cart">
+                <span className="nav-icon btn" role="img" aria-label="cart">
                   🛒
                 </span>
               </div>

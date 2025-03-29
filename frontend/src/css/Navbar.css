@@ -1,7 +1,7 @@
 .navbar-container {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 2;
   background: white;
 }
 
@@ -31,6 +31,7 @@
   opacity: 0;
   transform: translateY(10px);
   display: none; /* Ẩn mặc định */
+  --bs-dropdown-link-hover-bg: lightgrey;
 }
 
 /* Hiển thị dropdown khi có class 'show' */
@@ -41,12 +42,12 @@
 }
 
 .nav-link {
-  padding: 1rem !important;
+  padding: 0.4rem 1.5rem 0.4rem 1.5rem !important;
   transition: color 0.2s;
 }
 
 .nav-link:hover {
-  color: #666 !important;
+  color: grey !important;
 }
 
 /* Responsive adjustments */
