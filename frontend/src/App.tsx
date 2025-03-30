@@ -1,14 +1,19 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import Home from './pages/Home.tsx'
-import './css/Navbar.css'
-import './css/video.css'
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import Home from './pages/Home';
+import Product from './pages/Product';
 
 function App() {
   return (
-    <>
-       <Home />
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Product />} />
+      </Routes>
+    </Router>
+  );
 }
-export default App
+
+export default App; 

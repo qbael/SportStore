@@ -1,18 +1,23 @@
-
-import Video from '../components/layout/VideoLogo.tsx'
-import Navbar from '../components/layout/Navbar.tsx'
-import ProductCarousel from '../components/layout/ProductCarousel.tsx'
-import '../css/Navbar.css'
-import '../css/video.css'
-import '../css/ProductCarousek.css'
+import React from 'react';
+import Navbar from '../components/layout/Navbar';
+import VideoLogo from '../components/layout/VideoLogo';
+import ProductCarousel from '../components/layout/ProductCarousel';
+import Footer from '../components/layout/Footer';
 
 function Home() {
+  const handleSearch = (searchTerm: string) => {
+    console.log('Tìm kiếm từ Home:', searchTerm);
+    // Có thể thêm logic lọc sản phẩm ở đây nếu cần
+  };
+
   return (
     <>
-        <Navbar />
-        <Video />
-        <ProductCarousel />
+      <Navbar onSearch={handleSearch} />
+      <VideoLogo />
+      <ProductCarousel />
+      <Footer />
     </>
-  )
+  );
 }
-export default Home
+
+export default Home;
