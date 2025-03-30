@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import logo from '../../assets/img/logo.jpg';
+import {Link} from "react-router-dom";
 
 // Định nghĩa interface cho submenu item
 interface SubMenuItem {
@@ -11,6 +12,7 @@ interface SubMenuItem {
 // Định nghĩa interface cho nav item
 interface NavItem {
   label: string;
+  link: string;
   submenu: SubMenuItem[];
 }
 
@@ -19,28 +21,51 @@ export default function Navbar() {
   const [openDropdown, setOpenDropdown] = useState<number | null>(null); // State để theo dõi dropdown đang mở
 
   const navItems: NavItem[] = [
-    { label: 'SẢN PHẨM', submenu: [] },
+    { label: 'SẢN PHẨM',
+      link: '/product',
+      submenu: []
+    },
     {
       label: 'CẦU LÔNG',
+      link: '/product?bomon=cau-long',
       submenu: [
-        { label: 'Vợt cầu lông', link: '#vot-cau-long' },
-        { label: 'Quần áo cầu lông', link: '#qua-cau-long' },
-        { label: 'Giày cầu lông', link: '#giay-cau-long' },
+        { label: 'Vợt cầu lông', link: '/product?bomon=cau-long&danhmuc=vot' },
+        { label: 'Quần áo cầu lông', link: '/product?bomon=cau-long&danhmuc=quan-ao' },
+        { label: 'Giày cầu lông', link: '/product?bomon=cau-long&danhmuc=giay' },
       ],
     },
     {
       label: 'BÓNG BÀN',
+      link: '/product?bomon=bong-ban',
       submenu: [
-        { label: 'Vợt bóng bàn', link: '#vot-bong-ban' },
-        { label: 'Quần áo bóng bàn', link: '#ban-bong-ban' },
-        { label: 'Giày bóng bàn', link: '#bong-ban' },
+        { label: 'Vợt bóng bàn', link: '/product?bomon=bong-ban&danhmuc=vot' },
+        { label: 'Quần áo bóng bàn', link: '/product?bomon=bong-ban&danhmuc=quan-ao' },
+        { label: 'Giày bóng bàn', link: '/product?bomon=bong-ban&danhmuc=giay' },
       ],
     },
-    { label: 'TENNIS', submenu: [
-        { label: 'Vợt tennis', link: '#vot-tennis' },
-        { label: 'Quần áo tennis', link: '#bong-tennis' },
-        { label: 'Giày tennis', link: '#giay-tennis' },
-      ] },
+    { label: 'TENNIS',
+      link: '/product?bomon=tennis',
+      submenu: [
+        { label: 'Vợt tennis', link: '/product?bomon=tennis&danhmuc=vot' },
+        { label: 'Quần áo tennis', link: '/product?bomon=tennis&danhmuc=quan-ao' },
+        { label: 'Giày tennis', link: '/product?bomon=tennis&danhmuc=giay' },
+      ]
+    },
+    { label: 'THƯƠNG HIỆU',
+      link: '/product?thuonghieu=thuong-hieu',
+      submenu: [
+        { label: 'Nike', link: '/product?thuonghieu=nike' },
+        { label: 'Adidas', link: '/product?thuonghieu=adidas' },
+        { label: 'Puma', link: '/product?thuonghieu=puma' },
+        { label: 'Under Armour', link: '/product?thuonghieu=under-armour' },
+        { label: 'New Balance', link: '/product?thuonghieu=new-balance' },
+        { label: 'Asics', link: '/product?thuonghieu=asics' },
+        { label: 'Reebok', link: '/product?thuonghieu=reebok' },
+        { label: 'Wilson', link: '/product?thuonghieu=wilson' },
+        { label: 'Yonex', link: '/product?thuonghieu=yonex' },
+        { label: 'Speedo', link: '/product?thuonghieu=speedo' },
+      ]
+    },
   ];
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,35 +138,35 @@ export default function Navbar() {
                 >
                   {item.submenu.length > 0 ? (
                     <>
-                      <a
+                      <Link
                         className="nav-link text-uppercase fw-bold dropdown-toggle"
-                        href="#"
                         id={`dropdown${index}`}
                         role="button"
                         aria-expanded={openDropdown === index}
+                        to={`${item.link}`}
                       >
                         {item.label}
-                      </a>
+                      </Link>
                       <ul
                         className={`dropdown-menu ${openDropdown === index ? 'show' : ''}`}
                         aria-labelledby={`dropdown${index}`}
                       >
                         {item.submenu.map((subItem, subIndex) => (
                           <li key={subIndex}>
-                            <a className="dropdown-item" href={subItem.link}>
+                            <Link className="dropdown-item" to={subItem.link}>
                               {subItem.label}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
                     </>
                   ) : (
-                    <a
+                    <Link
                       className="nav-link text-uppercase fw-bold"
-                      href={`#${item.label.toLowerCase()}`}
+                      to={`${item.link}`}
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   )}
                 </li>
               ))}

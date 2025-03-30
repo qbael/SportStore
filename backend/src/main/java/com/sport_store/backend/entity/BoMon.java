@@ -20,9 +20,6 @@ public class BoMon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "ten")
+    @Column(name = "tenbomon")
     private String tenBoMon;
-
-    @OneToMany(mappedBy = "boMon", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SanPham> dsSanPham;
 }

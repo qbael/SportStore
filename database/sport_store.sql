@@ -33,8 +33,8 @@ CREATE TABLE hoadon
 
 CREATE TABLE thuonghieu
 (
-    id  INT PRIMARY KEY AUTO_INCREMENT,
-    ten NVARCHAR(255)
+    id            INT PRIMARY KEY AUTO_INCREMENT,
+    tenthuonghieu NVARCHAR(255)
 );
 
 CREATE TABLE danhmuc
@@ -45,8 +45,8 @@ CREATE TABLE danhmuc
 
 CREATE TABLE bomon
 (
-    id  INT PRIMARY KEY AUTO_INCREMENT,
-    ten NVARCHAR(255)
+    id       INT PRIMARY KEY AUTO_INCREMENT,
+    tenbomon NVARCHAR(255)
 );
 
 CREATE TABLE sanpham
@@ -130,7 +130,7 @@ CREATE TABLE quyen
     id       INT PRIMARY KEY AUTO_INCREMENT,
     chucvu   INT,
     chucnang INT,
-    hanhdong ENUM('Xem', 'Thêm', 'Sửa', 'Xóa') UNIQUE NOT NULL,
+    hanhdong ENUM ('Xem', 'Thêm', 'Sửa', 'Xóa') UNIQUE NOT NULL,
     UNIQUE (chucvu, chucnang, hanhdong),
     FOREIGN KEY (chucvu) REFERENCES chucvu (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (chucnang) REFERENCES chucnang (id) ON UPDATE CASCADE ON DELETE CASCADE

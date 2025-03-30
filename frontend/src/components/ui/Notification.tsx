@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNotificationContext } from '../../hook/useNotificationContext'
-import '../../css/component/Notification.css'
+import '../../css/ui/Notification.css'
 
 const Notification = () => {
     const { message } = useNotificationContext();

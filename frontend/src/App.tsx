@@ -1,9 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import Home from './pages/Home.tsx'
-import './css/Navbar.css'
-import './css/video.css'
 import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
+
+import Home from './pages/Home.tsx'
+import Product from './pages/Product.tsx'
+
+import './css/Navbar.css'
+import './css/Video.css'
+
 import Navbar from "./components/layout/Navbar.tsx";
 import Footer from "./components/layout/Footer.tsx";
 import Notification from "./components/ui/Notification.tsx";
@@ -17,6 +21,7 @@ const Layout = () => {
             <div>
                 <Routes>
                     <Route path='/' element={<Home/>}/>
+                    <Route path='/product' element={<Product/>}/>
                 </Routes>
             </div>
             {!hideLayout && <Footer/>}
