@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.jpg';
 import {Link} from "react-router-dom";
 
@@ -18,6 +19,8 @@ interface NavItem {
 
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigator = useNavigate();
   const [openDropdown, setOpenDropdown] = useState<number | null>(null); // State để theo dõi dropdown đang mở
 
   const navItems: NavItem[] = [
@@ -69,12 +72,14 @@ export default function Navbar() {
   ];
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+     setSearchQuery(e.target.value);
   };
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Searching for:', searchQuery);
+      e.preventDefault();
+      searchParams.set('search', searchQuery);
+      navigator(`/product?${searchParams.toString().trim()}`);
+      setSearchQuery('');
   };
 
   // Hàm xử lý click để mở/đóng dropdown
@@ -179,6 +184,11 @@ export default function Navbar() {
                   type="text"
                   value={searchQuery}
                   onChange={handleSearchChange}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearchSubmit(e as any);
+                    }
+                  }}
                   placeholder="Search"
                   className="form-control search-input"
                 />

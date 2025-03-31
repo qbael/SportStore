@@ -11,6 +11,7 @@ import './css/Video.css'
 import Navbar from "./components/layout/Navbar.tsx";
 import Footer from "./components/layout/Footer.tsx";
 import Notification from "./components/ui/Notification.tsx";
+import ProductDetail from "./pages/ProductDetail.tsx";
 
 const Layout = () => {
     const hideLayout = useLocation().pathname === '/admin';
@@ -22,6 +23,7 @@ const Layout = () => {
                 <Routes>
                     <Route path='/' element={<Home/>}/>
                     <Route path='/product' element={<Product/>}/>
+                    <Route path='/product/:id' element={<ProductDetail/>}/>
                 </Routes>
             </div>
             {!hideLayout && <Footer/>}

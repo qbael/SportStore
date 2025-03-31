@@ -7,7 +7,7 @@
     padding: 15px;
     text-align: center;
     align-items: center;
-    box-shadow: 0 15px 10px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.5);
     margin: 0 10px 30px 10px;
     contain: content;
     border-radius: 20px;
@@ -15,6 +15,7 @@
 
 .custom-card:hover{
     cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 30px 30px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .custom-card .card-body{

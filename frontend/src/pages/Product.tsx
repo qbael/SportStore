@@ -3,6 +3,7 @@ import {useNavigate, useSearchParams} from 'react-router-dom';
 import '../css/Product.css'
 import '../css/ui/Card.css'
 import {Container, Card, Pagination} from "react-bootstrap";
+import {SortFilter} from "../components/ui/SortFilter.tsx";
 
 const PRODUCT_PER_PAGE = 12;
 
@@ -31,6 +32,8 @@ type Product = {
 const Product = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPage, setTotalPage] = useState<number>(0);
+    const [isLastPage, setIsLastPage] = useState<boolean>(false);
+    const [isFirstPage, setIsFirstPage] = useState<boolean>(false);
     const navigator = useNavigate();
     const [products, setProducts] = useState<Product[]>([])
     const [searchParams, setSearchParams] = useSearchParams(`limit=${PRODUCT_PER_PAGE}`);
@@ -50,6 +53,8 @@ const Product = () => {
                 setProducts(data.content);
                 setTotalPage(data.totalPages);
                 setCurrentPage(data.number);
+                setIsLastPage(data.last);
+                setIsFirstPage(data.first);
             } catch (error: string | any) {
                 if (error.name === 'AbortError') {
                     console.log('Fetch aborted');
@@ -66,14 +71,15 @@ const Product = () => {
 
     return (
         <Container className="align-items-center border-1 border-secondary shadow
-        d-flex custom-container flex-wrap justify-content-center">
+        d-flex custom-container flex-wrap justify-content-start">
             {products.length === 0 ? (
                 <h1 className="w-100 text-center mt-4 mb-4">No products found</h1>
             ) : (
                 <>
+                    <SortFilter />
                     {products.map((product: Product) => (
                         <Card key={product.id} className="custom-card" onClick={() => {
-                            navigator(`/sanpham/${product.id}`)
+                            navigator(`/product/${product.id}`)
                         }}>
                             <Card.Img variant="top" src={`./product/${product.hinhAnh}`} />
                             <Card.Body>
@@ -91,7 +97,7 @@ const Product = () => {
                             setCurrentPage(0);
                         }} />
                         <Pagination.Prev onClick={() => {
-                            if (currentPage > 0) {
+                            if (!isFirstPage) {
                                 searchParams.set('page', (currentPage - 1).toString());
                                 setSearchParams(searchParams);
                                 setCurrentPage(currentPage - 1);
@@ -112,7 +118,7 @@ const Product = () => {
                             </Pagination.Item>
                         ))}
                         <Pagination.Next onClick={() => {
-                            if (currentPage < totalPage - 1) {
+                            if (!isLastPage) {
                                 searchParams.set('page', (currentPage + 1).toString());
                                 setSearchParams(searchParams);
                                 setCurrentPage(currentPage + 1);
