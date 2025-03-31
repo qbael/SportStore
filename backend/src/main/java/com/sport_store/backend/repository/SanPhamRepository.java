@@ -13,4 +13,10 @@ import java.util.List;
 
 @Repository
 public interface SanPhamRepository extends JpaRepository<SanPham, Integer>, JpaSpecificationExecutor<SanPham> {
+    @Query("SELECT s, b.tenBoMon, d.loai, t.tenThuongHieu FROM SanPham s " +
+            "JOIN s.boMon b " +
+            "JOIN s.danhMuc d " +
+            "JOIN s.thuongHieu t ")
+    @Override
+    Page<SanPham> findAll(Specification<SanPham> spec, Pageable pageable);
 }

@@ -28,7 +28,7 @@ public class SanPhamController {
             @RequestParam(name = "minprice", required = false, defaultValue = "0") Integer minprice,
             @RequestParam(name = "maxprice", required = false) Integer maxprice,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
-            @RequestParam(name = "sortDir", required = false, defaultValue = "ASC") String sortDir,
+            @RequestParam(name = "sortdir", required = false, defaultValue = "ASC") String sortDir,
             @RequestParam(name = "search", required = false) String search
     ) {
         Pageable pageable = PageRequest.of(page, limit, Sort.by(

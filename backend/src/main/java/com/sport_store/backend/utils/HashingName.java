@@ -13,4 +13,10 @@ public class HashingName {
 
         return slug + "." + fileExtension;
     }
+
+    public static String normalizeString(String str){
+        String normalized = Normalizer.normalize(str, Normalizer.Form.NFD);
+        String noDiacritics = normalized.replaceAll("\\p{M}", "");
+        return noDiacritics;
+    }
 }

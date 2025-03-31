@@ -42,10 +42,4 @@ public class BienThe {
     @ManyToOne
     @JoinColumn(name = "mau")
     private Mau mau;
-
-    @OneToMany(mappedBy = "bienThe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CTHoaDon> dsCTHoaDon;
-
-    @OneToMany(mappedBy = "bienThe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CTNhapHang> dsCTNhapHang;
 }

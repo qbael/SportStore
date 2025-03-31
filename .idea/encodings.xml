@@ -2,7 +2,9 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/3d6eed63-ff67-442b-9621-bd54de33a3b5/console_1.sql" charset="UTF-8" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/cd0f0cf6-1dd9-45b1-97b3-f0e2bb5db5fc/console_1.sql" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/backend/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/frontend/src/components/layout/Footer.tsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" charset="UTF-8" />
   </component>
 </project>
