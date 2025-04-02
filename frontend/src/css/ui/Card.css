@@ -19,7 +19,11 @@
 }
 
 .custom-card p {
-    margin: 10px 0 0 0;
+    margin: 20px 0 0 0;
+}
+
+.custom-card .card-body{
+    padding: 10px 5px 0 5px;
 }
 
 .custom-card .card-title{

@@ -19,7 +19,7 @@ const Product = () => {
     let url = `http://localhost:8080/api/sanpham?${searchParams.toString()}`;
 
     useEffect( () => {
-        window.scrollTo({ top: 70, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: "smooth" });
         const controller = new AbortController();
         const signal = controller.signal;
         const fetchData = async () => {
