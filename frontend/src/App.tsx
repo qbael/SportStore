@@ -19,7 +19,7 @@ const Layout = () => {
         <div className="container-fluid p-0">
             <Notification/>
             {!hideLayout && <Navbar/>}
-            <div>
+            <div className="w-100">
                 <Routes>
                     <Route path='/' element={<Home/>}/>
                     <Route path='/product' element={<Product/>}/>

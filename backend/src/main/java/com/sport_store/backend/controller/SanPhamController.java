@@ -1,5 +1,6 @@
 package com.sport_store.backend.controller;
 
+import com.sport_store.backend.entity.BienThe;
 import com.sport_store.backend.entity.SanPham;
 import com.sport_store.backend.service.SanPhamService;
 import org.springframework.data.domain.Page;
@@ -7,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -36,5 +39,10 @@ public class SanPhamController {
         ));
 
         return sanPhamService.getFilteredProducts(bomon, danhmuc, thuonghieu, minprice, maxprice, search, pageable);
+    }
+
+    @GetMapping("/{id}")
+    public List<BienThe> getAllBienTheOfSanPham(@PathVariable int id) {
+        return sanPhamService.getAllBienTheOfSanPham(id);
     }
 }

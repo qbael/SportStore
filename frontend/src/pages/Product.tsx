@@ -4,30 +4,9 @@ import '../css/Product.css'
 import '../css/ui/Card.css'
 import {Container, Card, Pagination} from "react-bootstrap";
 import {SortFilter} from "../components/ui/SortFilter.tsx";
+import {ProductType} from "../util/types/ProductTypes.tsx";
 
 const PRODUCT_PER_PAGE = 12;
-
-type Product = {
-    id: number,
-    tenSanPham: string,
-    hinhAnh: string,
-    giaBan: number,
-    giaNhap: number,
-    moTa: string,
-    trangThai: boolean,
-    danhMuc: {
-        id: number,
-        loai: string
-    },
-    thuongHieu: {
-        id: number,
-        tenThuongHieu: string
-    },
-    boMon: {
-        id: number,
-        tenBoMon: string
-    }
-}
 
 const Product = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -35,7 +14,7 @@ const Product = () => {
     const [isLastPage, setIsLastPage] = useState<boolean>(false);
     const [isFirstPage, setIsFirstPage] = useState<boolean>(false);
     const navigator = useNavigate();
-    const [products, setProducts] = useState<Product[]>([])
+    const [products, setProducts] = useState<ProductType[]>([])
     const [searchParams, setSearchParams] = useSearchParams(`limit=${PRODUCT_PER_PAGE}`);
     let url = `http://localhost:8080/api/sanpham?${searchParams.toString()}`;
 
@@ -77,8 +56,9 @@ const Product = () => {
             ) : (
                 <>
                     <SortFilter />
-                    {products.map((product: Product) => (
+                    {products.map((product: ProductType) => (
                         <Card key={product.id} className="custom-card" onClick={() => {
+                            localStorage.setItem("selectedProduct", JSON.stringify(product));
                             navigator(`/product/${product.id}`)
                         }}>
                             <Card.Img variant="top" src={`./product/${product.hinhAnh}`} />

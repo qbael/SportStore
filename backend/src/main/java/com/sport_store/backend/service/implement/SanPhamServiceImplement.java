@@ -1,5 +1,6 @@
 package com.sport_store.backend.service.implement;
 
+import com.sport_store.backend.entity.BienThe;
 import com.sport_store.backend.entity.SanPham;
 import com.sport_store.backend.repository.BienTheRepository;
 import com.sport_store.backend.repository.SanPhamRepository;
@@ -95,5 +96,9 @@ public class SanPhamServiceImplement implements SanPhamService {
             }
         };
         return sanPhamRepository.findAll(spec, pageable);
+    }
+
+    public List<BienThe> getAllBienTheOfSanPham(int id) {
+        return bienTheRepository.findAllBySanPhamId(id);
     }
 }
