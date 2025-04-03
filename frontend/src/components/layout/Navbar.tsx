@@ -1,16 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import logo from '../../assets/img/logo.jpg';
-import {Link} from "react-router-dom";
 
-// Định nghĩa interface cho submenu item
 interface SubMenuItem {
   label: string;
   link: string;
 }
 
-// Định nghĩa interface cho nav item
 interface NavItem {
   label: string;
   link: string;
@@ -20,14 +17,12 @@ interface NavItem {
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigator = useNavigate();
-  const [openDropdown, setOpenDropdown] = useState<number | null>(null); // State để theo dõi dropdown đang mở
+  const navigate = useNavigate();
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems: NavItem[] = [
-    { label: 'SẢN PHẨM',
-      link: '/product',
-      submenu: []
-    },
+    { label: 'SẢN PHẨM', link: '/product', submenu: [] },
     {
       label: 'CẦU LÔNG',
       link: '/product?bomon=cau-long',
@@ -46,15 +41,17 @@ export default function Navbar() {
         { label: 'Giày bóng bàn', link: '/product?bomon=bong-ban&danhmuc=giay' },
       ],
     },
-    { label: 'TENNIS',
+    {
+      label: 'TENNIS',
       link: '/product?bomon=tennis',
       submenu: [
         { label: 'Vợt tennis', link: '/product?bomon=tennis&danhmuc=vot' },
         { label: 'Quần áo tennis', link: '/product?bomon=tennis&danhmuc=quan-ao' },
         { label: 'Giày tennis', link: '/product?bomon=tennis&danhmuc=giay' },
-      ]
+      ],
     },
-    { label: 'THƯƠNG HIỆU',
+    {
+      label: 'THƯƠNG HIỆU',
       link: '/product?thuonghieu=thuong-hieu',
       submenu: [
         { label: 'Nike', link: '/product?thuonghieu=nike' },
@@ -67,98 +64,91 @@ export default function Navbar() {
         { label: 'Wilson', link: '/product?thuonghieu=wilson' },
         { label: 'Yonex', link: '/product?thuonghieu=yonex' },
         { label: 'Speedo', link: '/product?thuonghieu=speedo' },
-      ]
+      ],
     },
   ];
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-     setSearchQuery(e.target.value);
+    setSearchQuery(e.target.value);
   };
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      searchParams.set('search', searchQuery);
-      navigator(`/product?${searchParams.toString().trim()}`);
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      searchParams.set('search', searchQuery.trim());
+      navigate(`/product?${searchParams.toString()}`);
       setSearchQuery('');
-  };
-
-  // Hàm xử lý click để mở/đóng dropdown
-  const handleDropdownToggle = (index: number) => {
-    if (openDropdown === index) {
-      setOpenDropdown(null); // Đóng dropdown nếu đã mở
-    } else {
-      setOpenDropdown(index); // Mở dropdown
     }
   };
 
+  const handleDropdownToggle = (index: number) => {
+    setOpenDropdown(openDropdown === index ? null : index);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setOpenDropdown(null);
+  };
+
   return (
-    <div className="navbar-container">
-      {/* Top Bar */}
-      <div className="top-bar bg-dark text-white py-2 px-3 d-flex justify-content-between align-items-center">
-        <span className="return-link"></span>
-        <div className="top-right-links d-flex align-items-center">
-          <a href="#help" className="text-white text-decoration-none me-3">
-            help
-          </a>
-          <a href="#order-tracker" className="text-white text-decoration-none me-3">
-            order tracker
-          </a>
-          <a href="#become-member" className="text-white text-decoration-none me-3">
-            become a member
-          </a>
-          <span className="flag">🇻🇳</span>
-        </div>
-      </div>
+    <>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      />
+      <nav className={`navbar navbar-expand-lg fixed-top bg-white shadow-sm ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+        <div className="container py-2">
+          <Link className="navbar-brand" to="/">
+            <img src={logo} alt="Logo" height="45" className="navbar-logo" />
+          </Link>
 
-      {/* Main Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div className="container-fluid">
-          {/* Logo */}
-          <a className="navbar-brand" href="/">
-            <img src={logo} alt="adidas logo" className="logo-img" />
-          </a>
-
-          {/* Toggle button for mobile */}
           <button
-            className="navbar-toggler"
+            className="navbar-toggler hamburger-menu"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
+            onClick={toggleMobileMenu}
             aria-label="Toggle navigation"
+            aria-expanded={isMobileMenuOpen}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          {/* Navbar links */}
-          <div className="collapse navbar-collapse" id="navbarNav">
+          {isMobileMenuOpen && <div className="mobile-backdrop" onClick={toggleMobileMenu}></div>}
+
+          <div className={`navbar-collapse collapse ${isMobileMenuOpen ? 'show' : ''}`} id="navbarNav">
+            {isMobileMenuOpen && (
+              <button
+                className="mobile-close-btn d-lg-none" // Ẩn trên desktop
+                onClick={toggleMobileMenu}
+                aria-label="Close menu"
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            )}
+
             <ul className="navbar-nav mx-auto">
               {navItems.map((item, index) => (
-                <li
-                  key={index}
-                  className={`nav-item ${item.submenu.length > 0 ? 'dropdown' : ''}`}
-                  onMouseEnter={() => handleDropdownToggle(index)}
-                  onMouseLeave={() => handleDropdownToggle(index)}
-                >
+                <li key={index} className={`nav-item ${item.submenu.length > 0 ? 'dropdown' : ''}`}>
                   {item.submenu.length > 0 ? (
                     <>
-                      <Link
-                        className="nav-link text-uppercase fw-bold dropdown-toggle"
-                        id={`dropdown${index}`}
-                        role="button"
+                      <button
+                        className={`nav-link dropdown-toggle ${openDropdown === index ? 'active' : ''}`}
+                        onClick={() => handleDropdownToggle(index)}
                         aria-expanded={openDropdown === index}
-                        to={`${item.link}`}
                       >
                         {item.label}
-                      </Link>
-                      <ul
-                        className={`dropdown-menu ${openDropdown === index ? 'show' : ''}`}
-                        aria-labelledby={`dropdown${index}`}
-                      >
+                        <i className={`fas fa-chevron-down ms-2 ${openDropdown === index ? 'rotate' : ''}`}></i>
+                      </button>
+                      <ul className={`dropdown-menu ${openDropdown === index ? 'show' : ''}`}>
                         {item.submenu.map((subItem, subIndex) => (
                           <li key={subIndex}>
-                            <Link className="dropdown-item" to={subItem.link}>
+                            <Link
+                              className="dropdown-item"
+                              to={subItem.link}
+                              onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                setOpenDropdown(null);
+                              }}
+                            >
                               {subItem.label}
                             </Link>
                           </li>
@@ -167,8 +157,9 @@ export default function Navbar() {
                     </>
                   ) : (
                     <Link
-                      className="nav-link text-uppercase fw-bold"
-                      to={`${item.link}`}
+                      className="nav-link"
+                      to={item.link}
+                      onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {item.label}
                     </Link>
@@ -177,40 +168,36 @@ export default function Navbar() {
               ))}
             </ul>
 
-            {/* Search and Icons */}
-            <div className="d-flex align-items-center">
-              <form onSubmit={handleSearchSubmit} className="d-flex me-3">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSearchSubmit(e as any);
-                    }
-                  }}
-                  placeholder="Search"
-                  className="form-control search-input"
-                />
-                <button type="submit" className="btn btn-toolbar search-button">
-                  🔍
-                </button>
+            <div className="nav-actions d-flex align-items-center">
+              <form onSubmit={handleSearchSubmit} className="search-form me-3">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder="Tìm kiếm sản phẩm"
+                    className="form-control"
+                  />
+                  <button type="submit" className="btn search-btn">
+                    <i className="fas fa-search"></i>
+                  </button>
+                </div>
               </form>
-              <div className="icons d-flex gap-3">
-                <span className="nav-icon btn" role="img" aria-label="user">
-                  👤
-                </span>
-                <span className="nav-icon btn" role="img" aria-label="heart">
-                  ❤️
-                </span>
-                <span className="nav-icon btn" role="img" aria-label="cart">
-                  🛒
-                </span>
+              <div className="action-buttons d-flex gap-2">
+                <Link to="/account" className="btn btn-icon" title="Tài khoản">
+                  <i className="fas fa-user"></i>
+                </Link>
+                <Link to="/wishlist" className="btn btn-icon" title="Yêu thích">
+                  <i className="fas fa-heart"></i>
+                </Link>
+                <Link to="/cart" className="btn btn-icon" title="Giỏ hàng">
+                  <i className="fas fa-shopping-cart"></i>
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </nav>
-    </div>
+    </>
   );
 }
