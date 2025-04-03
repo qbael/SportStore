@@ -1,5 +1,8 @@
 package com.sport_store.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +25,4 @@ public class DanhMuc {
 
     @Column(name = "loai")
     private String loai;
-
-    @OneToMany(mappedBy = "danhMuc", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SanPham> dsSanPham;
 }

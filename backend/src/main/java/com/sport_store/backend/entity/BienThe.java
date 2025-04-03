@@ -1,5 +1,6 @@
 package com.sport_store.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class BienThe {
 
     @ManyToOne
     @JoinColumn(name = "sanpham")
+    @JsonBackReference
     private SanPham sanPham;
 
     @ManyToOne
@@ -40,10 +42,4 @@ public class BienThe {
     @ManyToOne
     @JoinColumn(name = "mau")
     private Mau mau;
-
-    @OneToMany(mappedBy = "bienThe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CTHoaDon> dsCTHoaDon;
-
-    @OneToMany(mappedBy = "bienThe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CTNhapHang> dsCTNhapHang;
 }

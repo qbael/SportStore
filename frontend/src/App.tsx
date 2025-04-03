@@ -1,19 +1,42 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import Home from './pages/Home';
-import Product from './pages/Product';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Product />} />
-      </Routes>
-    </Router>
-  );
+import Home from './pages/Home.tsx'
+import Product from './pages/Product.tsx'
+
+import './css/Navbar.css'
+import './css/Video.css'
+
+import Navbar from "./components/layout/Navbar.tsx";
+import Footer from "./components/layout/Footer.tsx";
+import Notification from "./components/ui/Notification.tsx";
+import ProductDetail from "./pages/ProductDetail.tsx";
+
+const Layout = () => {
+    const hideLayout = useLocation().pathname === '/admin';
+    return (
+        <div className="container-fluid p-0">
+            <Notification/>
+            {!hideLayout && <Navbar/>}
+            <div className="w-100">
+                <Routes>
+                    <Route path='/' element={<Home/>}/>
+                    <Route path='/product' element={<Product/>}/>
+                    <Route path='/product/:id' element={<ProductDetail/>}/>
+                </Routes>
+            </div>
+            {!hideLayout && <Footer/>}
+        </div>
+    );
 }
 
-export default App; 
+export const App = () => {
+    return (
+        <>
+            <BrowserRouter>
+                <Layout/>
+            </BrowserRouter>
+        </>
+    )
+}
