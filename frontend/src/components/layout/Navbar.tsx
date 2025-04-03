@@ -46,6 +46,14 @@ export default function Navbar({ onSearch }: NavbarProps) {
         { label: 'Bóng bàn', link: '/products#bong-ban' },
       ],
     },
+    {
+      label: 'TENNIS',
+      submenu: [
+        { label: 'Vợt tennis', link: '/products#vot-tennis' },
+        { label: 'Bóng tennis', link: '/products#bong-tennis' },
+        { label: 'Giày tennis', link: '/products#giay-tennis' },
+      ],
+    },
     { label: 'SẢN PHẨM', submenu: [] },
   ];
 
