@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import '../css/Product.css';
@@ -29,19 +30,41 @@ type Product = {
     };
 };
 
+=======
+import {useEffect, useState} from "react";
+import {useNavigate, useSearchParams} from 'react-router-dom';
+import '../css/Product.css'
+import '../css/ui/Card.css'
+import {Container, Card, Pagination} from "react-bootstrap";
+import {SortFilter} from "../components/ui/SortFilter.tsx";
+import {ProductType} from "../util/types/ProductTypes.tsx";
+
+const PRODUCT_PER_PAGE = 12;
+
+>>>>>>> c3e9d6840ea3aaf8cb6f880abaabe3df3e8a6bde
 const Product = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPage, setTotalPage] = useState<number>(0);
     const [isLastPage, setIsLastPage] = useState<boolean>(false);
     const [isFirstPage, setIsFirstPage] = useState<boolean>(false);
+<<<<<<< HEAD
     const navigate = useNavigate();
     const [products, setProducts] = useState<Product[]>([]);
+=======
+    const navigator = useNavigate();
+    const [products, setProducts] = useState<ProductType[]>([])
+>>>>>>> c3e9d6840ea3aaf8cb6f880abaabe3df3e8a6bde
     const [searchParams, setSearchParams] = useSearchParams(`limit=${PRODUCT_PER_PAGE}`);
     const [error, setError] = useState<string | null>(null);
     let url = `http://localhost:8080/api/sanpham?${searchParams.toString()}`;
 
+<<<<<<< HEAD
     useEffect(() => {
         window.scrollTo({ top: 70, behavior: "smooth" });
+=======
+    useEffect( () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+>>>>>>> c3e9d6840ea3aaf8cb6f880abaabe3df3e8a6bde
         const controller = new AbortController();
         const signal = controller.signal;
         const fetchData = async () => {
@@ -99,12 +122,20 @@ const Product = () => {
             ) : (
                 <>
                     <SortFilter />
+<<<<<<< HEAD
                     {products.map((product: Product) => (
                         <Card
                             key={product.id}
                             className="custom-card"
                             onClick={() => navigate(`/product/${product.id}`)}
                         >
+=======
+                    {products.map((product: ProductType) => (
+                        <Card key={product.id} className="custom-card" onClick={() => {
+                            localStorage.setItem("selectedProduct", JSON.stringify(product));
+                            navigator(`/product/${product.id}`)
+                        }}>
+>>>>>>> c3e9d6840ea3aaf8cb6f880abaabe3df3e8a6bde
                             <Card.Img variant="top" src={`./product/${product.hinhAnh}`} />
                             <Card.Body>
                                 <Card.Title>{product.tenSanPham}</Card.Title>

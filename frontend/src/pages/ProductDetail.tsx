@@ -1,50 +1,81 @@
-import React, { useState } from 'react';
 import { Container, Row, Col, Button, Image} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-interface SizeOption {
-    value: string;
-    label: string;
-    available: boolean;
-}
+import {useEffect, useState} from "react";
+import {ChiTietSanPhamType, MauType, SizeType} from "../util/types/ProductTypes.tsx";
+import {useLocation} from "react-router-dom";
+import '../css/ProductDetail.css'
 
 const ProductDetail: React.FC = () => {
-    const [selectedSize, setSelectedSize] = useState<string | null>(null);
-    const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+    const [selectedSize, setSelectedSize] = useState<SizeType | null>(null);
+    const [selectedColor, setSelectedColor] = useState<MauType | null>(null);
+    const selectedProduct = JSON.parse(localStorage.getItem('selectedProduct') || '{}');
+    const [productImage, setProductImage] = useState<string>(selectedProduct?.hinhAnh || '');
 
-    const productImages = [
-        '/path/to/sneaker-main.jpg',
-        '/path/to/sneaker-top.jpg',
-        '/path/to/sneaker-side.jpg',
-    ];
+    let chiTietSanPham: ChiTietSanPhamType = {
+        sanPham: selectedProduct,
+        bienThe: []
+    }
 
-    const sizeOptions: SizeOption[] = [
-        { value: '36.5', label: '36.5', available: true },
-        { value: '41', label: '41', available: true },
-        { value: '39', label: '39', available: true },
-        { value: '38', label: '38', available: true },
-        { value: '42.5', label: '42.5', available: true },
-    ];
+    let sizeMap = new Map<number, string>();
+    let mauMap = new Map<number, string>();
+    const location = useLocation();
+    const id = location.pathname.split('/').pop() || '';
 
-    const handleSizeSelect = (size: string) => {
-        setSelectedSize(size);
-    };
+    useEffect(() => {
+        if (!selectedProduct) return;
+
+        window.scrollTo({ top: 40 });
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        const fetchData = async () => {
+            try {
+                console.log('fetch');
+                const response = await fetch(`http://localhost:8080/api/sanpham/${id}`, { signal });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const data = await response.json();
+                chiTietSanPham.bienThe = data;
+                chiTietSanPham.bienThe.forEach(item => {
+                    if (item.size){
+                        sizeMap.set(item.id, item.size.size);
+                    }
+                    if (item.mau) {
+                        mauMap.set(item.id, item.mau.tenMau);
+                    }
+                });
+                console.log(sizeMap);
+                console.log(mauMap);
+            } catch (error: string | any) {
+                if (error.name === 'AbortError') {
+                    console.log('Fetch aborted');
+                } else {
+                    console.error(error);
+                }
+            }
+        };
+
+        fetchData();
+
+        return () => controller.abort();
+    }, [location.pathname]);
 
     return (
-        <Container className="my-5">
+        <Container fluid={'xxl'} className="my-5 product-detail-container">
             <Row>
                 <Col xs={10} md={5} className="position-relative">
-                    <Image src={productImages[currentImageIndex]} fluid alt="MLB Sneakers" className="main-product-image" />
+                    <Image src={`/product/${productImage}`} fluid className="main-product-image border border-1" />
                 </Col>
 
                 <Col xs={12} md={6}>
                     <div className="d-flex justify-content-between align-items-start mb-3">
-                        <h1 className="h2">MLB - Giày sneakers unisex cổ thấp Chunky Liner Denim Monogram</h1>
+                        <h1 className="h2">{chiTietSanPham.sanPham?.tenSanPham}</h1>
                         <div className="d-flex">
                         </div>
                     </div>
 
-                    <h2 className="h3 mb-4">3,990,000 VND</h2>
+                    <h2 className="mb-4 text-danger">{chiTietSanPham.sanPham?.giaBan.toLocaleString('de-DE') + 'VND'}</h2>
 
                     <div className="mb-4">
                         <div className="mb-2">
@@ -61,17 +92,17 @@ const ProductDetail: React.FC = () => {
                             <h3 className="h5 mb-0">Chọn kích thước</h3>
                         </div>
                         <div className="d-flex flex-wrap">
-                            {sizeOptions.map((size) => (
-                                <Button
-                                    key={size.value}
-                                    variant={selectedSize === size.value ? 'dark' : 'outline-secondary'}
-                                    className="me-2 mb-2 rounded-pill px-3"
-                                    onClick={() => handleSizeSelect(size.value)}
-                                    disabled={!size.available}
-                                >
-                                    {size.label}
-                                </Button>
-                            ))}
+                            {/*{sizeOptions.map((size) => (*/}
+                            {/*    <Button*/}
+                            {/*        key={size.value}*/}
+                            {/*        variant={selectedSize === size.value ? 'dark' : 'outline-secondary'}*/}
+                            {/*        className="me-2 mb-2 rounded-pill px-3"*/}
+                            {/*        onClick={() => handleSizeSelect(size.value)}*/}
+                            {/*        disabled={!size.available}*/}
+                            {/*    >*/}
+                            {/*        {size.label}*/}
+                            {/*    </Button>*/}
+                            {/*))}*/}
                         </div>
                     </div>
 
@@ -79,8 +110,9 @@ const ProductDetail: React.FC = () => {
                     <Button
                         variant="dark"
                         size="lg"
-                        className="w-100 py-3 mb-3"
-                        disabled={!selectedSize}
+                        className="w-100 py-2 mb-3"
+                        style={{ height: '40px' }}
+                        // disabled={!selectedSize}
                     >
                         Thêm vào giỏ hàng
                     </Button>
@@ -89,8 +121,7 @@ const ProductDetail: React.FC = () => {
                     <div className="mt-4">
                         <h3 className="h5 mb-3">Mô tả sản phẩm</h3>
                         <p>
-                            Giày sneakers unisex cổ thấp MLB Chunky Liner Denim Monogram với thiết kế hiện đại,
-                            chất liệu cao cấp và logo thương hiệu nổi bật. Phù hợp cho cả nam và nữ.
+                            {chiTietSanPham.sanPham?.moTa}
                         </p>
                     </div>
                 </Col>
@@ -98,5 +129,4 @@ const ProductDetail: React.FC = () => {
         </Container>
     );
 };
-
 export default ProductDetail;
