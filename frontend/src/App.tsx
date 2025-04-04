@@ -16,7 +16,9 @@ import ProductDetail from "./pages/ProductDetail.tsx";
 const Layout = () => {
     const hideLayout = useLocation().pathname === '/admin';
     return (
-        <div className="container-fluid p-0">
+        <div className="container-fluid p-0"
+             style={{ marginTop: '80px'}}
+        >
             <Notification/>
             {!hideLayout && <Navbar/>}
             <div className="w-100">

@@ -1,5 +1,6 @@
 package com.sport_store.backend.service.implement;
 
+import com.sport_store.backend.dto.ChiTietSanPhamDto;
 import com.sport_store.backend.entity.BienThe;
 import com.sport_store.backend.entity.SanPham;
 import com.sport_store.backend.repository.BienTheRepository;
@@ -98,7 +99,17 @@ public class SanPhamServiceImplement implements SanPhamService {
         return sanPhamRepository.findAll(spec, pageable);
     }
 
-    public List<BienThe> getAllBienTheOfSanPham(int id) {
-        return bienTheRepository.findAllBySanPhamId(id);
+    public ChiTietSanPhamDto getAllBienTheOfSanPham(int id) {
+        SanPham sanPham = sanPhamRepository.findById(id).orElse(null);
+        List<BienThe> bienThe;
+        if (sanPham != null) {
+            bienThe = bienTheRepository.findAllBySanPhamId(id);
+        } else {
+            throw new IllegalArgumentException("Product not found with id: " + id);
+        }
+        return new ChiTietSanPhamDto(
+                sanPham,
+                bienThe
+        );
     }
 }

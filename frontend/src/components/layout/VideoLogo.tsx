@@ -1,6 +1,6 @@
-import React from 'react';
 import video from '../../assets/video/videologo.mp4';
 import '../../css/Video.css';
+import {Link} from "react-router-dom";
 
 export default function VideoLogo() {
   return (
@@ -18,7 +18,7 @@ export default function VideoLogo() {
         <div className="overlay-text position-absolute top-50 start-50 translate-middle text-center text-white">
           <h1 className="display-4 fw-bold">Adidas Việt Nam</h1>
           <p className="lead">Khám phá đỉnh cao thể thao</p>
-          <a href="#products" className="btn btn-outline-light mt-3">Mua ngay</a>
+          <Link to={'/product'} className="btn btn-outline-light mt-3">Mua ngay</Link>
         </div>
       </div>
     </div>

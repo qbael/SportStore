@@ -17,11 +17,11 @@
 
 @keyframes drop-in {
   from {top: 0; opacity: 0}
-  to {top: 70px; opacity: 1}
+  to {top: 80px; opacity: 1}
 }
 
 @keyframes drop-out {
-  from {top: 70px; opacity: 1}
+  from {top: 80px; opacity: 1}
   to {top: 0; opacity: 0}
 }
 

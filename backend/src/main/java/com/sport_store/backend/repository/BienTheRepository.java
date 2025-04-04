@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface BienTheRepository extends JpaRepository<BienThe, Integer> {
-    @Query("SELECT b FROM BienThe b WHERE b.sanPham.id = :id")
-    List<BienThe> findAllBySanPhamId(@Param("id") int sanPhamId);
+    @Query(value = "SELECT b.* FROM bienthe b " +
+            "WHERE b.sanpham = :sanPhamId", nativeQuery = true)
+    List<BienThe> findAllBySanPhamId(@Param("sanPhamId") int sanPhamId);
 }

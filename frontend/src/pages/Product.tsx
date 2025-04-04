@@ -58,7 +58,6 @@ const Product = () => {
                     <SortFilter />
                     {products.map((product: ProductType) => (
                         <Card key={product.id} className="custom-card" onClick={() => {
-                            localStorage.setItem("selectedProduct", JSON.stringify(product));
                             navigator(`/product/${product.id}`)
                         }}>
                             <Card.Img variant="top" src={`./product/${product.hinhAnh}`} />

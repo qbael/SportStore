@@ -147,7 +147,7 @@ export default function Navbar() {
 
   return (
     <nav className={`navbar navbar-expand-lg fixed-top ${isScrolled ? 'navbar-scrolled' : ''}`} ref={navbarRef}>
-      <div className="container py-2">
+      <div className="container">
         <Link className="navbar-brand" to="/">
           <img src={logo} alt="Logo" height="45" className="navbar-logo" />
         </Link>
