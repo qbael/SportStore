@@ -142,7 +142,8 @@ export default function Navbar() {
                     <>
                       <button
                         className={`nav-link dropdown-toggle ${openDropdown === index ? 'active' : ''}`}
-                        onClick={() => handleDropdownToggle(index)}
+                        onMouseEnter={() => handleDropdownToggle(index)}
+                        onMouseLeave={() => handleDropdownToggle(index)}
                         aria-expanded={openDropdown === index}
                       >
                         {item.label}
