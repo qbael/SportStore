@@ -19,7 +19,8 @@ interface NavItem {
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigator = useNavigate();
+  const navigate = useNavigate();
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -80,197 +81,133 @@ export default function Navbar() {
   };
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      searchParams.set('search', searchQuery);
-      navigator(`/product?${searchParams.toString().trim()}`);
-      setSearchQuery('');
-  };
-
-  const handleDropdownClick = (index: number, e: React.MouseEvent) => {
     e.preventDefault();
-    e.stopPropagation();
-    setActiveDropdown(activeDropdown === index ? null : index);
+    if (searchQuery.trim()) {
+      searchParams.set('search', searchQuery.trim());
+      navigate(`/product?${searchParams.toString()}`);
+      setSearchQuery('');
+    }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const handleDropdownToggle = (index: number) => {
+    setOpenDropdown(openDropdown === index ? null : index);
+  };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        activeDropdown !== null &&
-        !(event.target as Element).closest('.nav-dropdown')
-      ) {
-        setActiveDropdown(null);
-      }
-      if (
-        isMobileMenuOpen &&
-        menuRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
-        !(event.target as Element).closest('.menu-toggle')
-      ) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [activeDropdown, isMobileMenuOpen]);
-
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isMobileMenuOpen]);
-
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsMobileMenuOpen(false);
-        setActiveDropdown(null);
-      }
-    };
-
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, []);
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setOpenDropdown(null);
+  };
 
   return (
-    <nav className={`navbar navbar-expand-lg fixed-top ${isScrolled ? 'navbar-scrolled' : ''}`} ref={navbarRef}>
-      <div className="container">
-        <Link className="navbar-brand" to="/">
-          <img src={logo} alt="Logo" height="45" className="navbar-logo" />
-        </Link>
+    <>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      />
+      <nav className={`navbar navbar-expand-lg fixed-top bg-white shadow-sm ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+        <div className="container">
+          <Link className="navbar-brand" to="/">
+            <img src={logo} alt="Logo" height="45" className="navbar-logo" />
+          </Link>
 
-        {/* Mobile Buttons */}
-        <div className="d-flex align-items-center gap-3 d-lg-none">
           <button
-            className={`hamburger-menu ${isMobileMenuOpen ? 'active' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsMobileMenuOpen(!isMobileMenuOpen);
-            }}
-            aria-label="Menu"
+            className="navbar-toggler hamburger-menu"
+            type="button"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle navigation"
             aria-expanded={isMobileMenuOpen}
           >
             <div className="hamburger-line"></div>
             <div className="hamburger-line"></div>
             <div className="hamburger-line"></div>
           </button>
-        </div>
 
-        {/* Mobile menu backdrop */}
-        {isMobileMenuOpen && <div className="mobile-backdrop" onClick={() => setIsMobileMenuOpen(false)}></div>}
+          {isMobileMenuOpen && <div className="mobile-backdrop" onClick={toggleMobileMenu}></div>}
 
-        {/* Main Navigation */}
-        <div className={`navbar-collapse ${isMobileMenuOpen ? 'show' : ''}`} ref={menuRef}>
-          <div className="mobile-header d-flex justify-content-between d-lg-none">
-            <h5 className="mb-0">Menu</h5>
-            <button
-              className="btn-close"
-              onClick={() => setIsMobileMenuOpen(false)}
-              aria-label="Close menu"
-            ></button>
-          </div>
-
-          <ul className="navbar-nav mx-auto">
-            {navItems.map((item, index) => (
-              <li key={index}
-                  className="nav-item"
-                  onMouseEnter={(e) => handleDropdownClick(index, e)}
-                  onMouseLeave={(e) => handleDropdownClick(index, e)}
+          <div className={`navbar-collapse collapse ${isMobileMenuOpen ? 'show' : ''}`} id="navbarNav">
+            {isMobileMenuOpen && (
+              <button
+                className="mobile-close-btn d-lg-none"
+                onClick={toggleMobileMenu}
+                aria-label="Close menu"
               >
-                {item.submenu.length > 0 ? (
-                  <div className="nav-dropdown">
-                    <button
-                      className={`nav-link d-flex align-items-center justify-content-between ${activeDropdown === index ? 'active' : ''}`}
-                      style={{ marginRight: '10px' }}
-                      onClick={() => {
-                        navigator(item.link === ''? '': item.link);
-                      }}
-                      aria-expanded={activeDropdown === index}
-                    >
-                      <span>{item.label}</span>
-                      <i className={`fas fa-chevron-down ${activeDropdown === index ? 'rotate' : ''}`}></i>
-                    </button>
-                    <div
-                      className={`dropdown-menu ${activeDropdown === index ? 'show' : ''}`}
-                      aria-hidden={activeDropdown !== index}
-                    >
-                      {item.submenu.map((subItem, subIndex) => (
-                        <Link
-                          key={subIndex}
-                          to={subItem.link}
-                          className="dropdown-item"
-                          onClick={() => {
-                            setIsMobileMenuOpen(false);
-                            setActiveDropdown(null);
-                          }}
-                        >
-                          {subItem.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <Link
-                    className="nav-link"
-                    to={item.label === 'TRANG CHỦ' ? '/' : '/product'}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
+                <i className="fas fa-times"></i>
+              </button>
+            )}
 
-          {/* Unified Search and Actions */}
-          <div className="nav-actions d-flex align-items-center">
-            <form onSubmit={handleSearchSubmit} className="search-form me-3">
-              <div className="input-group">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSearchSubmit(e as any);
-                    }
-                  }}
-                  placeholder="Search"
-                  className="form-control search-input"
-                />
-                <button type="submit" className="btn btn-icon">
-                  <i className="fas fa-search"></i>
-                </button>
+            <ul className="navbar-nav mx-auto">
+              {navItems.map((item, index) => (
+                <li key={index} className={`nav-item ${item.submenu.length > 0 ? 'dropdown' : ''}`}>
+                  {item.submenu.length > 0 ? (
+                    <>
+                      <button
+                        className={`nav-link dropdown-toggle ${openDropdown === index ? 'active' : ''}`}
+                        onClick={() => handleDropdownToggle(index)}
+                        aria-expanded={openDropdown === index}
+                      >
+                        {item.label}
+                        <i className={`fas fa-chevron-down ms-2 ${openDropdown === index ? 'rotate' : ''}`}></i>
+                      </button>
+                      <ul className={`dropdown-menu ${openDropdown === index ? 'show' : ''}`}>
+                        {item.submenu.map((subItem, subIndex) => (
+                          <li key={subIndex}>
+                            <Link
+                              className="dropdown-item"
+                              to={subItem.link}
+                              onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                setOpenDropdown(null);
+                              }}
+                            >
+                              {subItem.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : (
+                    <Link
+                      className="nav-link"
+                      to={item.link}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            <div className="nav-actions d-flex align-items-center">
+              <form onSubmit={handleSearchSubmit} className="search-form me-3">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder="Tìm kiếm sản phẩm"
+                    className="form-control"
+                  />
+                  <button type="submit" className="btn search-btn">
+                    <i className="fas fa-search"></i>
+                  </button>
+                </div>
+              </form>
+              <div className="action-buttons d-flex gap-2">
+                <Link to="/account" className="btn btn-icon" title="Tài khoản">
+                  <i className="fas fa-user"></i>
+                </Link>
+                <Link to="/wishlist" className="btn btn-icon" title="Yêu thích">
+                  <i className="fas fa-heart"></i>
+                </Link>
+                <Link to="/cart" className="btn btn-icon" title="Giỏ hàng">
+                  <i className="fas fa-shopping-cart"></i>
+                </Link>
               </div>
-            </form>
-
-            <div className="action-buttons d-flex">
-              <Link to="/account" className="btn btn-icon" title="Tài khoản">
-                <i className="fas fa-user"></i>
-              </Link>
-              <Link to="/wishlist" className="btn btn-icon" title="Yêu thích">
-                <i className="fas fa-heart"></i>
-              </Link>
-              <Link to="/cart" className="btn btn-icon" title="Giỏ hàng">
-                <i className="fas fa-shopping-cart"></i>
-              </Link>
             </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }

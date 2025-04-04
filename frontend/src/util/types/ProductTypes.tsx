@@ -1,23 +1,23 @@
 export type ProductType = {
-    id: number,
-    tenSanPham: string,
-    hinhAnh: string,
-    giaBan: number,
-    giaNhap: number,
-    moTa: string,
-    trangThai: boolean,
+    id: number;
+    tenSanPham: string;
+    hinhAnh: string;
+    giaBan?: number;
+    giaNhap?: number;
+    moTa: string;
+    trangThai: boolean;
     danhMuc: {
-        id: number,
-        loai: string
-    },
+        id: number;
+        loai: string;
+    };
     thuongHieu: {
-        id: number,
-        tenThuongHieu: string
-    },
+        id: number;
+        tenThuongHieu: string;
+    };
     boMon: {
-        id: number,
-        tenBoMon: string
-    }
+        id: number;
+        tenBoMon: string;
+    };
 }
 
 export type SizeType = {
