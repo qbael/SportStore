@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import "./fontAwesome";
 
 import {App} from './App.tsx'
 import {NotificationContextProvider} from "./context/NotificationContext.tsx";
