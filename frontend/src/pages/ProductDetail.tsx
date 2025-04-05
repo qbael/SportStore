@@ -4,6 +4,10 @@ import {useEffect, useState} from "react";
 import {BienTheType, ChiTietSanPhamType, MauType, SizeType} from "../util/types/ProductTypes.tsx";
 import {useLocation} from "react-router-dom";
 import '../css/ProductDetail.css'
+import { GiConsoleController } from 'react-icons/gi';
+
+import useCart from '../hook/useCart.ts';
+import {CartItem} from '../hook/useCart.ts';
 
 const ProductDetail: React.FC = () => {
     const [chiTietSanPham, setChiTietSanPham] = useState<ChiTietSanPhamType>({
@@ -17,11 +21,22 @@ const ProductDetail: React.FC = () => {
     const [availableSizes, setAvailableSizes] = useState<SizeType[]>([]);
     const [productImage, setProductImage] = useState<string>('');
 
+    const {addToCart} = useCart();
+
     const location = useLocation();
     const id = location.pathname.split('/').pop() || '';
 
     const handleAddToCart = () => {
-        console.log('Add to cart:', selectedBienThe);
+        console.log("sản phẩm :");
+        console.log('Add to cart:', selectedBienThe, chiTietSanPham.sanPham);
+        
+        const cartItem: CartItem = {
+            bienthesp: selectedBienThe, 
+            product: chiTietSanPham.sanPham, 
+            quantity: 1, 
+        };
+    
+        addToCart(cartItem);
     };
 
     useEffect(() => {

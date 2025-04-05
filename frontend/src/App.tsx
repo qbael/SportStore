@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
 
 import Home from './pages/Home.tsx'
 import Product from './pages/Product.tsx'
+import Cart from "./pages/Cart.tsx";
 
 import './css/Navbar.css'
 import './css/Video.css'
@@ -12,6 +13,7 @@ import Navbar from "./components/layout/Navbar.tsx";
 import Footer from "./components/layout/Footer.tsx";
 import Notification from "./components/ui/Notification.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
+
 
 const Layout = () => {
     const hideLayout = useLocation().pathname === '/admin';
@@ -26,6 +28,7 @@ const Layout = () => {
                     <Route path='/' element={<Home/>}/>
                     <Route path='/product' element={<Product/>}/>
                     <Route path='/product/:id' element={<ProductDetail/>}/>
+                    <Route path='/cart' element={<Cart/>}/>
                 </Routes>
             </div>
             {!hideLayout && <Footer/>}
