@@ -13,7 +13,7 @@ export const SortFilter = () => {
     return (
         <div className={'filter-container d-flex justify-content-start'}>
             <div className={'filter-component'}>
-                <h4>Sort by</h4>
+                <h4>Sắp xếp theo giá</h4>
                 <div className={'d-flex justify-content-start'}>
                     <div className={'filter-item'}
                          onClick={() => {
@@ -24,7 +24,7 @@ export const SortFilter = () => {
                          }}
                     >
                         <img className={'icon-link'} src={ascSortLogo}/>
-                        <span>Price increasing</span>
+                        <span>Tăng dần</span>
                     </div>
                     <div className={'filter-item'}
                          onClick={() => {
@@ -35,15 +35,15 @@ export const SortFilter = () => {
                          }}
                     >
                         <img className={'icon-link'} src={descSortLogo}/>
-                        <span>Price decreasing</span>
+                        <span>Giảm dần</span>
                     </div>
                 </div>
             </div>
             <div className={'filter-component'}>
-                <h4>Price range</h4>
+                <h4>Khoảng giá</h4>
                 <div className={'d-flex justify-content-start'}>
                     <input className={'price-input'}
-                           placeholder={`From`}
+                           placeholder={`Từ`}
                            value={minPrice ? minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : ""}
                            onChange={(e) => {
                                const rawValue = e.target.value.replace(/\./g, '');
@@ -53,7 +53,7 @@ export const SortFilter = () => {
                            }}
                     />
                     <input className={'price-input'}
-                           placeholder={`To`}
+                           placeholder={`Đến`}
                            value={maxPrice ? maxPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : ""}
                            onChange={(e) => {
                                const rawValue = e.target.value.replace(/\./g, '');
@@ -79,7 +79,7 @@ export const SortFilter = () => {
                                 setMinPrice("");
                                 setMaxPrice("");
                             }}
-                    >Apply
+                    >Lọc
                     </button>
                 </div>
             </div>

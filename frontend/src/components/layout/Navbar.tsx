@@ -138,7 +138,7 @@ export default function Navbar() {
                   {item.submenu.length > 0 ? (
                     <>
                       <button
-                        className={`nav-link dropdown-toggle ${openDropdown === index ? 'active' : ''}`}
+                        className={`nav-link ${openDropdown === index ? 'active' : ''}`}
                         aria-expanded={openDropdown === index}
                       >
                         {item.label}

@@ -27,7 +27,7 @@ CREATE TABLE hoadon
     ttkhachhang INT,
     tonggianhap INT,
     tonggiaban  INT,
-    trangthai   ENUM ('Đang xử lý', 'Đã hủy', 'Đang giao', 'Đã giao') DEFAULT 'Đang xử lý' UNIQUE,
+    trangthai   ENUM ('Đang xử lý', 'Đã hủy', 'Đang giao', 'Đã giao') DEFAULT 'Đang xử lý',
     FOREIGN KEY (ttkhachhang) REFERENCES ttkhachhang (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
