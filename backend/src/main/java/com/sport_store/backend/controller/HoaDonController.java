@@ -1,6 +1,5 @@
 package com.sport_store.backend.controller;
 
-
 import com.sport_store.backend.entity.HoaDon;
 import com.sport_store.backend.entity.CTHoaDon;
 import com.sport_store.backend.repository.HoaDonRepository;
@@ -12,8 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -39,9 +39,8 @@ public class HoaDonController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<HoaDon> createHoaDon(@RequestBody HoaDon hoaDon) {
-        System.out.println("---------------------------------------------------------------");
-        System.out.println(hoaDon.toString());
+    public ResponseEntity<Map<String, Object>> createHoaDon(@RequestBody HoaDon hoaDon) {
+
         if (hoaDon.getNgay() == null) {
             hoaDon.setNgay(LocalDate.now());
         }
@@ -51,15 +50,21 @@ public class HoaDonController {
                 ct.setHoaDon(hoaDon);
             }
         }
-        // int kiểu dữ liệu (không có null) interger lớp dữ liệu (có thể null);&& hoaDon.getTtKhachHang().getId() != null
-        if (hoaDon.getTtKhachHang() != null ) {
+        // int kiểu dữ liệu (không có null) interger lớp dữ liệu (có thể null);&&
+        // hoaDon.getTtKhachHang().getId() != null
+        if (hoaDon.getTtKhachHang() != null) {
             hoaDon.setTtKhachHang(
-                ttKhachHangRepository.findById(hoaDon.getTtKhachHang().getId()).orElse(null)
-            );
+                    ttKhachHangRepository.findById(hoaDon.getTtKhachHang().getId()).orElse(null));
         }
 
         HoaDon saved = hoaDonRepository.save(hoaDon);
-        return ResponseEntity.ok(saved);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Tạo hóa đơn thành công");
+        response.put("hoaDonId", saved.getId());
+        response.put("ngay", saved.getNgay());
+
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
@@ -76,9 +81,9 @@ public class HoaDonController {
 
         if (hoaDon.getDsCTHoaDon() != null) {
             for (CTHoaDon ct : hoaDon.getDsCTHoaDon()) {
-                ct.setHoaDon(existingHoaDon);  
+                ct.setHoaDon(existingHoaDon);
             }
-            existingHoaDon.setDsCTHoaDon(hoaDon.getDsCTHoaDon());  
+            existingHoaDon.setDsCTHoaDon(hoaDon.getDsCTHoaDon());
         }
 
         HoaDon updated = hoaDonRepository.save(existingHoaDon);
@@ -87,12 +92,12 @@ public class HoaDonController {
     // có thể không dùng <note>
     // @DeleteMapping("/{id}")
     // public ResponseEntity<Void> deleteHoaDon(@PathVariable int id) {
-    //     hoaDonRepository.deleteById(id);
-    //     return ResponseEntity.noContent().build();
+    // hoaDonRepository.deleteById(id);
+    // return ResponseEntity.noContent().build();
     // }
 
     // @GetMapping("/{id}/chitiet")
     // public List<CTHoaDon> getCTHoaDonByHoaDonId(@PathVariable int id) {
-    //     return ctHoaDonRepository.findByHoaDonId(id);
+    // return ctHoaDonRepository.findByHoaDonId(id);
     // }
 }

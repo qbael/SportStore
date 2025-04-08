@@ -10,7 +10,8 @@ function Cart() {
     decreaseQuantity,
     removeFromCart,
     getTotalPrice,
-    getTotalQuantity
+    getTotalQuantity,
+    resetCart,
   } = useCart();
 
   useEffect(() => {
@@ -59,13 +60,14 @@ function Cart() {
       })
       .then((data) => {
         console.log("Hóa đơn đã lưu:", data);
+        resetCart();
       })
       .catch((err) => {
         console.error("Lỗi:", err);
       });
 
 
-    alert("Bạn đã đặt hàng thành công!");
+    // alert("Bạn đã đặt hàng thành công!");
     // hoặc gọi API, xử lý logic đặt hàng tại đây
   };
 

@@ -90,6 +90,10 @@ const useCart = () => {
     }, 0);
   };
 
+  const resetCart = () => {
+    setCart([]); 
+  };
+
   return {
     cart,
     addToCart,
@@ -98,6 +102,7 @@ const useCart = () => {
     decreaseQuantity,
     getTotalQuantity,
     getTotalPrice,
+    resetCart,
   };
 };
 
