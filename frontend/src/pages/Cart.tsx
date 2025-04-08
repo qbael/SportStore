@@ -18,6 +18,53 @@ function Cart() {
   }, [cart]);
 
   const handleOrder = () => {
+
+    const ctHoaDonList: {
+      soLuong: number;
+      giaBan: number | null;
+      giaNhap: number | null;
+      bienThe: { id: number };
+    }[] = [];
+
+    cart.map((item, index) => {
+      ctHoaDonList.push({
+        soLuong: item.quantity,
+        giaBan: item.product?.giaBan ?? null,
+        giaNhap: item.product?.giaNhap ?? null,
+        bienThe: { id: item.bienthesp?.id ?? 0 },
+      });
+    });
+
+    const newHoaDon = {
+      tongGiaNhap: 200000,
+      tongGiaBan: 250000,
+      trangThai: "DANGXULY",
+      ttKhachHang: { id: 1 },
+      dsCTHoaDon: ctHoaDonList,
+    };
+
+
+    fetch("http://localhost:8080/api/hoadon", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newHoaDon),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Lỗi khi tạo hóa đơn");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Hóa đơn đã lưu:", data);
+      })
+      .catch((err) => {
+        console.error("Lỗi:", err);
+      });
+
+
     alert("Bạn đã đặt hàng thành công!");
     // hoặc gọi API, xử lý logic đặt hàng tại đây
   };
@@ -66,22 +113,22 @@ function Cart() {
               ) : null
             ))}
           </div>
-            <div className="cart-summary">
-              <div className="header_name">
-                <span>Tóm tắt đơn hàng</span>
+          <div className="cart-summary">
+            <div className="header_name">
+              <span>Tóm tắt đơn hàng</span>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", margin: "10px", padding: "10px" }}>
+              <div>
+                <span>Tổng ({getTotalQuantity()} sản phẩm)</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", margin: "10px", padding: "10px" }}>
-                <div>
-                  <span>Tổng ({getTotalQuantity()} sản phẩm)</span>
-                </div>
-                <div style={{ color: "#e95221" }}>
-                  <span>{formatPrice(getTotalPrice())}</span>
-                </div>
-              </div>
-              <div className="f-center">
-                <button onClick={handleOrder} className="btn-dathang">Đặt hàng</button>
+              <div style={{ color: "#e95221" }}>
+                <span>{formatPrice(getTotalPrice())}</span>
               </div>
             </div>
+            <div className="f-center">
+              <button onClick={handleOrder} className="btn-dathang">Đặt hàng</button>
+            </div>
+          </div>
         </div>
 
       )}

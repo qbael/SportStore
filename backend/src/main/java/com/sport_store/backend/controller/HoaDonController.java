@@ -8,11 +8,14 @@ import com.sport_store.backend.repository.TTKhachHangRepository;
 import com.sport_store.backend.repository.CTHoaDonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
+
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/hoadon")
 @RequiredArgsConstructor
@@ -35,7 +38,10 @@ public class HoaDonController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<HoaDon> createHoaDon(@RequestBody HoaDon hoaDon) {
+        System.out.println("---------------------------------------------------------------");
+        System.out.println(hoaDon.toString());
         if (hoaDon.getNgay() == null) {
             hoaDon.setNgay(LocalDate.now());
         }
