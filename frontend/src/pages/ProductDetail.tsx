@@ -128,7 +128,7 @@ const ProductDetail: React.FC = () => {
                             </div>
 
                             <h2 className="mb-4 text-danger">
-                                {chiTietSanPham?.sanPham?.giaBan.toLocaleString("de-DE") + " VND"}
+                                {chiTietSanPham.sanPham.giaBan?.toLocaleString("de-DE") + " VND"}
                             </h2>
 
                             {uniqueColors.length > 0 && (

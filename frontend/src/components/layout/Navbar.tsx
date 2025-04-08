@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import {Link, useSearchParams, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.jpg';
 import '../../css/Navbar.css';
@@ -22,12 +22,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  const navbarRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
-
   const navItems: NavItem[] = [
     { label: 'SẢN PHẨM',
       link: '/product',
@@ -137,13 +131,14 @@ export default function Navbar() {
 
             <ul className="navbar-nav mx-auto">
               {navItems.map((item, index) => (
-                <li key={index} className={`nav-item ${item.submenu.length > 0 ? 'dropdown' : ''}`}>
+                <li key={index} className={`nav-item ${item.submenu.length > 0 ? 'dropdown' : ''}`}
+                    onMouseEnter={() => handleDropdownToggle(index)}
+                    onMouseLeave={() => handleDropdownToggle(index)}
+                >
                   {item.submenu.length > 0 ? (
                     <>
                       <button
                         className={`nav-link dropdown-toggle ${openDropdown === index ? 'active' : ''}`}
-                        onMouseEnter={() => handleDropdownToggle(index)}
-                        onMouseLeave={() => handleDropdownToggle(index)}
                         aria-expanded={openDropdown === index}
                       >
                         {item.label}
@@ -186,6 +181,11 @@ export default function Navbar() {
                     type="text"
                     value={searchQuery}
                     onChange={handleSearchChange}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearchSubmit(e as any);
+                      }
+                    }}
                     placeholder="Tìm kiếm sản phẩm"
                     className="form-control"
                   />
