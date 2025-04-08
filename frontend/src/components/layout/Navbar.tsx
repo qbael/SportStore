@@ -181,6 +181,11 @@ export default function Navbar() {
                     type="text"
                     value={searchQuery}
                     onChange={handleSearchChange}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearchSubmit(e as any);
+                      }
+                    }}
                     placeholder="Tìm kiếm sản phẩm"
                     className="form-control"
                   />
