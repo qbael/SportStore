@@ -5,7 +5,7 @@
 }
 
 .filter-component{
-    margin-right: 50px;
+    margin-right: 10px;
 }
 
 .filter-container img {
@@ -16,7 +16,7 @@
 .filter-item{
     align-items: center;
     margin-right: 10px;
-    font-size: 14px;
+    font-size: 13px;
     border-radius: 10px;
     border: 1px solid black;
     padding: 5px;
@@ -39,7 +39,7 @@
     border-radius: 10px;
     border: 1px solid black;
     padding: 5px;
-    width: 100px;
+    width: 90px;
 }
 
 .btn {

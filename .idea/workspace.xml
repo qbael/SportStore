@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/util/Constant.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/css/Navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/css/Navbar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/sport_store.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/sport_store.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Product.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Product.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/styles/Navbar.css" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,6 +255,7 @@
       <workItem from="1743946685907" duration="2475000" />
       <workItem from="1743953231220" duration="2858000" />
       <workItem from="1744011102978" duration="6806000" />
+      <workItem from="1744100828804" duration="2126000" />
     </task>
     <servers />
   </component>

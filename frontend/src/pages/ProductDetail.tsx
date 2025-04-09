@@ -9,6 +9,8 @@ import { GiConsoleController } from 'react-icons/gi';
 import useCart from '../hook/useCart.ts';
 import {CartItem} from '../hook/useCart.ts';
 
+import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH} from "../util/Constant.tsx";
+
 const ProductDetail: React.FC = () => {
     const [chiTietSanPham, setChiTietSanPham] = useState<ChiTietSanPhamType>({
         sanPham: null,
@@ -47,7 +49,7 @@ const ProductDetail: React.FC = () => {
 
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/sanpham/${id}`, { signal });
+                const response = await fetch(`${PRODUCT_API_URL}/${id}`, { signal });
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
@@ -70,7 +72,7 @@ const ProductDetail: React.FC = () => {
             const colors = Array.from(
                 new Map(chiTietSanPham.bienThe.map((bt) => [bt.mau!.id, bt.mau!])).values()
             );
-            setProductImage(`/product/${chiTietSanPham.sanPham?.hinhAnh}`);
+            setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${chiTietSanPham.sanPham?.hinhAnh}`);
             setUniqueColors(colors);
         }
     }, [chiTietSanPham]);
@@ -107,13 +109,13 @@ const ProductDetail: React.FC = () => {
 
     useEffect(() => {
         if (selectedBienThe) {
-            setProductImage(`/product/${selectedBienThe.hinhAnh}`);
+            setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${selectedBienThe.hinhAnh}`);
         }
     }, [selectedBienThe]);
 
     return (
         <>
-            {chiTietSanPham.sanPham && chiTietSanPham.bienThe.length > 0 && (
+            {chiTietSanPham.sanPham && (
                 <Container fluid={"xxl"} className="my-5 product-detail-container">
                     <Row>
                         <Col xs={10} md={5} className="position-relative">

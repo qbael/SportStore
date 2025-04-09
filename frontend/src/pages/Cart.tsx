@@ -2,6 +2,7 @@ import "../css/Cart.css"
 import useCart from '../hook/useCart';
 import { useEffect } from 'react';
 import { formatPrice } from '../util/utils';
+import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH, BASE_URL} from "../util/Constant.tsx";
 
 function Cart() {
   const {
@@ -38,14 +39,14 @@ function Cart() {
 
     const newHoaDon = {
       tongGiaNhap: 200000,
-      tongGiaBan: 250000,
+      tongGiaBan: getTotalPrice(),
       trangThai: "DANGXULY",
       ttKhachHang: { id: 1 },
       dsCTHoaDon: ctHoaDonList,
     };
 
 
-    fetch("http://localhost:8080/api/hoadon", {
+    fetch(`${BASE_URL}/hoadon`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -89,7 +90,7 @@ function Cart() {
 
                 <div className="cart-item">
                   <div className="cart-item-img">
-                    <img src={"./product/" + item.product?.hinhAnh} alt="" />
+                    <img src={`${PRODUCT_IMAGE_BASE_PATH}${item.product?.hinhAnh}`} alt="" />
                   </div>
                   <div className="cart-item-name">
                     <div>
