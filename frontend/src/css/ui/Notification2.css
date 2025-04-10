@@ -1,0 +1,50 @@
+.notification {
+    position: fixed;
+    /* top: 20px; */
+    right: 20px;
+    bottom: 20px;
+    padding: 15px 20px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    z-index: 1000;
+    animation: slideIn 0.5s ease-in-out forwards, slideOut 0.5s ease-in-out 2.5s forwards;
+    max-width: 300px;
+  }
+  
+  /* Hiệu ứng trượt từ phải sang trái */
+  @keyframes slideIn {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Hiệu ứng trượt ra ngoài */
+  @keyframes slideOut {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+  
+  /* Màu sắc theo loại thông báo */
+  .notification.success {
+    background-color: #28a745; /* Xanh lá cho thành công */
+  }
+  
+  .notification.error {
+    background-color: #dc3545; /* Đỏ cho lỗi */
+  }
+  
+  .notification.info {
+    background-color: #17a2b8; /* Xanh dương cho thông tin */
+  }

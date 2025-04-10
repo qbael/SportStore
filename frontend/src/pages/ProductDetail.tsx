@@ -4,8 +4,18 @@ import {useEffect, useState} from "react";
 import {BienTheType, ChiTietSanPhamType, MauType, SizeType} from "../util/types/ProductTypes.tsx";
 import {useLocation} from "react-router-dom";
 import '../css/ProductDetail.css'
+<<<<<<< Updated upstream
+=======
+import { GiConsoleController } from 'react-icons/gi';
+import { useNotification } from '../hook/useNotification2.tsx';
+
+import useCart from '../hook/useCart.tsx';
+import {CartItem} from '../hook/useCart.ts';
+import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH} from "../util/Constant.tsx";
+>>>>>>> Stashed changes
 
 const ProductDetail: React.FC = () => {
+    const {showNotification} = useNotification();
     const [chiTietSanPham, setChiTietSanPham] = useState<ChiTietSanPhamType>({
         sanPham: null,
         bienThe: []
@@ -16,12 +26,24 @@ const ProductDetail: React.FC = () => {
     const [uniqueColors, setUniqueColors] = useState<MauType[]>([]);
     const [availableSizes, setAvailableSizes] = useState<SizeType[]>([]);
     const [productImage, setProductImage] = useState<string>('');
+    const {addToCart} = useCart();
 
     const location = useLocation();
     const id = location.pathname.split('/').pop() || '';
+  
 
     const handleAddToCart = () => {
-        console.log('Add to cart:', selectedBienThe);
+        console.log("sản phẩm :");
+        console.log('Add to cart:', selectedBienThe, chiTietSanPham.sanPham);
+
+        const cartItem: CartItem = {
+            bienthesp: selectedBienThe, 
+            product: chiTietSanPham.sanPham, 
+            quantity: 1, 
+        };
+        showNotification("Thêm vào giỏ hàng thành công", "success");
+        addToCart(cartItem);
+
     };
 
     useEffect(() => {

@@ -1,0 +1,125 @@
+a {
+    text-decoration: none;   /* Xóa gạch dưới */
+    color: inherit;          /* Đảm bảo màu sắc kế thừa từ phần tử cha */
+    background: none;        /* Xóa màu nền nếu có */
+    outline: none;           /* Xóa viền khi focus */
+    cursor: pointer;         /* Thêm con trỏ pointer khi hover */
+}
+
+.header_name{
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    background: #f7f8f9;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    margin-bottom: 0px;
+}
+
+.cart_null{
+    margin: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+}
+
+.cart-item-bienthe{
+    display: block;
+    font-size: 12px;
+    color: #9e9e9e;
+}
+
+.cart-items{
+    display: flex;
+    flex-direction: column;
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);  
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cart-item-img img{
+    width: 100px;
+    height: auto;
+}
+
+
+.name-1:hover{
+    color: #e95221;
+}
+
+.cart-item-img{
+    flex: 1;
+}
+
+.cart-item-name{
+    flex: 2;
+}
+
+.cart-item-control{
+    flex: 1;
+    display: flex;
+}
+
+.control{
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+}
+
+.left{
+    border-radius: 50% 0 0 50%; 
+    cursor: pointer;
+}
+
+
+.right{
+    border-radius: 0 50% 50% 0;
+    cursor: pointer;
+}
+
+.cart-item-price{
+    flex: 0.5;
+    color: #e95221;
+}
+
+.btn-dathang{
+    margin: 10px;
+    padding: 10px;
+    background-color: #e95221;
+    color: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #e95221;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-dathang:hover{
+    border: 1px solid #e95221;
+    background-color: white;
+    color: #e95221;
+}
+
+.f-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

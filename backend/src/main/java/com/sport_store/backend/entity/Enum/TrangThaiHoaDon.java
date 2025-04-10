@@ -3,7 +3,7 @@ package com.sport_store.backend.entity.Enum;
 public enum TrangThaiHoaDon {
     DANGXULY("Đang xử lý"),
     DANGGIAO("Đang giao"),
-    DAGIA0N("Đã giao"),
+    DAGIAO("Đã giao"),
     DAHUY("Đã hủy");
 
     private final String value;
