@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BienTheType, ProductType } from '../util/types/ProductTypes';
 import { useAuth } from '../hook/useAuth'; // Thêm useAuth để lấy user
+import { useNotification } from '../hook/useNotification2'; // Thêm thông báo
 
 export type CartItem = {
   bienthesp: BienTheType | null;
@@ -10,9 +11,12 @@ export type CartItem = {
 
 const useCart = () => {
   const { user } = useAuth(); // Lấy thông tin user từ AuthContext
+  const { showNotification } = useNotification(); // Thêm thông báo
 
   // Tạo key động dựa trên username, nếu không có user thì dùng key mặc định (cart_guest) luon = []
+  // const getCartKey = () => (user ? `cart_${user.username}` : 'cart_guest');
   const getCartKey = () => (user ? `cart_${user.username}` : 'cart_guest');
+
 
   // Load giỏ hàng từ localStorage khi khởi tạo
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -53,11 +57,13 @@ const useCart = () => {
   const addToCart = (item: CartItem) => {
     if (!user) {
       console.log('Vui lòng đăng nhập để thêm vào giỏ hàng');
+      // showNotification('Vui lòng đăng nhập để thêm vào giỏ hàng', 'error');
       return; // Không thêm vào giỏ hàng nếu chưa đăng nhập
     }
 
     if (!item.product || !item.bienthesp) {
       console.log('Sản phẩm hoặc biến thể không hợp lệ.');
+      showNotification('Sản phẩm không hợp lệ', 'error');
       return;
     }
 
