@@ -6,14 +6,17 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import {App} from './App.tsx'
 import {NotificationContextProvider} from "./context/NotificationContext.tsx";
 import {NotificationProvider} from "./context/NotificationContext2.tsx"; // Import NotificationProvider
+import { AuthProvider } from './context/AuthContext.tsx'; // Import AuthProvider
 
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <NotificationProvider>
-      <NotificationContextProvider>
-          <App />
-      </NotificationContextProvider>
-    </NotificationProvider>
+    <AuthProvider>
+      <NotificationProvider>
+        <NotificationContextProvider>
+            <App />
+        </NotificationContextProvider>
+      </NotificationProvider>
+    </AuthProvider>
   </StrictMode>,
 )

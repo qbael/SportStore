@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Card, Tabs, Tab } from 'react-bootstrap';
 import '../css/Login.css';
 import { useNotification } from '../hook/useNotification2'; // Import hook
+import { useAuth } from '../hook/useAuth'; // Thêm useAuth
 
 interface User {
   username: string;
@@ -11,8 +12,7 @@ interface User {
 
 const Login: React.FC = () => {
   const { showNotification } = useNotification(); // Sử dụng hook
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
+  const { login, logout, user, isAuthenticated } = useAuth(); // Sử dụng AuthContext
   const [activeTab, setActiveTab] = useState<string>('login');
   const [loginData, setLoginData] = useState<{ username: string; password: string }>({
     username: '',
@@ -37,30 +37,29 @@ const Login: React.FC = () => {
   });
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Lấy name và value từ input
     setLoginData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleRegisterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Lấy name và value từ input
     setRegisterData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     try {
       const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginData),
       });
-  
+
       const data = await response.json();
-  
-      if (response.ok && !data.error) { // Kiểm tra cả data.error
-        setUser({ username: data.username, email: data.email, hoTen: data.hoTen });
-        setIsAuthenticated(true);
+
+      if (response.ok && !data.error) { // Kiểm tra nếu không có lỗi
+        login({ username: data.username, email: data.email, hoTen: data.hoTen }); // Gọi login từ AuthContext
         setLoginData({ username: '', password: '' });
         showNotification('Đăng nhập thành công!', 'success');
       } else {
@@ -95,9 +94,8 @@ const Login: React.FC = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        setUser({ username: data.username, email: data.email, hoTen: data.hoTen });
-        setIsAuthenticated(true);
+      if (response.ok && !data.error) {
+        login({ username: data.username, email: data.email, hoTen: data.hoTen }); // Gọi login từ AuthContext
         setRegisterData({
           username: '',
           email: '',
@@ -118,8 +116,7 @@ const Login: React.FC = () => {
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    setUser(null);
+    logout(); // Gọi logout từ AuthContext
     showNotification('Đã đăng xuất', 'info');
   };
 

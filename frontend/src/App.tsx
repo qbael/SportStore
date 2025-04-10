@@ -15,7 +15,7 @@ import Notification2 from "./components/ui/Notification2.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import NotFound from "./pages/NotFound.tsx"; // Thêm NotFound
 import Cart from "./pages/Cart.tsx";
-import Login from './pages/Loging.tsx';
+import Login from './pages/Login.tsx';
 
 const Layout = () => {
     const hideLayout = useLocation().pathname === '/admin';
