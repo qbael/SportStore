@@ -4,15 +4,6 @@ import {useEffect, useState} from "react";
 import {BienTheType, ChiTietSanPhamType, MauType, SizeType} from "../util/types/ProductTypes.tsx";
 import {useLocation} from "react-router-dom";
 import '../css/ProductDetail.css'
-<<<<<<< Updated upstream
-=======
-import { GiConsoleController } from 'react-icons/gi';
-import { useNotification } from '../hook/useNotification2.tsx';
-
-import useCart from '../hook/useCart.tsx';
-import {CartItem} from '../hook/useCart.ts';
-import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH} from "../util/Constant.tsx";
->>>>>>> Stashed changes
 
 const ProductDetail: React.FC = () => {
     const {showNotification} = useNotification();
