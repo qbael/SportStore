@@ -5,8 +5,7 @@ import '../css/ui/Card.css'
 import {Container, Card, Pagination} from "react-bootstrap";
 import {SortFilter} from "../components/ui/SortFilter.tsx";
 import {ProductType} from "../util/types/ProductTypes.tsx";
-
-const PRODUCT_PER_PAGE = 12;
+import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH, PRODUCT_PER_PAGE} from "../util/Constant.tsx";
 
 const Product = () => {
     const [products, setProducts] = useState<ProductType[]>([]);
@@ -17,10 +16,10 @@ const Product = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams(`limit=${PRODUCT_PER_PAGE}`);
     const [error, setError] = useState<string | null>(null);
-    let url = `http://localhost:8080/api/sanpham?${searchParams.toString()}`;
+    let url = `${PRODUCT_API_URL}?${searchParams.toString()}`;
 
     useEffect(() => {
-        window.scrollTo({ top: 70, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: "smooth" });
         const controller = new AbortController();
         const signal = controller.signal;
         const fetchData = async () => {
@@ -77,7 +76,7 @@ const Product = () => {
                         <Card
                             key={product.id}
                             className="custom-card"
-                            onClick={() => navigate(`/product/${product.id}`)}
+                            onClick={() => navigate(`${PRODUCT_IMAGE_BASE_PATH}${product.id}`)}
                         >
                             <Card.Img variant="top" src={`./product/${product.hinhAnh}`} />
                             <Card.Body>

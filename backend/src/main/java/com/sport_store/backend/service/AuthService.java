@@ -31,7 +31,7 @@ public class AuthService {
             }
             return new LoginResponseDTO(null, null, null, "Tên người dùng hoặc mật khẩu không đúng");
         } catch (NoResultException e) {
-            return new LoginResponseDTO(null, null, null, "Tên người dùng không tồn tại");
+            return new LoginResponseDTO(null, null, null, "Tên người dùng hoặc mật khẩu không đúng");   // user sai ne
         } catch (Exception e) {
             throw new RuntimeException("Lỗi trong quá trình đăng nhập: " + e.getMessage());
         }

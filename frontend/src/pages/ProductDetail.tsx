@@ -4,9 +4,15 @@ import {useEffect, useState} from "react";
 import {BienTheType, ChiTietSanPhamType, MauType, SizeType} from "../util/types/ProductTypes.tsx";
 import {useLocation} from "react-router-dom";
 import '../css/ProductDetail.css'
+import { GiConsoleController } from 'react-icons/gi';
+import { useNotification } from '../hook/useNotification2'; // Import hook
+
+import useCart from '../hook/useCart.tsx';
+import {CartItem} from '../hook/useCart.tsx';
+import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH} from "../util/Constant.tsx";
 
 const ProductDetail: React.FC = () => {
-    const {showNotification} = useNotification();
+      const { showNotification } = useNotification(); // Sử dụng hook
     const [chiTietSanPham, setChiTietSanPham] = useState<ChiTietSanPhamType>({
         sanPham: null,
         bienThe: []
@@ -18,10 +24,10 @@ const ProductDetail: React.FC = () => {
     const [availableSizes, setAvailableSizes] = useState<SizeType[]>([]);
     const [productImage, setProductImage] = useState<string>('');
     const {addToCart} = useCart();
+  
 
     const location = useLocation();
     const id = location.pathname.split('/').pop() || '';
-  
 
     const handleAddToCart = () => {
         console.log("sản phẩm :");
@@ -34,7 +40,6 @@ const ProductDetail: React.FC = () => {
         };
         showNotification("Thêm vào giỏ hàng thành công", "success");
         addToCart(cartItem);
-
     };
 
     useEffect(() => {
@@ -45,7 +50,7 @@ const ProductDetail: React.FC = () => {
 
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/sanpham/${id}`, { signal });
+                const response = await fetch(`${PRODUCT_API_URL}/${id}`, { signal });
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
@@ -68,7 +73,7 @@ const ProductDetail: React.FC = () => {
             const colors = Array.from(
                 new Map(chiTietSanPham.bienThe.map((bt) => [bt.mau!.id, bt.mau!])).values()
             );
-            setProductImage(`/product/${chiTietSanPham.sanPham?.hinhAnh}`);
+            setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${chiTietSanPham.sanPham?.hinhAnh}`);
             setUniqueColors(colors);
         }
     }, [chiTietSanPham]);
@@ -105,13 +110,13 @@ const ProductDetail: React.FC = () => {
 
     useEffect(() => {
         if (selectedBienThe) {
-            setProductImage(`/product/${selectedBienThe.hinhAnh}`);
+            setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${selectedBienThe.hinhAnh}`);
         }
     }, [selectedBienThe]);
 
     return (
         <>
-            {chiTietSanPham.sanPham && chiTietSanPham.bienThe.length > 0 && (
+            {chiTietSanPham.sanPham && (
                 <Container fluid={"xxl"} className="my-5 product-detail-container">
                     <Row>
                         <Col xs={10} md={5} className="position-relative">
@@ -126,7 +131,7 @@ const ProductDetail: React.FC = () => {
                             </div>
 
                             <h2 className="mb-4 text-danger">
-                                {chiTietSanPham?.sanPham?.giaBan.toLocaleString("de-DE") + " VND"}
+                                {chiTietSanPham.sanPham.giaBan?.toLocaleString("de-DE") + " VND"}
                             </h2>
 
                             {uniqueColors.length > 0 && (
