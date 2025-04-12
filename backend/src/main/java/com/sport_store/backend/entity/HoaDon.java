@@ -1,5 +1,6 @@
 package com.sport_store.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sport_store.backend.entity.Enum.TrangThaiHoaDon;
 import jakarta.persistence.*;
 import lombok.*;

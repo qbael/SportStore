@@ -2,8 +2,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
-import Home from "./pages/Home.tsx";
-import Product from "./pages/Product.tsx";
+import Home from './pages/Home.tsx'
+import Product from './pages/Product.tsx'
+import Cart from "./pages/Cart.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import NotFound from "./pages/NotFound.tsx"; // Thêm NotFound
 
@@ -14,7 +15,6 @@ import Navbar from "./components/layout/Navbar.tsx";
 import Footer from "./components/layout/Footer.tsx";
 import Notification from "./components/ui/Notification.tsx";
 import Notification2 from "./components/ui/Notification2.tsx";
-import Cart from "./pages/Cart.tsx";
 import Login from './pages/Login.tsx';
 
 const Layout = () => {

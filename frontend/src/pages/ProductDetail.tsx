@@ -28,6 +28,7 @@ const ProductDetail: React.FC = () => {
     const [availableSizes, setAvailableSizes] = useState<SizeType[]>([]);
     const [productImage, setProductImage] = useState<string>('');
 
+
     const location = useLocation();
     const id = location.pathname.split('/').pop() || '';
 
@@ -38,13 +39,13 @@ const ProductDetail: React.FC = () => {
           return;
         }
     
-        console.log('Sản phẩm:', selectedBienThe, chiTietSanPham.sanPham);
+        // console.log('Sản phẩm:', selectedBienThe, chiTietSanPham.sanPham);
         const cartItem: CartItem = {
           bienthesp: selectedBienThe,
           product: chiTietSanPham.sanPham,
           quantity: 1,
         };
-        showNotification('Thêm vào giỏ hàng thành công', 'success');
+        console.log('Giỏ hàng:', cartItem);
         addToCart(cartItem);
       };
 
