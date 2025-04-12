@@ -59,7 +59,7 @@ function Cart() {
     const newHoaDon = {
       tongGiaNhap: 200000,
       tongGiaBan: getTotalPrice(),
-      trangThai: "DANGXULY",
+      trangThai: "Đang xử lý",
       ttKhachHang: { id: 1 }, // Nên thay bằng id khách hàng thực tế từ user
       dsCTHoaDon: ctHoaDonList,
     };

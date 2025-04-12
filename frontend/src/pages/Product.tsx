@@ -78,7 +78,9 @@ const Product = () => {
                             className="custom-card"
                             onClick={() => navigate(`${PRODUCT_IMAGE_BASE_PATH}${product.id}`)}
                         >
-                            <Card.Img variant="top" src={`./product/${product.hinhAnh}`} />
+                            <Card.Img className={"w-100 h-75"}
+                                      style={{ minWidth: '150px', minHeight: '200px', maxHeight: '220px', maxWidth: '200px' }}
+                                      variant="top" src={`${PRODUCT_IMAGE_BASE_PATH}${product.hinhAnh}`} />
                             <Card.Body>
                                 <Card.Title>{product.tenSanPham}</Card.Title>
                                 <Card.Text className="text-danger fs-6">

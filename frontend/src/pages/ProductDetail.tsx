@@ -128,16 +128,17 @@ const ProductDetail: React.FC = () => {
       {chiTietSanPham.sanPham && (
         <Container fluid="xxl" className="my-5 product-detail-container">
           <Row>
-            <Col xs={10} md={5} className="position-relative">
+            <Col xs={10} md={6} className="position-relative text-center">
               <Image
-                src={productImage ? productImage : ''}
-                fluid
-                className="main-product-image border border-1"
+                  style={{minWidth: '350px', minHeight: '450px', objectFit: 'cover', maxWidth: '550px', maxHeight: '550px'}}
+                     src={productImage ? productImage : ''}
+                     fluid
+                     className="w-100 h-100 border border-1"
               />
             </Col>
 
             <Col xs={12} md={6}>
-              <div className="d-flex justify-content-between align-items-start mb-3">
+              <div className="d-flex justify-content-between align-items-start mb-3 mt-3">
                 <h1 className="h2">
                   {selectedBienThe ? selectedBienThe.tenBienThe : chiTietSanPham?.sanPham?.tenSanPham}
                 </h1>
