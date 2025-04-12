@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 import {BienTheType, ChiTietSanPhamType, MauType, SizeType} from "../util/types/ProductTypes.tsx";
 import { useLocation, useNavigate } from 'react-router-dom'; // Thêm useNavigate
 import '../css/ProductDetail.css'
-import { GiConsoleController } from 'react-icons/gi';
 import { useNotification } from '../hook/useNotification2'; // Import hook
 
 import useCart from '../hook/useCart.tsx';
@@ -30,8 +29,6 @@ const ProductDetail: React.FC = () => {
 
     const location = useLocation();
     const id = location.pathname.split('/').pop() || '';
-
-
 
     const handleAddToCart = () => {
         if (!isAuthenticated) {

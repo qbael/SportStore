@@ -5,65 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/HoaDonController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/HoaDonController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_cau_long_victor_unisex_do_size_l.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_cau_long_victor_unisex_do_size_m.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/ao_cau_long_victor_unisex_do.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_cau_long_victor_unisex_xanh_size_l.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/ao_cau_long_victor_unisex_xanh.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_cau_long_victor_unisex_xanh_size_m.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_cau_long_yonex_tournament_-_do_size_l.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/ao_cau_long_yonex_tournament_-_do.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_cau_long_yonex_tournament_-_do_size_m.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_tennis_adidas_club_-_trang_size_l.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/ao_tennis_adidas_club_-_trang.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_tennis_adidas_club_-_trang_size_m.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_tennis_adidas_club_-_xanh_size_l.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/ao_tennis_adidas_club_-_xanh.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_tennis_adidas_club_-_xanh_size_m.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_tennis_nike_court_dri-fit_-_trang_size_l.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_tennis_nike_court_dri-fit_-_trang_size_m.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/ao_tennis_nike_court_dri-fit_-_trang.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_tennis_nike_court_dri-fit_-_xanh_size_l.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/ao_tennis_nike_court_dri-fit_-_xanh_size_m.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/ao_tennis_nike_court_dri-fit_-_xanh.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_bong_ban_butterfly_lezoline_-_do_size_40.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_bong_ban_butterfly_lezoline_-_do.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_bong_ban_butterfly_lezoline_-_do_size_41.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_bong_ban_mizuno_wave_drive_trang_nau_size_40.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_bong_ban_mizuno_wave_drive_trang_nau.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_bong_ban_mizuno_wave_drive_trang_nau_size_41.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_bong_ban_mizuno_wave_drive_xanh_size_40.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_bong_ban_mizuno_wave_drive_xanh_size_41.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_bong_ban_mizuno_wave_drive_xanh.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_li-ning_ranger_-_den_size_40.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_li-ning_ranger_-_den_size_41.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_li-ning_ranger_-_den.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_li-ning_ranger_-_do_size_40.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_li-ning_ranger_-_do_size_41.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_li-ning_ranger_-_do.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_victor_sh-a830_-_xanh_size_40.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_victor_sh-a830_-_xanh_size_41.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_victor_sh-a830_-_xanh.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_victor_sh-a830_do_size_40.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_victor_sh-a830_do.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_victor_sh-a830_do_size_41.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_victor_sh-a830_vang_size_40.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_victor_sh-a830_vang_size_41.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_victor_sh-a830_vang.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_yonex_power_cushion_-_xanh_size_40.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_yonex_power_cushion_-_xanh.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_cau_long_yonex_power_cushion_-_xanh_size_41.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_adidas_barricade_-_den_size_40.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_adidas_barricade_-_den_size_41.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_tennis_adidas_barricade_-_den.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_adidas_barricade_-_trang_size_40.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_adidas_barricade_-_trang_size_41.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_tennis_adidas_barricade_-_trang.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_asics_gel_resolution_-_xanh_size_40.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_tennis_asics_gel_resolution_-_xanh.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_asics_gel_resolution_-_xanh_size_41.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_asics_gel_resolution_-_xanh_size_42.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_nike_vapor_-_den_size_40.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_tennis_nike_vapor_-_den.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_nike_vapor_-_den_size_41.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_nike_vapor_-_trang_size_40.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/giay_tennis_nike_vapor_-_trang.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/giay_tennis_nike_vapor_-_trang_size_41.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/quan_bong_ban_butterfly_swift_-_den_size_l.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/quan_bong_ban_butterfly_swift_-_den.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/quan_bong_ban_butterfly_swift_-_den_size_m.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/quan_cau_long_yonex_premium_den_size_l.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/quan_cau_long_yonex_premium_den.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/quan_cau_long_yonex_premium_den_size_m.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/quan_cau_long_yonex_premium_trang_size_l.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/quan_cau_long_yonex_premium_trang_size_m.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/quan_cau_long_yonex_premium_trang.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/quan_tennis_under_armour_-_den_size_l.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/quan_tennis_under_armour_-_den_size_m.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/quan_tennis_under_armour_-_den.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/quan_tennis_under_armour_-_xam_size_l.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/product/quan_tennis_under_armour_-_xam_size_m.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/product/quan_tennis_under_armour_-_xam.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Cart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Product.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Product.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Admin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Admin.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -317,7 +260,7 @@
       <workItem from="1744331544141" duration="489000" />
       <workItem from="1744385018693" duration="15000" />
       <workItem from="1744448300997" duration="3378000" />
-      <workItem from="1744455376006" duration="3128000" />
+      <workItem from="1744455376006" duration="4862000" />
     </task>
     <servers />
   </component>
