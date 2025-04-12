@@ -130,7 +130,7 @@ CREATE TABLE quyen
     id       INT PRIMARY KEY AUTO_INCREMENT,
     chucvu   INT,
     chucnang INT,
-    hanhdong ENUM ('Xem', 'Thêm', 'Sửa', 'Xóa') UNIQUE NOT NULL,
+    hanhdong ENUM ('Xem', 'Thêm', 'Sửa', 'Xóa') NOT NULL,
     UNIQUE (chucvu, chucnang, hanhdong),
     FOREIGN KEY (chucvu) REFERENCES chucvu (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (chucnang) REFERENCES chucnang (id) ON UPDATE CASCADE ON DELETE CASCADE

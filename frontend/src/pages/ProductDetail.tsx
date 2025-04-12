@@ -2,8 +2,9 @@ import { Container, Row, Col, Button, Image} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useEffect, useState} from "react";
 import {BienTheType, ChiTietSanPhamType, MauType, SizeType} from "../util/types/ProductTypes.tsx";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from 'react-router-dom'; // Thêm useNavigate
 import '../css/ProductDetail.css'
+import { GiConsoleController } from 'react-icons/gi';
 import { useNotification } from '../hook/useNotification2'; // Import hook
 
 import useCart from '../hook/useCart.tsx';
@@ -18,7 +19,7 @@ const ProductDetail: React.FC = () => {
     const navigate = useNavigate(); // Để chuyển hướng đến trang đăng nhập
     const [chiTietSanPham, setChiTietSanPham] = useState<ChiTietSanPhamType>({
         sanPham: null,
-        bienThe: []
+        bienThe: [],
     });
     const [selectedBienThe, setSelectedBienThe] = useState<BienTheType | null>(null);
     const [selectedSize, setSelectedSize] = useState<SizeType | null>(null);
@@ -29,6 +30,8 @@ const ProductDetail: React.FC = () => {
 
     const location = useLocation();
     const id = location.pathname.split('/').pop() || '';
+
+
 
     const handleAddToCart = () => {
         if (!isAuthenticated) {
@@ -101,7 +104,7 @@ const ProductDetail: React.FC = () => {
             setSelectedBienThe(bienthe || null);
           }
         } else {
-          setAvailableSizes([]);
+            setAvailableSizes([]);
         }
     }, [selectedColor]);
 

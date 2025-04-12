@@ -6,6 +6,8 @@ import com.sport_store.backend.repository.HoaDonRepository;
 import com.sport_store.backend.repository.TTKhachHangRepository;
 import com.sport_store.backend.repository.CTHoaDonRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -26,20 +28,39 @@ public class HoaDonController {
     private final CTHoaDonRepository ctHoaDonRepository; // Thêm repository CTHoaDon
 
     @GetMapping
-    public List<HoaDon> getAllHoaDon() {
-        return hoaDonRepository.findAll();
+    public ResponseEntity getAllHoaDon() {
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("status", 200);
+        res.put("message", "Thành công");
+        res.put("data", hoaDonRepository.findAllBy());
+
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HoaDon> getHoaDonById(@PathVariable int id) {
+    public ResponseEntity<Map<String, Object>> getHoaDonById(@PathVariable int id) {
+        Map<String, Object> res = new HashMap<>();
+
         return hoaDonRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(HoaDonFullProjection -> {
+                    res.put("status", 200);
+                    res.put("message", "Thành công");
+                    res.put("data", HoaDonFullProjection);
+                    return ResponseEntity.ok(res);
+                })
+                .orElseGet(() -> {
+                    res.put("status", 404);
+                    res.put("message", "Không tìm thấy hóa đơn");
+                    res.put("data", null);
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+                });
     }
 
     @PostMapping
     @Transactional
     public ResponseEntity<Map<String, Object>> createHoaDon(@RequestBody HoaDon hoaDon) {
+v
 
         if (hoaDon.getNgay() == null) {
             hoaDon.setNgay(LocalDate.now());
@@ -67,28 +88,28 @@ public class HoaDonController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<HoaDon> updateHoaDon(@PathVariable int id, @RequestBody HoaDon hoaDon) {
-        HoaDon existingHoaDon = hoaDonRepository.findById(id).orElse(null);
+    // @PutMapping("/{id}")
+    // public ResponseEntity<HoaDon> updateHoaDon(@PathVariable int id, @RequestBody HoaDon hoaDon) {
+    //     HoaDon existingHoaDon = hoaDonRepository.findById(id).orElse(null);
 
-        if (existingHoaDon == null) {
-            return ResponseEntity.notFound().build();
-        }
+    //     if (existingHoaDon == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
 
-        existingHoaDon.setTongGiaNhap(hoaDon.getTongGiaNhap());
-        existingHoaDon.setTongGiaBan(hoaDon.getTongGiaBan());
-        existingHoaDon.setTrangThai(hoaDon.getTrangThai());
+    //     existingHoaDon.setTongGiaNhap(hoaDon.getTongGiaNhap());
+    //     existingHoaDon.setTongGiaBan(hoaDon.getTongGiaBan());
+    //     existingHoaDon.setTrangThai(hoaDon.getTrangThai());
 
-        if (hoaDon.getDsCTHoaDon() != null) {
-            for (CTHoaDon ct : hoaDon.getDsCTHoaDon()) {
-                ct.setHoaDon(existingHoaDon);
-            }
-            existingHoaDon.setDsCTHoaDon(hoaDon.getDsCTHoaDon());
-        }
+    //     if (hoaDon.getDsCTHoaDon() != null) {
+    //         for (CTHoaDon ct : hoaDon.getDsCTHoaDon()) {
+    //             ct.setHoaDon(existingHoaDon);
+    //         }
+    //         existingHoaDon.setDsCTHoaDon(hoaDon.getDsCTHoaDon());
+    //     }
 
-        HoaDon updated = hoaDonRepository.save(existingHoaDon);
-        return ResponseEntity.ok(updated);
-    }
+    //     HoaDon updated = hoaDonRepository.save(existingHoaDon);
+    //     return ResponseEntity.ok(updated);
+    // }
     // có thể không dùng <note>
     // @DeleteMapping("/{id}")
     // public ResponseEntity<Void> deleteHoaDon(@PathVariable int id) {

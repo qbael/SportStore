@@ -1,5 +1,8 @@
 package com.sport_store.backend.entity;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +35,6 @@ public class CTHoaDon {
     private BienThe bienThe;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "hoadon")
     private HoaDon hoaDon;
 }
