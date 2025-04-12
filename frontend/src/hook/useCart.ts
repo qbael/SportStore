@@ -23,6 +23,7 @@ const useCart = () => {
 
   // Lưu giỏ hàng vào localStorage mỗi khi có thay đổi
   useEffect(() => {
+    console.log("Giỏ hàng hiện tại:", cart);
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cart));
     } catch (error) {
@@ -46,7 +47,7 @@ const useCart = () => {
         updatedCart[existingIndex].quantity += item.quantity;
         return updatedCart;
       }
-
+    
       return [...prevCart, item];
     });
   };

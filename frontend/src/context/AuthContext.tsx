@@ -1,9 +1,16 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
+interface Profile {
+  id: number;
+  hoTen: string;
+  diachi: string;
+  sdt: string;
+}
+
 interface User {
   username: string;
   email: string;
-  hoTen?: string;
+  profiles: Profile[];
 }
 
 interface AuthContextType {

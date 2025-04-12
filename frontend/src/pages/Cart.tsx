@@ -1,5 +1,5 @@
 import "../css/Cart.css"
-import useCart from '../hook/useCart';
+import useCart from '../hook/useCart.tsx';
 import { useEffect } from 'react';
 import { formatPrice } from '../util/utils';
 import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH, BASE_URL} from "../util/Constant.tsx";
@@ -18,7 +18,7 @@ function Cart() {
     resetCart,
   } = useCart();
 
-  const { isAuthenticated } = useAuth(); // Lấy thông tin xác thực từ AuthContext
+  const { isAuthenticated, user } = useAuth(); // Lấy thông tin xác thực từ AuthContext
   const navigate = useNavigate(); // Để điều hướng đến trang đăng nhập
   const { showNotification } = useNotification(); // Để hiển thị thông báo
   
@@ -57,10 +57,10 @@ function Cart() {
     });
 
     const newHoaDon = {
-      tongGiaNhap: 200000,
+      tongGiaNhap: 0,
       tongGiaBan: getTotalPrice(),
       trangThai: "DANGXULY",
-      ttKhachHang: { id: 1 }, // Nên thay bằng id khách hàng thực tế từ user
+      ttKhachHang: { id: user?.profiles?.[0]?.id }, // Nên thay bằng id khách hàng thực tế từ user
       dsCTHoaDon: ctHoaDonList,
     };
 

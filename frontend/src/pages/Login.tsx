@@ -4,11 +4,6 @@ import '../css/Login.css';
 import { useNotification } from '../hook/useNotification2'; // Import hook
 import { useAuth } from '../hook/useAuth'; // Thêm useAuth
 
-interface User {
-  username: string;
-  email: string;
-  hoTen?: string;
-}
 
 const Login: React.FC = () => {
   const { showNotification } = useNotification(); // Sử dụng hook
@@ -59,7 +54,7 @@ const Login: React.FC = () => {
       const data = await response.json();
 
       if (response.ok && !data.error) { // Kiểm tra nếu không có lỗi
-        login({ username: data.username, email: data.email, hoTen: data.hoTen }); // Gọi login từ AuthContext
+        login({ username: data.username, email: data.email, profiles: data.profile }); // Gọi login từ AuthContext
         setLoginData({ username: '', password: '' });
         showNotification('Đăng nhập thành công!', 'success');
       } else {
@@ -95,7 +90,7 @@ const Login: React.FC = () => {
       const data = await response.json();
 
       if (response.ok && !data.error) {
-        login({ username: data.username, email: data.email, hoTen: data.hoTen }); // Gọi login từ AuthContext
+        login({ username: data.username, email: data.email, profiles: data.profile }); // Gọi login từ AuthContext
         setRegisterData({
           username: '',
           email: '',
@@ -130,7 +125,7 @@ const Login: React.FC = () => {
                 <Card.Title className="mb-4">Thông tin tài khoản</Card.Title>
                 <p><strong>Tên người dùng:</strong> {user.username}</p>
                 <p><strong>Email:</strong> {user.email}</p>
-                {user.hoTen && <p><strong>Họ tên:</strong> {user.hoTen}</p>}
+                {user.profiles?.[0]?.hoTen && <p><strong>Họ tên:</strong> {user.profiles[0].hoTen}</p>}
                 <Button variant="danger" onClick={handleLogout}>
                   Đăng xuất
                 </Button>
