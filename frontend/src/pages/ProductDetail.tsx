@@ -55,9 +55,10 @@ const ProductDetail: React.FC = () => {
         if (chiTietSanPham) {
             const colors = Array.from(
                 new Map(chiTietSanPham.bienThe.map((bt) => [bt.mau!.id, bt.mau!])).values()
-            );
+            ).sort((a, b) => a.tenMau.localeCompare(b.tenMau));
             setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${chiTietSanPham.sanPham?.hinhAnh}`);
             setUniqueColors(colors);
+            setSelectedColor(colors[0]);
         }
     }, [chiTietSanPham]);
 
@@ -70,9 +71,9 @@ const ProductDetail: React.FC = () => {
                             .filter((bt) => bt.mau?.id === selectedColor.id && bt.soLuongTon > 0)
                             .map((bt) => [bt.size!.id, bt.size!])
                     ).values()
-                );
+                ).sort((a, b) => a.size.localeCompare(b.size));
                 setAvailableSizes(sizes);
-                setSelectedSize(null);
+                setSelectedSize(sizes[0]);
             } else {
                 const bienthe = chiTietSanPham?.bienThe.find((bt) => bt.mau?.id === selectedColor.id);
                 setSelectedBienThe(bienthe || null);
@@ -122,7 +123,6 @@ const ProductDetail: React.FC = () => {
                                     <h3 className="h5 mb-0">Chọn màu sắc</h3>
                                     <div className="d-flex flex-wrap" style={{ marginTop: "30px" }}>
                                         {uniqueColors
-                                            .sort((a, b) => a.tenMau.localeCompare(b.tenMau))
                                             .map((mau) => (
                                                 <Button
                                                     key={mau.id}
@@ -142,7 +142,6 @@ const ProductDetail: React.FC = () => {
                                     <h3 className="h5 mb-0">Chọn kích thước</h3>
                                     <div className="d-flex flex-wrap" style={{ marginTop: "30px" }}>
                                         {availableSizes
-                                            .sort((a, b) => a.size.localeCompare(b.size))
                                             .map((size) => (
                                                 <Button
                                                     key={size.id}

@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/util/Constant.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/Admin.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/LoginAdmin.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/sport_store.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/sport_store.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Product.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Product.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -96,7 +96,7 @@
     &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;22.14.0&quot;,
     &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;22.14.0&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/CODE/Projects/DoAnPTTK/frontend/src/assets/icon&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/CODE/SportStore&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -256,6 +256,12 @@
       <workItem from="1743953231220" duration="2858000" />
       <workItem from="1744011102978" duration="6806000" />
       <workItem from="1744100828804" duration="2126000" />
+      <workItem from="1744124086512" duration="12000" />
+      <workItem from="1744157900978" duration="5522000" />
+      <workItem from="1744166317335" duration="655000" />
+      <workItem from="1744167009067" duration="8000" />
+      <workItem from="1744331544141" duration="489000" />
+      <workItem from="1744385018693" duration="15000" />
     </task>
     <servers />
   </component>
