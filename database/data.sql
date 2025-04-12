@@ -290,3 +290,80 @@ VALUES (3, '2023-01-15', 15000000, 1),
        (3, '2023-05-12', 16000000, 4);
 
 
+-- Insert data into taikhoan (user accounts)
+INSERT INTO taikhoan (username, password, email)
+VALUES ('khachhang1', 'pass123', 'khachhang1@example.com'),
+       ('khachhang2', 'pass456', 'khachhang2@example.com'),
+       ('khachhang3', 'pass789', 'khachhang3@example.com'),
+       ('khachhang4', 'pass101', 'khachhang4@example.com'),
+       ('khachhang5', 'pass202', 'khachhang5@example.com');
+
+-- Insert data into ttkhachhang (customer information)
+INSERT INTO ttkhachhang (taikhoan, hoten, diachi, sdt)
+VALUES (1, 'Nguyễn Thị Hoa', 'Hà Nội', 0912345678),
+       (2, 'Trần Văn Hùng', 'Hồ Chí Minh', 0923456789),
+       (3, 'Lê Thị Mai', 'Đà Nẵng', 0934567890),
+       (4, 'Phạm Văn Nam', 'Hải Phòng', 0945678901),
+       (5, 'Hoàng Thị Lan', 'Cần Thơ', 0956789012);
+
+-- Insert data into hoadon (invoices)
+INSERT INTO hoadon (ngay, ttkhachhang, tonggianhap, tonggiaban, trangthai)
+VALUES ('2023-06-01', 1, 3000000, 5000000, 'Đã giao'),
+       ('2023-06-02', 2, 3600000, 5600000, 'Đang giao'),
+       ('2023-06-03', 3, 2400000, 3600000, 'Đang xử lý'),
+       ('2023-06-04', 4, 4000000, 6400000, 'Đã hủy'),
+       ('2023-06-05', 5, 3200000, 4800000, 'Đã giao');
+
+-- Insert data into cthoadon (invoice details)
+INSERT INTO cthoadon (hoadon, bienthe, soluong, giaban, gianhap)
+VALUES (1, 1, 2, 2500000, 1500000),  -- Vợt Tennis Wilson Pro Staff - Đen
+       (1, 6, 1, 2800000, 1800000),  -- Giày Tennis Nike Vapor - Trắng, size 40
+       (2, 3, 1, 3200000, 2000000),  -- Vợt Cầu Lông Yonex Astrox 88D - Xanh dương
+       (2, 10, 2, 2400000, 1600000), -- Giày Cầu Lông Yonex Power Cushion - Xanh, size 40
+       (3, 5, 1, 1800000, 1200000),  -- Vợt Bóng Bàn Butterfly Timo Boll - Đen/Đỏ
+       (3, 12, 1, 2200000, 1400000), -- Giày Bóng Bàn Butterfly Lezoline - Đỏ, size 40
+       (4, 11, 1, 2900000, 1800000), -- Vợt Tennis Babolat Pure Drive - Đen
+       (4, 14, 2, 3200000, 2100000), -- Giày Tennis Adidas Barricade - Đen, size 40
+       (5, 17, 1, 2600000, 1700000), -- Vợt Cầu Lông Li-Ning Windstorm - Đỏ
+       (5, 19, 1, 2300000, 1500000); -- Giày Cầu Lông Li-Ning Ranger - Đỏ, size 40
+
+-- Insert data into chucnang (functions)
+INSERT INTO chucnang (tenchucnang)
+VALUES ('Quản lý sản phẩm'),
+       ('Quản lý hóa đơn'),
+       ('Quản lý khách hàng'),
+       ('Quản lý nhập hàng'),
+       ('Quản lý nhân viên'),
+       ('Quản lý quyền hạn');
+
+-- Insert data into quyen (permissions)  cai nay bi loi
+INSERT INTO quyen (chucvu, chucnang, hanhdong)
+VALUES (1, 1, 'Xem'),   -- Admin: Xem Quản lý sản phẩm
+       (1, 1, 'Thêm'),  -- Admin: Thêm Quản lý sản phẩm
+       (1, 1, 'Sửa'),   -- Admin: Sửa Quản lý sản phẩm
+       (1, 1, 'Xóa'),   -- Admin: Xóa Quản lý sản phẩm
+       (1, 2, 'Xem'),   -- Admin: Xem Quản lý hóa đơn
+       (1, 2, 'Thêm'),  -- Admin: Thêm Quản lý hóa đơn
+       (1, 2, 'Sửa'),   -- Admin: Sửa Quản lý hóa đơn
+       (1, 2, 'Xóa'),   -- Admin: Xóa Quản lý hóa đơn
+       (2, 2, 'Xem'),   -- Nhân viên bán hàng: Xem Quản lý hóa đơn
+       (2, 2, 'Thêm'),  -- Nhân viên bán hàng: Thêm Quản lý hóa đơn
+       (2, 3, 'Xem'),   -- Nhân viên bán hàng: Xem Quản lý khách hàng
+       (3, 4, 'Xem'),   -- Nhân viên kho: Xem Quản lý nhập hàng
+       (3, 4, 'Thêm'),  -- Nhân viên kho: Thêm Quản lý nhập hàng
+       (4, 1, 'Xem'),   -- Quản lý doanh nghiệp: Xem Quản lý sản phẩm
+       (4, 5, 'Xem'),   -- Quản lý doanh nghiệp: Xem Quản lý nhân viên
+       (4, 6, 'Xem');   -- Quản lý doanh nghiệp: Xem Quản lý quyền hạn
+
+-- Insert data into ctnhaphang (import order details)
+INSERT INTO ctnhaphang (nhaphang, bienthe, soluong, gianhap)
+VALUES (1, 1, 10, 1500000),  -- Nhập 10 Vợt Tennis Wilson Pro Staff - Đen
+       (1, 6, 5, 1800000),   -- Nhập 5 Giày Tennis Nike Vapor - Trắng, size 40
+       (2, 3, 8, 2000000),   -- Nhập 8 Vợt Cầu Lông Yonex Astrox 88D - Xanh dương
+       (2, 10, 6, 1600000),  -- Nhập 6 Giày Cầu Lông Yonex Power Cushion - Xanh, size 40
+       (3, 5, 7, 1200000),   -- Nhập 7 Vợt Bóng Bàn Butterfly Timo Boll - Đen/Đỏ
+       (3, 12, 4, 1400000),  -- Nhập 4 Giày Bóng Bàn Butterfly Lezoline - Đỏ, size 40
+       (4, 11, 5, 1800000),  -- Nhập 5 Vợt Tennis Babolat Pure Drive - Đen
+       (4, 14, 6, 2100000),  -- Nhập 6 Giày Tennis Adidas Barricade - Đen, size 40
+       (5, 17, 8, 1700000),  -- Nhập 8 Vợt Cầu Lông Li-Ning Windstorm - Đỏ
+       (5, 19, 5, 1500000);  -- Nhập 5 Giày Cầu Lông Li-Ning Ranger - Đỏ, size 40

@@ -1,7 +1,9 @@
 
 
-export const Admin = () => {
+const Admin = () => {
     return (
         <></>
     );
 };
+
+export default Admin;
