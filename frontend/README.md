@@ -52,3 +52,6 @@ export default tseslint.config({
   },
 })
 ```
+
+
+```dit me doi ( doi oiiii)```
