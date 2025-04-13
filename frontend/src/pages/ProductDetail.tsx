@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {BienTheType, ChiTietSanPhamType, MauType, SizeType} from "../util/types/ProductTypes.tsx";
 import { useLocation, useNavigate } from 'react-router-dom'; // Thêm useNavigate
 import '../css/ProductDetail.css'
+import { GiConsoleController } from 'react-icons/gi';
 import { useNotification } from '../hook/useNotification2'; // Import hook
 
 import useCart from '../hook/useCart.tsx';
@@ -27,6 +28,7 @@ const ProductDetail: React.FC = () => {
     const [availableSizes, setAvailableSizes] = useState<SizeType[]>([]);
     const [productImage, setProductImage] = useState<string>('');
 
+
     const location = useLocation();
     const id = location.pathname.split('/').pop() || '';
 
@@ -36,23 +38,22 @@ const ProductDetail: React.FC = () => {
           navigate('/account'); // Chuyển hướng đến trang đăng nhập
           return;
         }
-
-        console.log('Sản phẩm:', selectedBienThe, chiTietSanPham.sanPham);
+    
+        // console.log('Sản phẩm:', selectedBienThe, chiTietSanPham.sanPham);
         const cartItem: CartItem = {
           bienthesp: selectedBienThe,
           product: chiTietSanPham.sanPham,
           quantity: 1,
         };
-        showNotification('Thêm vào giỏ hàng thành công', 'success');
+        console.log('Giỏ hàng:', cartItem);
         addToCart(cartItem);
       };
 
     useEffect(() => {
-
         window.scrollTo({ top: 0 });
         const controller = new AbortController();
         const signal = controller.signal;
-
+    
         const fetchData = async () => {
           try {
             const response = await fetch(`${PRODUCT_API_URL}/${id}`, { signal });
@@ -77,10 +78,10 @@ const ProductDetail: React.FC = () => {
         if (chiTietSanPham) {
           const colors = Array.from(
             new Map(chiTietSanPham.bienThe.map((bt) => [bt.mau!.id, bt.mau!])).values()
-          ).sort((a, b) => a.tenMau.localeCompare(b.tenMau));
+          ).sort((a, b) => a.id - b.id);
+          setSelectedColor(colors[0] || null);
           setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${chiTietSanPham.sanPham?.hinhAnh}`);
           setUniqueColors(colors);
-          setSelectedColor(colors[0] || null);
         }
     }, [chiTietSanPham]);
 
@@ -93,7 +94,7 @@ const ProductDetail: React.FC = () => {
                   .filter((bt) => bt.mau?.id === selectedColor.id && bt.soLuongTon > 0)
                   .map((bt) => [bt.size!.id, bt.size!])
               ).values()
-            ).sort((a, b) => a.size.localeCompare(b.size));
+            ).sort((a, b) => a.id - b.id);
             setAvailableSizes(sizes);
             setSelectedSize(sizes[0] || null);
           } else {
@@ -101,7 +102,7 @@ const ProductDetail: React.FC = () => {
             setSelectedBienThe(bienthe || null);
           }
         } else {
-            setAvailableSizes([]);
+          setAvailableSizes([]);
         }
     }, [selectedColor]);
 
@@ -125,17 +126,16 @@ const ProductDetail: React.FC = () => {
       {chiTietSanPham.sanPham && (
         <Container fluid="xxl" className="my-5 product-detail-container">
           <Row>
-            <Col xs={10} md={6} className="position-relative text-center">
+            <Col xs={10} md={5} className="position-relative">
               <Image
-                  style={{minWidth: '350px', minHeight: '450px', objectFit: 'cover', maxWidth: '550px', maxHeight: '550px'}}
-                     src={productImage ? productImage : ''}
-                     fluid
-                     className="w-100 h-100 border border-1"
+                src={productImage ? productImage : ''}
+                fluid
+                className="main-product-image border border-1"
               />
             </Col>
 
             <Col xs={12} md={6}>
-              <div className="d-flex justify-content-between align-items-start mb-3 mt-3">
+              <div className="d-flex justify-content-between align-items-start mb-3">
                 <h1 className="h2">
                   {selectedBienThe ? selectedBienThe.tenBienThe : chiTietSanPham?.sanPham?.tenSanPham}
                 </h1>

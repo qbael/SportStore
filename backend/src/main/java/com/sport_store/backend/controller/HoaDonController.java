@@ -60,7 +60,6 @@ public class HoaDonController {
     @PostMapping
     @Transactional
     public ResponseEntity<Map<String, Object>> createHoaDon(@RequestBody HoaDon hoaDon) {
-        System.out.println(hoaDon);
 
         if (hoaDon.getNgay() == null) {
             hoaDon.setNgay(LocalDate.now());

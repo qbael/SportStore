@@ -77,9 +77,11 @@ const useCart = () => {
         updatedCart[existingIndex].quantity += item.quantity;
         return updatedCart;
       }
-
+      console.log('Thêm sản phẩm vào giỏ hàng:', item);
       return [...prevCart, item];
     });
+    showNotification('Thêm vào giỏ hàng thành công', 'success');
+    
   };
 
   const removeFromCart = (Idbienthe: number) => {
