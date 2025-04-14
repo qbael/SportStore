@@ -2,7 +2,9 @@ package com.sport_store.backend.entity.Enum;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
+@Getter
 public enum TrangThaiHoaDon {
     DANGXULY("Đang xử lý"),
     DANGGIAO("Đang giao"),
@@ -13,11 +15,6 @@ public enum TrangThaiHoaDon {
 
     TrangThaiHoaDon(String value) {
         this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-        return value;
     }
 
     @JsonCreator

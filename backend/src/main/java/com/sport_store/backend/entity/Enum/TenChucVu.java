@@ -15,11 +15,6 @@ public enum TenChucVu {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return value;
-    }
-
     public static TenChucVu fromValue(String value) {
         for (TenChucVu role : TenChucVu.values()) {
             if (role.value.equalsIgnoreCase(value)) {

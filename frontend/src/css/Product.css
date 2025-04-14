@@ -1,9 +1,22 @@
 .custom-container {
     background: linear-gradient(to right, rgb(246, 247, 244), rgb(237, 243, 230), rgb(234, 245, 234), rgb(227, 245, 227));
     min-height: 400px;
+    max-width: 1200px;
     text-align: center;
     padding: 30px 30px 0 30px;
     border-radius: 20px;
-    margin-top: 100px;
-    margin-bottom: 80px;
+    min-width: 540px;
+    margin: 100px auto 80px auto;
+}
+
+@media screen and (max-width: 1050px) {
+    .custom-container {
+        max-width: 780px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .custom-container {
+        max-width: 540px;
+    }
 }

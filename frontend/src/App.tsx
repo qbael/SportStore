@@ -16,13 +16,12 @@ import Footer from "./components/layout/Footer.tsx";
 import Notification from "./components/ui/Notification.tsx";
 import Notification2 from "./components/ui/Notification2.tsx";
 import Login from './pages/Login.tsx';
-import Admin from "./pages/Admin.tsx";
+import Admin from "./pages/AdminPages/Admin.tsx";
 
 const Layout = () => {
     const hideLayout = useLocation().pathname === '/admin';
     return (
         <div className="container-fluid p-0"
-             style={{ marginTop: '80px'}}
         >
             <Notification2/>
             <Notification/>

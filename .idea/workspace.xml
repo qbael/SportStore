@@ -5,22 +5,50 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/TTKhachHangDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/AdminAuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/AdminLoginRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/AdminLoginResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/NhanVienService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/img/admin_login_bg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/context/AdminAuthContext.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/css/Admin.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/hook/useAdminAuth.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/hook/useAdminLogin.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AdminPages/Admin.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AdminPages/AdminLogin.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AdminPages/QuanLyHoaDon.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AdminPages/QuanLyNhapHang.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AdminPages/QuanLySanPham.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/util/Enum.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/util/types/PhanQuyenTypes.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/config/JacksonConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/config/JacksonConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/HoaDonController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/HoaDonController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/LoginResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/LoginResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/SanPhamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/SanPhamController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/ChiTietSanPhamDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/ChiTietSanPhamDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/LoginRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/LoginRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/ChucNang.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/ChucNang.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/ChucVu.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/ChucVu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/Enum/HanhDong.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/Enum/HanhDong.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/Enum/TenChucVu.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/Enum/TenChucVu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/Enum/TrangThaiHoaDon.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/Enum/TrangThaiHoaDon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/NhanVien.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/NhanVien.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/Quyen.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/Quyen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/NhanVienRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/NhanVienRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/SanPhamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/service_interface/SanPhamService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/implement/SanPhamServiceImplement.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/SanPhamServiceImplement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/data.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/sport_store.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/sport_store.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/hook/useCart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hook/useCart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Cart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/context/NotificationContext2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/NotificationContext2.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/css/Product.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/css/Product.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/css/ui/Card.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/css/ui/Card.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Admin.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LoginAdmin.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Product.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Product.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/util/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/util/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/util/Constant.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/util/Constant.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,11 +131,11 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Spring Boot.BackendApplication.executor&quot;: &quot;Run&quot;,
     &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Merging qbao&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;qbao&quot;,
     &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;22.14.0&quot;,
     &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;22.14.0&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/CODE/SportStore&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/CODE/Projects/DoAnPTTK/frontend/src/css&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -138,17 +166,17 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\css" />
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\assets\icon" />
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\css\ui" />
-      <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\css" />
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\components\ui" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\pages\AdminPages" />
+      <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\components" />
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\css" />
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\util\types" />
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\public\product" />
-      <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\css\component" />
-      <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\pages" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.sport_store.backend.service" />
@@ -277,6 +305,9 @@
       <workItem from="1744455376006" duration="4862000" />
       <workItem from="1744474741451" duration="4364000" />
       <workItem from="1744479372379" duration="72000" />
+      <workItem from="1744525744689" duration="10566000" />
+      <workItem from="1744559535799" duration="6094000" />
+      <workItem from="1744614745506" duration="26929000" />
     </task>
     <servers />
   </component>

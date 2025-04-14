@@ -66,7 +66,7 @@ const Product = () => {
     // }
 
     return (
-        <Container className="align-items-center border-1 border-secondary shadow d-flex custom-container flex-wrap justify-content-start">
+        <div className="align-items-center border-1 border-secondary shadow d-flex custom-container flex-wrap justify-content-start">
             {products.length === 0 ? (
                 <h1 className="w-100 text-center mt-4 mb-4">Không tìm thấy sản phẩm</h1>
             ) : (
@@ -78,8 +78,8 @@ const Product = () => {
                             className="custom-card"
                             onClick={() => navigate(`${PRODUCT_IMAGE_BASE_PATH}${product.id}`)}
                         >
-                            <Card.Img className={"w-100 h-75"}
-                                      style={{ minWidth: '150px', minHeight: '200px', maxHeight: '220px', maxWidth: '200px' }}
+                            <Card.Img className={"w-100 h-50"}
+                                      style={{ minWidth: '180px', minHeight: '220px', maxHeight: '220px', maxWidth: '220px' }}
                                       variant="top" src={`${PRODUCT_IMAGE_BASE_PATH}${product.hinhAnh}`} />
                             <Card.Body>
                                 <Card.Title>{product.tenSanPham}</Card.Title>
@@ -145,7 +145,7 @@ const Product = () => {
                     </Pagination>
                 </>
             )}
-        </Container>
+        </div>
     );
 };
 

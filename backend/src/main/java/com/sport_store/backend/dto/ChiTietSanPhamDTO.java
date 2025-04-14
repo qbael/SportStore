@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class ChiTietSanPhamDto {
+public class ChiTietSanPhamDTO {
     private SanPham sanPham;
     private List<BienThe> bienThe;
 }

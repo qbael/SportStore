@@ -1,11 +1,11 @@
-package com.sport_store.backend.service.implement;
+package com.sport_store.backend.service;
 
-import com.sport_store.backend.dto.ChiTietSanPhamDto;
+import com.sport_store.backend.dto.ChiTietSanPhamDTO;
 import com.sport_store.backend.entity.BienThe;
 import com.sport_store.backend.entity.SanPham;
 import com.sport_store.backend.repository.BienTheRepository;
 import com.sport_store.backend.repository.SanPhamRepository;
-import com.sport_store.backend.service.SanPhamService;
+import com.sport_store.backend.service.service_interface.SanPhamService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -99,7 +99,7 @@ public class SanPhamServiceImplement implements SanPhamService {
         return sanPhamRepository.findAll(spec, pageable);
     }
 
-    public ChiTietSanPhamDto getAllBienTheOfSanPham(int id) {
+    public ChiTietSanPhamDTO getAllBienTheOfSanPham(int id) {
         SanPham sanPham = sanPhamRepository.findById(id).orElse(null);
         List<BienThe> bienThe;
         if (sanPham != null) {
@@ -107,7 +107,7 @@ public class SanPhamServiceImplement implements SanPhamService {
         } else {
             throw new IllegalArgumentException("Product not found with id: " + id);
         }
-        return new ChiTietSanPhamDto(
+        return new ChiTietSanPhamDTO(
                 sanPham,
                 bienThe
         );
