@@ -1,32 +1,27 @@
 package com.sport_store.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sport_store.backend.entity.Enum.HanhDong;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(
-        name = "quyen",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"chucvu", "chucnang", "hanhdong"})}
-)
+@Table(name = "quyen", uniqueConstraints = @UniqueConstraint(columnNames = {"chucvu", "chucnang", "hanhdong"}))
+@NoArgsConstructor
+@AllArgsConstructor
 public class Quyen {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chucvu", nullable = false)
+    @JsonBackReference
     private ChucVu chucVu;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "chucnang", nullable = false)
     private ChucNang chucNang;
 

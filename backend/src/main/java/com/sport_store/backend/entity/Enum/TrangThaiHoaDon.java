@@ -1,5 +1,10 @@
 package com.sport_store.backend.entity.Enum;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+
+@Getter
 public enum TrangThaiHoaDon {
     DANGXULY("Đang xử lý"),
     DANGGIAO("Đang giao"),
@@ -8,16 +13,11 @@ public enum TrangThaiHoaDon {
 
     private final String value;
 
-
     TrangThaiHoaDon(String value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return value;
-    }
-
+    @JsonCreator
     public static TrangThaiHoaDon fromValue(String value) {
         for (TrangThaiHoaDon trangThaiHoaDon : TrangThaiHoaDon.values()) {
             if (trangThaiHoaDon.value.equalsIgnoreCase(value)) {

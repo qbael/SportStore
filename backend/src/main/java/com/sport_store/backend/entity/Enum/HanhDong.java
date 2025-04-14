@@ -15,11 +15,6 @@ public enum HanhDong {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return value;
-    }
-
     public static HanhDong fromValue(String value) {
         for (HanhDong hanhDong : HanhDong.values()) {
             if (hanhDong.value.equalsIgnoreCase(value)) {

@@ -1,16 +1,14 @@
 package com.sport_store.backend.controller;
 
-import com.sport_store.backend.dto.ChiTietSanPhamDto;
+import com.sport_store.backend.dto.ChiTietSanPhamDTO;
 import com.sport_store.backend.entity.SanPham;
-import com.sport_store.backend.service.SanPhamService;
+import com.sport_store.backend.service.service_interface.SanPhamService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -43,7 +41,7 @@ public class SanPhamController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ChiTietSanPhamDto> getAllBienTheOfSanPham(@PathVariable int id) {
+    public ResponseEntity<ChiTietSanPhamDTO> getAllBienTheOfSanPham(@PathVariable int id) {
         return ResponseEntity.ok(sanPhamService.getAllBienTheOfSanPham(id));
     }
 }

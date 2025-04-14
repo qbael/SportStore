@@ -10,6 +10,4 @@ import lombok.NoArgsConstructor;
 public class LoginRequestDTO {  // dien form dang nhap
     private String username;
     private String password;
-
-
 }

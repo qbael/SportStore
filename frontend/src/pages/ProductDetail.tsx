@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 import {BienTheType, ChiTietSanPhamType, MauType, SizeType} from "../util/types/ProductTypes.tsx";
 import { useLocation, useNavigate } from 'react-router-dom'; // Thêm useNavigate
 import '../css/ProductDetail.css'
-import { GiConsoleController } from 'react-icons/gi';
 import { useNotification } from '../hook/useNotification2'; // Import hook
 
 import useCart from '../hook/useCart.tsx';
@@ -78,7 +77,8 @@ const ProductDetail: React.FC = () => {
         if (chiTietSanPham) {
           const colors = Array.from(
             new Map(chiTietSanPham.bienThe.map((bt) => [bt.mau!.id, bt.mau!])).values()
-          );
+          ).sort((a, b) => a.id - b.id);
+          setSelectedColor(colors[0] || null);
           setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${chiTietSanPham.sanPham?.hinhAnh}`);
           setUniqueColors(colors);
         }
@@ -93,9 +93,9 @@ const ProductDetail: React.FC = () => {
                   .filter((bt) => bt.mau?.id === selectedColor.id && bt.soLuongTon > 0)
                   .map((bt) => [bt.size!.id, bt.size!])
               ).values()
-            );
+            ).sort((a, b) => a.id - b.id);
             setAvailableSizes(sizes);
-            setSelectedSize(null);
+            setSelectedSize(sizes[0] || null);
           } else {
             const bienthe = chiTietSanPham?.bienThe.find((bt) => bt.mau?.id === selectedColor.id);
             setSelectedBienThe(bienthe || null);
@@ -148,9 +148,7 @@ const ProductDetail: React.FC = () => {
                 <div className="mb-4">
                   <h3 className="h5 mb-0">Chọn màu sắc</h3>
                   <div className="d-flex flex-wrap" style={{ marginTop: '30px' }}>
-                    {uniqueColors
-                      .sort((a, b) => a.tenMau.localeCompare(b.tenMau))
-                      .map((mau) => (
+                    {uniqueColors.map((mau) => (
                         <Button
                           key={mau.id}
                           variant={selectedColor?.id === mau.id ? 'dark' : 'outline-secondary'}
@@ -168,9 +166,7 @@ const ProductDetail: React.FC = () => {
                 <div className="mb-4">
                   <h3 className="h5 mb-0">Chọn kích thước</h3>
                   <div className="d-flex flex-wrap" style={{ marginTop: '30px' }}>
-                    {availableSizes
-                      .sort((a, b) => a.size.localeCompare(b.size))
-                      .map((size) => (
+                    {availableSizes.map((size) => (
                         <Button
                           key={size.id}
                           variant={selectedSize?.id === size.id ? 'dark' : 'outline-secondary'}

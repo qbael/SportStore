@@ -59,10 +59,12 @@ function Cart() {
     const newHoaDon = {
       tongGiaNhap: 0,
       tongGiaBan: getTotalPrice(),
-      trangThai: "DANGXULY",
+      trangThai: 'Đang xử lý',
       ttKhachHang: { id: user?.profiles?.[0]?.id }, // Nên thay bằng id khách hàng thực tế từ user
       dsCTHoaDon: ctHoaDonList,
     };
+
+    console.log("Hóa đơn mới:", newHoaDon);
 
     fetch(`${BASE_URL}/hoadon`, {
       method: "POST",

@@ -22,7 +22,4 @@ public class ChucNang {
 
     @Column(name = "tenchucnang")
     private String tenChucNang;
-
-    @OneToMany(mappedBy = "chucNang")
-    private List<Quyen> dsQuyen;
 }
