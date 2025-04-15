@@ -16,7 +16,7 @@ import Footer from "./components/layout/Footer.tsx";
 import Notification from "./components/ui/Notification.tsx";
 import Notification2 from "./components/ui/Notification2.tsx";
 import Login from './pages/Login.tsx';
-import Admin from "./pages/AdminPages/Admin.tsx";
+import Admin from "./pages/admin_pages/Admin.tsx";
 
 const Layout = () => {
     const hideLayout = useLocation().pathname === '/admin';

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import '../../css/Admin.css'
+import '../../css/admin/Admin.css'
 
 import { useAdminLogin } from '../../hook/useAdminLogin.tsx'
 import { useNotification } from '../../hook/useNotification2.tsx'

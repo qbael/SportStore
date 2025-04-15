@@ -41,3 +41,9 @@ export const mapToTenChucVu = (key: string): TenChucVu | undefined => {
     return undefined;
 }
 
+export const mapToHanhDong = (key: string): HanhDong | undefined => {
+    if (key in HanhDong) {
+        return HanhDong[key as keyof typeof HanhDong];
+    }
+    return undefined;
+}

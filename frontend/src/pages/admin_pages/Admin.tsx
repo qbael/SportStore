@@ -1,19 +1,17 @@
 import AdminLogin from "./AdminLogin.tsx";
-import {useAdminAuth} from "../../hook/useAdminAuth.tsx";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Container, Row, Col} from "react-bootstrap";
-import QuanLySanPham from "./QuanLySanPham.tsx";
-import QuanLyHoaDon from "./QuanLyHoaDon.tsx";
-import QuanLyNhapHang from "./QuanLyNhapHang.tsx";
-import {getIconFromChucNang, HanhDong, mapToTenChucVu} from "../../util/Enum.tsx";
+import {getIconFromChucNang, mapToHanhDong, mapToTenChucVu, TenChucNang} from "../../util/Enum.tsx";
 import logo from '../../assets/img/logo.jpg';
+import QuanLySanPham from "./QuanLySanPham.tsx";
+import {useAdminContext} from "../../hook/useAdminContext.tsx";
+import {useAdminAuth} from "../../hook/useAdminAuth.tsx";
 
 const Admin = () => {
-    const {taiKhoanNV, logout} = useAdminAuth();
+    const {taiKhoanNV, logout} = useAdminAuth()
+    const {selectedChucNang, setSelectedChucNang, dsHanhDong, setDsHanhDong} = useAdminContext()
     const [listChucNang, setListChucNang] = useState<{id: number; tenChucNang: string}[]>([]);
     const [showSideNav, setShowSideNav] = useState(true)
-    const [selectedChucNang, setSelectedChucNang] = useState<number>();
-    const [dsHanhDong, setDsHanhDong] = useState<HanhDong[]>([]);
 
     useEffect(() => {
         if (taiKhoanNV) {
@@ -21,23 +19,29 @@ const Admin = () => {
                 new Map(taiKhoanNV.chucVu.quyenList.map((item) => [item.chucNang.id, item.chucNang])).values()
             );
             setListChucNang(listChucNangMap);
-            setSelectedChucNang(listChucNangMap[0]?.id);
+            setSelectedChucNang(listChucNangMap[0].tenChucNang)
         }
     }, [taiKhoanNV]);
 
     useEffect(() => {
         if (selectedChucNang){
-            const dsHanhDongTemp = taiKhoanNV?.chucVu.quyenList.filter((item) => item.chucNang.id === selectedChucNang);
-            console.log(dsHanhDongTemp);
+            const dsHanhDongTemp = taiKhoanNV?.chucVu.quyenList
+                .filter((item) => item.chucNang.tenChucNang === selectedChucNang)
+                .map((item) => mapToHanhDong(item.hanhDong));
+            setDsHanhDong(dsHanhDongTemp)
         }
     }, [selectedChucNang]);
 
-    const renderContent = () => {
+    const content = useMemo(() => {
+        if (!selectedChucNang || !dsHanhDong || dsHanhDong.length === 0) return null;
+
         switch (selectedChucNang) {
+            case TenChucNang.QUAN_LY_SAN_PHAM:
+                return <QuanLySanPham/>;
             default:
                 return null;
         }
-    };
+    }, [selectedChucNang, dsHanhDong]);
 
     return (
         <>
@@ -68,8 +72,8 @@ const Admin = () => {
                                 <ul className="nav flex-column">
                                     {listChucNang.map((item) => (
                                         <li key={item.id}
-                                            className={`nav-item ${selectedChucNang === item.id ? 'active' : ''}`}
-                                            onClick={() => setSelectedChucNang(item.id)}
+                                            className={`nav-item ${selectedChucNang === item.tenChucNang ? 'active' : ''}`}
+                                            onClick={() => setSelectedChucNang(item.tenChucNang)}
                                         >
                                             <div>
                                                 <i className={getIconFromChucNang(item.tenChucNang)}></i> {item.tenChucNang}
@@ -84,8 +88,8 @@ const Admin = () => {
                                 </ul>
                             )}
                         </Col>
-                        <Col style={{ width: '85%' }} className="content bg-primary">
-
+                        <Col style={{ width: '85%' }} className="content">
+                            {content}
                         </Col>
                     </Row>
                 </Container>

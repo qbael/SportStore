@@ -8,19 +8,22 @@ import {App} from './App.tsx'
 import {NotificationContextProvider} from "./context/NotificationContext.tsx";
 import {NotificationProvider} from "./context/NotificationContext2.tsx"; // Import NotificationProvider
 import { AuthProvider } from './context/AuthContext.tsx'; // Import AuthProvider
-import { AdminAuthProvider } from './context/AdminAuthContext.tsx'; // Import AdminAuthProvider
+import { AdminAuthProvider } from './context/AdminAuthContext.tsx';
+import {AdminContextProvider} from "./context/AdminContext.tsx"; // Import AdminAuthProvider
 
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-        <AdminAuthProvider>
-          <NotificationProvider>
-            <NotificationContextProvider>
-                <App />
-            </NotificationContextProvider>
-          </NotificationProvider>
-        </AdminAuthProvider>
-    </AuthProvider>
+      <NotificationProvider>
+        <NotificationContextProvider>
+            <AuthProvider>
+                <AdminAuthProvider>
+                    <AdminContextProvider>
+                        <App />
+                    </AdminContextProvider>
+                </AdminAuthProvider>
+            </AuthProvider>
+        </NotificationContextProvider>
+      </NotificationProvider>
   </StrictMode>,
 )
