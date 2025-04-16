@@ -78,7 +78,6 @@ const ProductDetail: React.FC = () => {
           const colors = Array.from(
             new Map(chiTietSanPham.bienThe.map((bt) => [bt.mau!.id, bt.mau!])).values()
           ).sort((a, b) => a.id - b.id);
-          setSelectedColor(colors[0] || null);
           setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${chiTietSanPham.sanPham?.hinhAnh}`);
           setUniqueColors(colors);
         }
@@ -95,7 +94,6 @@ const ProductDetail: React.FC = () => {
               ).values()
             ).sort((a, b) => a.id - b.id);
             setAvailableSizes(sizes);
-            setSelectedSize(sizes[0] || null);
           } else {
             const bienthe = chiTietSanPham?.bienThe.find((bt) => bt.mau?.id === selectedColor.id);
             setSelectedBienThe(bienthe || null);

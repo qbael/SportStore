@@ -11,8 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -63,5 +65,44 @@ public class SanPhamController {
         dsThongTinSPDTO.setDsThuongHieu(dsThuongHieu);
         dsThongTinSPDTO.setDsBoMon(dsBoMon);
         return ResponseEntity.ok(dsThongTinSPDTO);
+    }
+
+    public record savedSanPhamResponseDTO(String message, int id) {
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createSanPham(@RequestParam("tenSanPham") String tenSanPham,
+                                           @RequestParam("giaNhap") Integer giaNhap,
+                                           @RequestParam("giaBan") Integer giaBan,
+                                           @RequestParam("moTa") String moTa,
+                                           @RequestParam("thuongHieuId") Integer thuongHieuId,
+                                           @RequestParam("danhMucId") Integer danhMucId,
+                                           @RequestParam("boMonId") Integer boMonId,
+                                           @RequestParam("hinhAnh") MultipartFile hinhAnh) {
+        int id = sanPhamService.createSanPham(tenSanPham, giaNhap, giaBan, moTa, thuongHieuId, danhMucId, boMonId, hinhAnh);
+        if (id > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Thêm sản phẩm thành công", id));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi thêm sản phẩm");
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateSanPham(@PathVariable int id,
+                                           @RequestParam("tenSanPham") String tenSanPham,
+                                           @RequestParam("giaNhap") Integer giaNhap,
+                                           @RequestParam("giaBan") Integer giaBan,
+                                           @RequestParam("moTa") String moTa,
+                                           @RequestParam("thuongHieuId") Integer thuongHieuId,
+                                           @RequestParam("danhMucId") Integer danhMucId,
+                                           @RequestParam("boMonId") Integer boMonId,
+                                           @RequestParam("trangThai") Boolean trangThai,
+                                           @RequestParam("hinhAnh") MultipartFile hinhAnh) {
+        int signal = sanPhamService.updateSanPham(id, tenSanPham, giaNhap, giaBan, moTa, thuongHieuId, danhMucId, boMonId, trangThai, hinhAnh);
+        if (signal > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Cập nhật sản phẩm thành công", signal));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi cập nhật sản phẩm");
+        }
     }
 }

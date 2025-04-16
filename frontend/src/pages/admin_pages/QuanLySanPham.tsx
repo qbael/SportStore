@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useReducer} from "react";
 import {dsFull, ProductType} from "../../util/types/ProductTypes.tsx";
 import '../../css/admin/QuanLySanPham.css'
 import {Button, Container, Form, Row, Table} from "react-bootstrap";
@@ -10,28 +10,69 @@ import {HanhDong} from "../../util/Enum.tsx";
 import {formatPrice} from "../../util/Helper.ts";
 import { useNotification } from '../../hook/useNotification2.tsx';
 import ModalThemSanPham from "../../components/modal_box/ModalThemSanPham.tsx";
+import ModalSuaSanPham from "../../components/modal_box/ModalSuaSanPham.tsx";
 
+const initialState = {
+    dsSanPham: [] as ProductType[],
+    currentPage: 1,
+    totalPage: 0,
+    isLastPage: false,
+    isFirstPage: false,
+    minPrice: "",
+    maxPrice: "",
+    keyword: "",
+    searchType: "tenSanPham",
+    dsFull: null as dsFull | null,
+    selectedSanPham: null as ProductType | null,
+    showAddModal: false,
+    showUpdateModal: false,
+};
+
+type State = typeof initialState;
+
+type Action =
+    | { type: 'SET_DS_SANPHAM', payload: ProductType[] }
+    | { type: 'SET_CURRENT_PAGE', payload: number }
+    | { type: 'SET_TOTAL_PAGE', payload: number }
+    | { type: 'SET_IS_LAST_PAGE', payload: boolean }
+    | { type: 'SET_IS_FIRST_PAGE', payload: boolean }
+    | { type: 'SET_MIN_PRICE', payload: string }
+    | { type: 'SET_MAX_PRICE', payload: string }
+    | { type: 'SET_KEYWORD', payload: string }
+    | { type: 'SET_SEARCH_TYPE', payload: string }
+    | { type: 'SET_DSFULL', payload: dsFull | null }
+    | { type: 'SET_SELECTED_SANPHAM', payload: ProductType | null }
+    | { type: 'SET_SHOW_ADD_MODAL', payload?: boolean }
+    | { type: 'SET_SHOW_UPDATE_MODAL', payload?: boolean };
+
+const reducer = (state: State, action: Action): State => {
+    switch (action.type) {
+        case 'SET_DS_SANPHAM': return { ...state, dsSanPham: action.payload };
+        case 'SET_CURRENT_PAGE': return { ...state, currentPage: action.payload };
+        case 'SET_TOTAL_PAGE': return { ...state, totalPage: action.payload };
+        case 'SET_IS_LAST_PAGE': return { ...state, isLastPage: action.payload };
+        case 'SET_IS_FIRST_PAGE': return { ...state, isFirstPage: action.payload };
+        case 'SET_MIN_PRICE': return { ...state, minPrice: action.payload };
+        case 'SET_MAX_PRICE': return { ...state, maxPrice: action.payload };
+        case 'SET_KEYWORD': return { ...state, keyword: action.payload };
+        case 'SET_SEARCH_TYPE': return { ...state, searchType: action.payload };
+        case 'SET_SHOW_ADD_MODAL': return { ...state, showAddModal: action.payload ?? !state.showAddModal };
+        case 'SET_SHOW_UPDATE_MODAL': return { ...state, showUpdateModal: action.payload ?? !state.showUpdateModal };
+        case 'SET_SELECTED_SANPHAM': return { ...state, selectedSanPham: action.payload };
+        case 'SET_DSFULL': return { ...state, dsFull: action.payload };
+        default: return state;
+    }
+};
 
 const QuanLySanPham = () => {
-    const [dsSanPham, setDsSanPham] = useState<ProductType[]>([]);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalPage, setTotalPage] = useState<number>(0);
-    const [isLastPage, setIsLastPage] = useState<boolean>(false);
-    const [isFirstPage, setIsFirstPage] = useState<boolean>(false);
-    const [searchParams, setSearchParams] = useSearchParams()
-    const [minPrice, setMinPrice] = useState<string>("");
-    const [maxPrice, setMaxPrice] = useState<string>("");
-    const {showNotification} = useNotification();
-    const [keyword, setKeyword] = useState<string>("");
-    const [selectSearchType, setSelectSearchType] = useState<string>("tenSanPham");
-    const [showModal, setShowModal] = useState(false);
-    const {dsHanhDong} = useAdminContext();
-    const [dsFull, setDsFull] = useState<dsFull>();
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const { showNotification } = useNotification();
+    const { dsHanhDong } = useAdminContext();
 
     useEffect(() => {
         const controller = new AbortController();
         const signal = controller.signal;
-
         searchParams.set("limit", ADMIN_PRODUCT_PER_PAGE.toString());
 
         const fetchData = async () => {
@@ -41,59 +82,67 @@ const QuanLySanPham = () => {
                     fetch(`${PRODUCT_API_URL}/ds`, { signal }),
                 ]);
 
-                if (!resSanPham.ok || !resDs.ok) {
-                    throw new Error("Lỗi khi gọi API");
-                }
+                if (!resSanPham.ok || !resDs.ok) throw new Error("Lỗi khi gọi API");
 
                 const sanPhamData = await resSanPham.json();
                 const dsData = await resDs.json();
 
-                console.log("dsSanPham", sanPhamData);
-                console.log("dsFull", dsData);
-                setDsSanPham(sanPhamData.content || []);
-                setTotalPage(sanPhamData.totalPages || 0);
-                setCurrentPage((sanPhamData.number || 0));
-                setIsLastPage(sanPhamData.last || false);
-                setIsFirstPage(sanPhamData.first || false);
-
-                setDsFull(dsData);
+                dispatch({ type: 'SET_DS_SANPHAM', payload: sanPhamData.content || [] });
+                dispatch({ type: 'SET_TOTAL_PAGE', payload: sanPhamData.totalPages || 0 });
+                dispatch({ type: 'SET_CURRENT_PAGE', payload: sanPhamData.number || 0 });
+                dispatch({ type: 'SET_IS_LAST_PAGE', payload: sanPhamData.last || false });
+                dispatch({ type: 'SET_IS_FIRST_PAGE', payload: sanPhamData.first || false });
+                dispatch({ type: 'SET_DSFULL', payload: dsData });
             } catch (error: any) {
                 if (error.name !== "AbortError") {
                     console.error("Lỗi fetch:", error);
-                    setDsSanPham([]);
+                    dispatch({ type: 'SET_DS_SANPHAM', payload: [] });
                 }
             }
         };
 
         fetchData();
-
-        return () => {
-            controller.abort();
-        };
+        return () => controller.abort();
     }, [searchParams.toString()]);
-
-
 
     const hasPermission = (action: HanhDong) => {
         return dsHanhDong?.includes(action);
     }
 
     const handleSaveSanPham = async (formData: FormData) => {
-        // try {
-        //     const res = await fetch(`${PRODUCT_API_URL}`, {
-        //         method: "POST",
-        //         body: formData,
-        //     });
-        //     if (!res.ok) throw new Error("Lỗi khi thêm sản phẩm");
-        //     showNotification("Thêm sản phẩm thành công!", "success");
-        //     setSearchParams(prev => {
-        //         prev.delete("page");
-        //         return prev;
-        //     });
-        // } catch (e) {
-        //     console.error(e);
-        //     showNotification("Thêm sản phẩm thất bại", "error");
-        // }
+        try {
+            const res = await fetch(`${PRODUCT_API_URL}`, {
+                method: "POST",
+                body: formData,
+            });
+            if (!res.ok) throw new Error("Lỗi khi thêm sản phẩm");
+            showNotification("Thêm sản phẩm thành công!", "success");
+            setSearchParams(prev => {
+                prev.delete("page");
+                return prev;
+            });
+        } catch (e) {
+            console.error(e);
+            showNotification("Thêm sản phẩm thất bại", "error");
+        }
+    };
+
+    const handleUpdateSanPham = async (formData: FormData) => {
+        try {
+            const res = await fetch(`${PRODUCT_API_URL}/${state.selectedSanPham?.id}`, {
+                method: "PUT",
+                body: formData,
+            });
+            if (!res.ok) throw new Error("Lỗi khi cập nhật sản phẩm");
+            showNotification("Cập nhật sản phẩm thành công!", "success");
+            setSearchParams(prev => {
+                prev.delete("page");
+                return prev;
+            });
+        } catch (e) {
+            console.error(e);
+            showNotification("Cập nhật sản phẩm thất bại", "error");
+        }
     };
 
     return (
@@ -104,8 +153,8 @@ const QuanLySanPham = () => {
                 <Form className="d-flex flex-wrap gap-2">
                     <Form.Group controlId="selectSearchType">
                         <Form.Select
-                            onChange={(e) => setSelectSearchType(e.target.value)}
-                            defaultValue={searchParams.get("searchBy") || "tenSanPham"}
+                            onChange={(e) => dispatch({ type: 'SET_SEARCH_TYPE', payload: e.target.value })}
+                            defaultValue={state.searchType}
                         >
                             <option value="tenSanPham">Tên sản phẩm</option>
                             <option value="thuongHieu">Thương hiệu</option>
@@ -118,20 +167,20 @@ const QuanLySanPham = () => {
                         <Form.Control
                             type="text"
                             placeholder="Nhập từ khóa..."
-                            onChange={(e) => setKeyword(e.target.value)}
-                            value={keyword}
+                            onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
+                            value={state.keyword}
                         />
                     </Form.Group>
 
                     <Form.Group controlId="minPrice" style={{width:'150px'}}>
                         <Form.Control
-                            type="number"
+                            type="text"
                             placeholder="Giá từ"
-                            value={minPrice ? minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : ""}
+                            value={state.minPrice ? state.minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : ""}
                             onChange={(e) => {
                                 const rawValue = e.target.value.replace(/\./g, '');
                                 if (!isNaN(Number(rawValue))) {
-                                    setMinPrice(rawValue);
+                                    dispatch({ type: 'SET_MIN_PRICE', payload: rawValue });
                                 }
                             }}
                         />
@@ -139,13 +188,13 @@ const QuanLySanPham = () => {
 
                     <Form.Group controlId="maxPrice" style={{width:'150px'}}>
                         <Form.Control
-                            type="number"
+                            type="text"
                             placeholder="Đến"
-                            value={maxPrice? maxPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : ""}
+                            value={state.maxPrice ? state.maxPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : ""}
                             onChange={(e) => {
                                 const rawValue = e.target.value.replace(/\./g, '');
                                 if (!isNaN(Number(rawValue))) {
-                                    setMaxPrice(rawValue);
+                                    dispatch({ type: 'SET_MAX_PRICE', payload: rawValue });
                                 }
                             }}
                         />
@@ -153,38 +202,38 @@ const QuanLySanPham = () => {
 
                     <Form.Group controlId="sortButtons" className="d-flex gap-2">
                         <Button className={"btn-primary"}
-                            onClick={() => {
-                                const newParams = new URLSearchParams(searchParams.toString());
-                                newParams.delete('page');
-                                newParams.delete('sort');
-                                newParams.delete('sortdir');
+                                onClick={() => {
+                                    const newParams = new URLSearchParams(searchParams.toString());
+                                    newParams.delete('page');
+                                    newParams.delete('sort');
+                                    newParams.delete('sortdir');
 
-                                const min = parseInt(minPrice || "0");
-                                const max = parseInt(maxPrice || "0");
+                                    const min = parseInt(state.minPrice || "0");
+                                    const max = parseInt(state.maxPrice || "0");
 
-                                if (minPrice && maxPrice && max < min) {
-                                    showNotification('Giá tối thiểu phải nhỏ hơn giá tối đa', "error");
-                                    return;
-                                }
+                                    if (state.minPrice && state.maxPrice && max < min) {
+                                        showNotification('Giá tối thiểu phải nhỏ hơn giá tối đa', "error");
+                                        return;
+                                    }
 
-                                if (minPrice && maxPrice) {
-                                    newParams.set('minprice', minPrice);
-                                    newParams.set('maxprice', maxPrice);
-                                } else {
-                                    newParams.delete('minprice');
-                                    newParams.delete('maxprice');
-                                }
+                                    if (state.minPrice && state.maxPrice) {
+                                        newParams.set('minprice', state.minPrice);
+                                        newParams.set('maxprice', state.maxPrice);
+                                    } else {
+                                        newParams.delete('minprice');
+                                        newParams.delete('maxprice');
+                                    }
 
-                                if (keyword) {
-                                    newParams.set("searchBy", selectSearchType);
-                                    newParams.set("search", keyword);
-                                } else {
-                                    newParams.delete("searchBy");
-                                    newParams.delete("search");
-                                }
+                                    if (state.keyword) {
+                                        newParams.set("searchBy", state.searchType);
+                                        newParams.set("search", state.keyword);
+                                    } else {
+                                        newParams.delete("searchBy");
+                                        newParams.delete("search");
+                                    }
 
-                                setSearchParams(newParams);
-                            }}
+                                    setSearchParams(newParams);
+                                }}
                         >
                             Áp dụng
                         </Button>
@@ -222,7 +271,7 @@ const QuanLySanPham = () => {
                         <Form.Group controlId="sortButtons" className="d-flex gap-2">
                             <Button
                                 variant="success"
-                                onClick={() => setShowModal(true)}
+                                onClick={() => dispatch({ type: 'SET_SHOW_ADD_MODAL', payload: true })}
                             >
                                 + Thêm sản phẩm
                             </Button>
@@ -236,81 +285,94 @@ const QuanLySanPham = () => {
                        style={{verticalAlign: 'middle'}}
                 >
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Hình ảnh</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Giá nhập</th>
-                            <th>Giá bán</th>
-                            <th>Thương hiệu</th>
-                            <th>Phân loại</th>
-                            <th>Bộ môn</th>
-                            <th>Trạng thái</th>
-                            {hasPermission(HanhDong.SUA) && (
-                                <th></th>
-                            )}
-                            {hasPermission(HanhDong.XOA) && (
-                                <th></th>
-                            )}
-                        </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá nhập</th>
+                        <th>Giá bán</th>
+                        <th>Thương hiệu</th>
+                        <th>Phân loại</th>
+                        <th>Bộ môn</th>
+                        <th>Trạng thái</th>
+                        {hasPermission(HanhDong.SUA) && (
+                            <th></th>
+                        )}
+                        {hasPermission(HanhDong.XOA) && (
+                            <th></th>
+                        )}
+                    </tr>
                     </thead>
                     <tbody>
-                        {dsSanPham.map((item, index) => (
-                            <tr key={index}
-                                style={{maxHeight: '50px'}}
-                            >
-                                <td>{item.id}</td>
+                    {state.dsSanPham.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.id}</td>
+                            <td>
+                                <img src={`${PRODUCT_IMAGE_BASE_PATH}${item.hinhAnh}`}
+                                     alt={item.tenSanPham} className={"img-fluid"}
+                                     style={{width: '45px', height: '45px'}}
+                                />
+                            </td>
+                            <td>{item.tenSanPham}</td>
+                            <td>{formatPrice(item.giaNhap!)}</td>
+                            <td>{formatPrice(item.giaBan!)}</td>
+                            <td>{item.thuongHieu.tenThuongHieu}</td>
+                            <td>{item.danhMuc.loai}</td>
+                            <td>{item.boMon.tenBoMon}</td>
+                            <td className={`fs-6 ${item.trangThai ? '': 'text-danger'}`} >{item.trangThai ? "Đang kinh doanh" : "Dừng kinh doanh"}</td>
+                            {hasPermission(HanhDong.SUA) && (
                                 <td>
-                                    <img src={`${PRODUCT_IMAGE_BASE_PATH}${item.hinhAnh}`}
-                                         alt={item.tenSanPham} className={"img-fluid"}
-                                         style={{width: '45px', height: '45px'}}
-                                    />
+                                    <button className={"btn btn-warning"}
+                                            onClick={() => {
+                                                dispatch({ type: 'SET_SELECTED_SANPHAM', payload: item });
+                                                dispatch({ type: 'SET_SHOW_UPDATE_MODAL', payload: true });
+                                            }}
+                                    >
+                                        Sửa
+                                    </button>
                                 </td>
-                                <td>{item.tenSanPham}</td>
-                                <td>{formatPrice(item.giaNhap!)}</td>
-                                <td>{formatPrice(item.giaBan!)}</td>
-                                <td>{item.thuongHieu.tenThuongHieu}</td>
-                                <td>{item.danhMuc.loai}</td>
-                                <td>{item.boMon.tenBoMon}</td>
-                                <td>{item.trangThai ? "Đang kinh doanh" : "Dừng kinh doanh"}</td>
-                                {hasPermission(HanhDong.SUA) && (
-                                    <td>
-                                        <button className={"btn btn-warning"}
-                                        >
-                                            Sửa
-                                        </button>
-                                    </td>
-                                )}
-                                {hasPermission(HanhDong.XOA) && (
-                                    <td>
-                                        <button className={"btn btn-danger"}
-                                        >
-                                            Xóa
-                                        </button>
-                                    </td>
-                                )}
-                            </tr>
-                        ))}
+                            )}
+                            {hasPermission(HanhDong.XOA) && (
+                                <td>
+                                    <button className={"btn btn-danger"}>
+                                        Xóa
+                                    </button>
+                                </td>
+                            )}
+                        </tr>
+                    ))}
                     </tbody>
                 </Table>
-                {totalPage > 1 && (
+                {state.totalPage > 1 && (
                     <CustomPagination
-                        currentPage={currentPage}
-                        totalPage={totalPage}
+                        currentPage={state.currentPage}
+                        totalPage={state.totalPage}
                         searchParams={searchParams}
                         setSearchParams={setSearchParams}
-                        isFirstPage={isFirstPage}
-                        isLastPage={isLastPage}
+                        isFirstPage={state.isFirstPage}
+                        isLastPage={state.isLastPage}
                     />
                 )}
             </Row>
             <ModalThemSanPham
-                show={showModal}
-                handleClose={() => setShowModal(false)}
+                show={state.showAddModal}
+                handleClose={() => dispatch({ type: 'SET_SHOW_ADD_MODAL', payload: false })}
                 handleSave={handleSaveSanPham}
-                dsThuongHieu={dsFull?.dsThuongHieu}
-                dsDanhMuc={dsFull?.dsDanhMuc}
-                dsBoMon={dsFull?.dsBoMon}
+                dsThuongHieu={state.dsFull?.dsThuongHieu}
+                dsDanhMuc={state.dsFull?.dsDanhMuc}
+                dsBoMon={state.dsFull?.dsBoMon}
+            />
+            <ModalSuaSanPham
+                show={state.showUpdateModal && state.selectedSanPham !== null}
+                handleClose={() => {
+                    dispatch({ type: 'SET_SHOW_UPDATE_MODAL', payload: false });
+                    dispatch({ type: 'SET_SELECTED_SANPHAM', payload: null });
+                }}
+                handleUpdate={handleUpdateSanPham}
+                sanPham={state.selectedSanPham}
+                dsDanhMuc={state.dsFull?.dsDanhMuc}
+                dsThuongHieu={state.dsFull?.dsThuongHieu}
+                dsBoMon={state.dsFull?.dsBoMon}
             />
         </Container>
     );

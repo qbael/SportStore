@@ -4,6 +4,7 @@ import {
 } from "react-bootstrap";
 
 import {boMonType, danhMucType, thuongHieuType} from "../../util/types/ProductTypes.tsx";
+import {useNotification} from "../../hook/useNotification2.tsx";
 
 type Props = {
     show: boolean;
@@ -23,19 +24,31 @@ const ModalThemSanPham = ({
                               dsBoMon
                           }: Props) => {
     const [tenSanPham, setTenSanPham] = useState("");
-    const [giaNhap, setGiaNhap] = useState("");
-    const [giaBan, setGiaBan] = useState("");
+    const [giaNhap, setGiaNhap] = useState<number>(0);
+    const [giaBan, setGiaBan] = useState<number>(0);
     const [moTa, setMoTa] = useState("");
     const [hinhAnh, setHinhAnh] = useState<File | null>(null);
     const [thuongHieuId, setThuongHieuId] = useState("");
     const [danhMucId, setDanhMucId] = useState("");
     const [boMonId, setBoMonId] = useState("");
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
+    const {showNotification} = useNotification()
 
     const handleSubmit = () => {
+        if(!tenSanPham || !giaNhap || !giaBan || !moTa || !thuongHieuId || !danhMucId || !boMonId || !hinhAnh) {
+            showNotification("Vui lòng điền đầy đủ thông tin sản phẩm.", "error");
+            return;
+        }
+
+        if (giaNhap < 0 || giaBan < 0) {
+            showNotification("Giá nhập và giá bán phải lớn hơn hoặc bằng 0.", "error");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("tenSanPham", tenSanPham);
-        formData.append("giaNhap", giaNhap);
-        formData.append("giaBan", giaBan);
+        formData.append("giaNhap", giaNhap.toString());
+        formData.append("giaBan", giaBan.toString());
         formData.append("moTa", moTa);
         if (hinhAnh) {
             formData.append("hinhAnh", hinhAnh);
@@ -51,13 +64,26 @@ const ModalThemSanPham = ({
 
     const resetForm = () => {
         setTenSanPham("");
-        setGiaNhap("");
-        setGiaBan("");
+        setGiaNhap(0);
+        setGiaBan(0);
         setMoTa("");
         setHinhAnh(null);
         setThuongHieuId("");
         setDanhMucId("");
         setBoMonId("");
+        setPreviewImage(null);
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] || null;
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setPreviewImage(imageUrl);
+            setHinhAnh(file);
+        } else {
+            setPreviewImage(null);
+            setHinhAnh(null);
+        }
     };
 
     return (
@@ -81,8 +107,17 @@ const ModalThemSanPham = ({
                         <Form.Control
                             type="file"
                             accept="image/*"
-                            onChange={(e) => setHinhAnh((e.target as HTMLInputElement).files?.[0] || null)}
+                            onChange={handleFileChange}
                         />
+                        {previewImage && (
+                            <div className="mt-2 text-center">
+                                <img
+                                    src={previewImage}
+                                    alt="Preview"
+                                    style={{ maxWidth: "100%", maxHeight: "200px", borderRadius: "8px" }}
+                                />
+                            </div>
+                        )}
                     </Form.Group>
 
                     <Row>
@@ -90,9 +125,10 @@ const ModalThemSanPham = ({
                             <Form.Group controlId="giaNhap" className="mb-3">
                                 <Form.Label>Giá nhập</Form.Label>
                                 <Form.Control
+                                    onFocus={(e) => e.target.select()}
                                     type="number"
                                     value={giaNhap}
-                                    onChange={(e) => setGiaNhap(e.target.value)}
+                                    onChange={(e) => setGiaNhap(parseInt(e.target.value))}
                                 />
                             </Form.Group>
                         </Col>
@@ -100,9 +136,10 @@ const ModalThemSanPham = ({
                             <Form.Group controlId="giaBan" className="mb-3">
                                 <Form.Label>Giá bán</Form.Label>
                                 <Form.Control
+                                    onFocus={(e) => e.target.select()}
                                     type="number"
                                     value={giaBan}
-                                    onChange={(e) => setGiaBan(e.target.value)}
+                                    onChange={(e) => setGiaBan(parseInt(e.target.value))}
                                 />
                             </Form.Group>
                         </Col>
