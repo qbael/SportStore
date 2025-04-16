@@ -1,33 +1,28 @@
 package com.sport_store.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sport_store.backend.entity.Enum.TenChucVu;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "chucvu")
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChucVu {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tenchucvu", unique = true, nullable = false)
+    @Column(name = "tenchucvu", nullable = false)
     private TenChucVu tenChucVu;
 
-    @OneToMany(mappedBy = "chucVu", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<NhanVien> dsNhanVien;
-
-    @OneToMany(mappedBy = "chucVu")
-    private List<Quyen> dsQuyen;
+    @OneToMany(mappedBy = "chucVu", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Quyen> quyenList;
 }

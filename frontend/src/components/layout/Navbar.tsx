@@ -54,7 +54,7 @@ export default function Navbar() {
       ]
     },
     { label: 'THƯƠNG HIỆU',
-      link: '',
+      link: '/product',
       submenu: [
         { label: 'Nike', link: '/product?thuonghieu=nike' },
         { label: 'Adidas', link: '/product?thuonghieu=adidas' },
@@ -140,6 +140,7 @@ export default function Navbar() {
                       <button
                         className={`nav-link ${openDropdown === index ? 'active' : ''}`}
                         aria-expanded={openDropdown === index}
+                        onClick={() => navigate(item.link)}
                       >
                         {item.label}
                         <i className={`fas fa-chevron-down ms-2 ${openDropdown === index ? 'rotate' : ''}`}></i>

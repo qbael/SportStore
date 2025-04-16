@@ -27,7 +27,7 @@ CREATE TABLE hoadon
     ttkhachhang INT,
     tonggianhap INT,
     tonggiaban  INT,
-    trangthai   ENUM ('Đang xử lý', 'Đã hủy', 'Đang giao', 'Đã giao') DEFAULT 'Đang xử lý',
+    trangthai   ENUM ('DANGXULY', 'DAHUY', 'DANGGIAO', 'DAGIAO') DEFAULT 'DANGXULY',
     FOREIGN KEY (ttkhachhang) REFERENCES ttkhachhang (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -56,7 +56,7 @@ CREATE TABLE sanpham
     hinhanh    VARCHAR(255),
     gianhap    INT,
     giaban     INT,
-    mota       TEXT,
+    mota       VARCHAR(255),
     trangthai  BOOLEAN DEFAULT TRUE,
     thuonghieu INT,
     danhmuc    INT,
@@ -75,7 +75,7 @@ CREATE TABLE mau
 CREATE TABLE size
 (
     id   INT PRIMARY KEY AUTO_INCREMENT,
-    size VARCHAR(5)
+    size VARCHAR(255)
 );
 
 CREATE TABLE bienthe
@@ -122,7 +122,7 @@ CREATE TABLE chucnang
 CREATE TABLE chucvu
 (
     id        INT PRIMARY KEY AUTO_INCREMENT,
-    tenchucvu ENUM ('Admin', 'Nhân viên bán hàng', 'Nhân viên kho', 'Quản lý doanh nghiệp') UNIQUE NOT NULL
+    tenchucvu ENUM ('ADMIN', 'NHAN_VIEN_BAN_HANG', 'NHAN_VIEN_KHO', 'QUAN_LY_DOANH_NGHIEP') NOT NULL
 );
 
 CREATE TABLE quyen
@@ -130,7 +130,7 @@ CREATE TABLE quyen
     id       INT PRIMARY KEY AUTO_INCREMENT,
     chucvu   INT,
     chucnang INT,
-    hanhdong ENUM ('Xem', 'Thêm', 'Sửa', 'Xóa') UNIQUE NOT NULL,
+    hanhdong ENUM ('XEM', 'THEM', 'SUA', 'XOA') NOT NULL,
     UNIQUE (chucvu, chucnang, hanhdong),
     FOREIGN KEY (chucvu) REFERENCES chucvu (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (chucnang) REFERENCES chucnang (id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -146,6 +146,7 @@ CREATE TABLE nhanvien
     email    VARCHAR(255),
     sdt      INT,
     chucvu   INT not null,
+    password VARCHAR(255),
     FOREIGN KEY (chucvu) REFERENCES chucvu (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 

@@ -1,7 +1,7 @@
 import "../css/Cart.css"
 import useCart from '../hook/useCart.tsx';
 import { useEffect } from 'react';
-import { formatPrice } from '../util/utils';
+import { formatPrice } from '../util/Helper.ts';
 import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH, BASE_URL} from "../util/Constant.tsx";
 import { useAuth } from '../hook/useAuth.tsx'; // Thêm useAuth
 import { useNavigate } from 'react-router-dom'; // Thêm useNavigate
@@ -61,10 +61,12 @@ function Cart() {
     const newHoaDon = {
       tongGiaNhap: 0,
       tongGiaBan: getTotalPrice(),
-      trangThai: "DANGXULY",
+      trangThai: 'Đang xử lý',
       ttKhachHang: { id: user?.profiles?.[0]?.id }, // Nên thay bằng id khách hàng thực tế từ user
       dsCTHoaDon: ctHoaDonList,
     };
+
+    console.log("Hóa đơn mới:", newHoaDon);
 
     fetch(`${BASE_URL}/hoadon`, {
       method: "POST",

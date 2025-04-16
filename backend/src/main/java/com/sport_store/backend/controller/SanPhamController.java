@@ -1,16 +1,14 @@
 package com.sport_store.backend.controller;
 
-import com.sport_store.backend.dto.ChiTietSanPhamDto;
+import com.sport_store.backend.dto.ChiTietSanPhamDTO;
 import com.sport_store.backend.entity.SanPham;
-import com.sport_store.backend.service.SanPhamService;
+import com.sport_store.backend.service.service_interface.SanPhamService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -33,17 +31,19 @@ public class SanPhamController {
             @RequestParam(name = "maxprice", required = false) Integer maxprice,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
             @RequestParam(name = "sortdir", required = false, defaultValue = "ASC") String sortDir,
-            @RequestParam(name = "search", required = false) String search
+            @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "searchBy", required = false) String searchBy,
+            @RequestParam(name = "status", required = false) Boolean status
     ) {
         Pageable pageable = PageRequest.of(page, limit, Sort.by(
                 sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sort
         ));
 
-        return sanPhamService.getFilteredProducts(bomon, danhmuc, thuonghieu, minprice, maxprice, search, pageable);
+        return sanPhamService.getFilteredProducts(bomon, danhmuc, thuonghieu, minprice, maxprice, search, searchBy, status, pageable);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ChiTietSanPhamDto> getAllBienTheOfSanPham(@PathVariable int id) {
+    public ResponseEntity<ChiTietSanPhamDTO> getAllBienTheOfSanPham(@PathVariable int id) {
         return ResponseEntity.ok(sanPhamService.getAllBienTheOfSanPham(id));
     }
 }

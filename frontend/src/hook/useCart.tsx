@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BienTheType, ProductType } from '../util/types/ProductTypes';
-import { useAuth } from '../hook/useAuth';
-import { useNotification } from '../hook/useNotification2';
+import { useAuth } from './useAuth.tsx'; // Thêm useAuth để lấy user
+import { useNotification } from './useNotification2.tsx'; // Thêm thông báo
 
 export type CartItem = {
   bienthesp: BienTheType | null;

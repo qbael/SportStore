@@ -65,7 +65,7 @@ export const SortFilter = () => {
                     <button className={'btn btn-primary'}
                             onClick={() => {
                                 if (parseInt(maxPrice) < parseInt(minPrice)) {
-                                    showNotification('Maximum price can not be lower than minimum price')
+                                    showNotification('Giá tối thiểu phải nhỏ hơn giá tối đa')
                                     setMinPrice("");
                                     setMaxPrice("");
                                     return
