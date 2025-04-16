@@ -1,3 +1,18 @@
+export type danhMucType = {
+    id: number;
+    loai: string;
+}
+
+export type boMonType = {
+    id: number;
+    tenBoMon: string;
+}
+
+export type thuongHieuType = {
+    id: number;
+    tenThuongHieu: string;
+}
+
 export type ProductType = {
     id: number;
     tenSanPham: string;
@@ -6,18 +21,9 @@ export type ProductType = {
     giaNhap?: number;
     moTa: string;
     trangThai: boolean;
-    danhMuc: {
-        id: number;
-        loai: string;
-    };
-    thuongHieu: {
-        id: number;
-        tenThuongHieu: string;
-    };
-    boMon: {
-        id: number;
-        tenBoMon: string;
-    };
+    danhMuc: danhMucType;
+    thuongHieu: thuongHieuType
+    boMon: boMonType
 }
 
 export type SizeType = {
@@ -42,4 +48,10 @@ export type BienTheType = {
 export type ChiTietSanPhamType = {
     sanPham: ProductType | null;
     bienThe: BienTheType[];
+}
+
+export type dsFull = {
+    dsThuongHieu: thuongHieuType[];
+    dsDanhMuc: danhMucType[];
+    dsBoMon: boMonType[];
 }

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {ProductType} from "../../util/types/ProductTypes.tsx";
+import {dsFull, ProductType} from "../../util/types/ProductTypes.tsx";
 import '../../css/admin/QuanLySanPham.css'
 import {Button, Container, Form, Row, Table} from "react-bootstrap";
 import {useAdminContext} from "../../hook/useAdminContext.tsx";
@@ -9,6 +9,7 @@ import CustomPagination from "../../components/ui/CustomPagination.tsx";
 import {HanhDong} from "../../util/Enum.tsx";
 import {formatPrice} from "../../util/Helper.ts";
 import { useNotification } from '../../hook/useNotification2.tsx';
+import ModalThemSanPham from "../../components/modal_box/ModalThemSanPham.tsx";
 
 
 const QuanLySanPham = () => {
@@ -23,40 +24,77 @@ const QuanLySanPham = () => {
     const {showNotification} = useNotification();
     const [keyword, setKeyword] = useState<string>("");
     const [selectSearchType, setSelectSearchType] = useState<string>("tenSanPham");
+    const [showModal, setShowModal] = useState(false);
     const {dsHanhDong} = useAdminContext();
+    const [dsFull, setDsFull] = useState<dsFull>();
 
     useEffect(() => {
         const controller = new AbortController();
         const signal = controller.signal;
-        searchParams.set('limit', ADMIN_PRODUCT_PER_PAGE.toString());
-        const fecthData = async () => {
+
+        searchParams.set("limit", ADMIN_PRODUCT_PER_PAGE.toString());
+
+        const fetchData = async () => {
             try {
-                const response = await fetch(`${PRODUCT_API_URL}?${searchParams.toString()}`, { signal });
-                if (!response.ok) {
-                    throw new Error('Không thể tải sản phẩm');
+                const [resSanPham, resDs] = await Promise.all([
+                    fetch(`${PRODUCT_API_URL}?${searchParams.toString()}`, { signal }),
+                    fetch(`${PRODUCT_API_URL}/ds`, { signal }),
+                ]);
+
+                if (!resSanPham.ok || !resDs.ok) {
+                    throw new Error("Lỗi khi gọi API");
                 }
-                const data = await response.json();
-                setDsSanPham(data.content);
-                setTotalPage(data.totalPages || 0);
-                setCurrentPage(data.number || 0);
-                setIsLastPage(data.last || false);
-                setIsFirstPage(data.first || false);
+
+                const sanPhamData = await resSanPham.json();
+                const dsData = await resDs.json();
+
+                console.log("dsSanPham", sanPhamData);
+                console.log("dsFull", dsData);
+                setDsSanPham(sanPhamData.content || []);
+                setTotalPage(sanPhamData.totalPages || 0);
+                setCurrentPage((sanPhamData.number || 0));
+                setIsLastPage(sanPhamData.last || false);
+                setIsFirstPage(sanPhamData.first || false);
+
+                setDsFull(dsData);
             } catch (error: any) {
-                if (error.name !== 'AbortError') {
-                    console.error('Fetch error:', error);
+                if (error.name !== "AbortError") {
+                    console.error("Lỗi fetch:", error);
                     setDsSanPham([]);
                 }
             }
         };
-        fecthData()
+
+        fetchData();
+
         return () => {
             controller.abort();
         };
-    }, [searchParams]);
+    }, [searchParams.toString()]);
+
+
 
     const hasPermission = (action: HanhDong) => {
         return dsHanhDong?.includes(action);
     }
+
+    const handleSaveSanPham = async (formData: FormData) => {
+        // try {
+        //     const res = await fetch(`${PRODUCT_API_URL}`, {
+        //         method: "POST",
+        //         body: formData,
+        //     });
+        //     if (!res.ok) throw new Error("Lỗi khi thêm sản phẩm");
+        //     showNotification("Thêm sản phẩm thành công!", "success");
+        //     setSearchParams(prev => {
+        //         prev.delete("page");
+        //         return prev;
+        //     });
+        // } catch (e) {
+        //     console.error(e);
+        //     showNotification("Thêm sản phẩm thất bại", "error");
+        // }
+    };
 
     return (
         <Container fluid className={"w-100 h-100 rounded-3"}
@@ -116,32 +154,36 @@ const QuanLySanPham = () => {
                     <Form.Group controlId="sortButtons" className="d-flex gap-2">
                         <Button className={"btn-primary"}
                             onClick={() => {
-                                if (parseInt(maxPrice) < parseInt(minPrice)) {
-                                    showNotification('Giá tối thiểu phải nhỏ hơn giá tối đa', "error")
-                                    setMinPrice("");
-                                    setMaxPrice("");
-                                    return
+                                const newParams = new URLSearchParams(searchParams.toString());
+                                newParams.delete('page');
+                                newParams.delete('sort');
+                                newParams.delete('sortdir');
+
+                                const min = parseInt(minPrice || "0");
+                                const max = parseInt(maxPrice || "0");
+
+                                if (minPrice && maxPrice && max < min) {
+                                    showNotification('Giá tối thiểu phải nhỏ hơn giá tối đa', "error");
+                                    return;
                                 }
-                                searchParams.delete('page');
-                                searchParams.delete('sort');
-                                searchParams.delete('sortdir');
+
                                 if (minPrice && maxPrice) {
-                                    searchParams.set('minprice', minPrice);
-                                    searchParams.set('maxprice', maxPrice);
+                                    newParams.set('minprice', minPrice);
+                                    newParams.set('maxprice', maxPrice);
                                 } else {
-                                    searchParams.delete('minprice');
-                                    searchParams.delete('maxprice');
+                                    newParams.delete('minprice');
+                                    newParams.delete('maxprice');
                                 }
+
                                 if (keyword) {
-                                    searchParams.set("searchBy", selectSearchType);
-                                    searchParams.set("search", keyword);
+                                    newParams.set("searchBy", selectSearchType);
+                                    newParams.set("search", keyword);
                                 } else {
-                                    searchParams.delete("searchBy");
-                                    searchParams.delete("search");
+                                    newParams.delete("searchBy");
+                                    newParams.delete("search");
                                 }
-                                setSearchParams(searchParams)
-                                setMinPrice("");
-                                setMaxPrice("");
+
+                                setSearchParams(newParams);
                             }}
                         >
                             Áp dụng
@@ -180,8 +222,7 @@ const QuanLySanPham = () => {
                         <Form.Group controlId="sortButtons" className="d-flex gap-2">
                             <Button
                                 variant="success"
-                                onClick={() => {
-                                }}
+                                onClick={() => setShowModal(true)}
                             >
                                 + Thêm sản phẩm
                             </Button>
@@ -261,6 +302,14 @@ const QuanLySanPham = () => {
                     />
                 )}
             </Row>
+            <ModalThemSanPham
+                show={showModal}
+                handleClose={() => setShowModal(false)}
+                handleSave={handleSaveSanPham}
+                dsThuongHieu={dsFull?.dsThuongHieu}
+                dsDanhMuc={dsFull?.dsDanhMuc}
+                dsBoMon={dsFull?.dsBoMon}
+            />
         </Container>
     );
 }

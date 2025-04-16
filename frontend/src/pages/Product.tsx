@@ -6,7 +6,7 @@ import {Card} from "react-bootstrap";
 import CustomPagination from "../components/ui/CustomPagination.tsx";
 import {SortFilter} from "../components/ui/SortFilter.tsx";
 import {ProductType} from "../util/types/ProductTypes.tsx";
-import {ADMIN_PRODUCT_PER_PAGE, PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH, PRODUCT_PER_PAGE} from "../util/Constant.tsx";
+import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH, PRODUCT_PER_PAGE} from "../util/Constant.tsx";
 
 const Product = () => {
     const [products, setProducts] = useState<ProductType[]>([]);
@@ -23,7 +23,7 @@ const Product = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
         const controller = new AbortController();
         const signal = controller.signal;
-        searchParams.set('limit', ADMIN_PRODUCT_PER_PAGE.toString());
+        searchParams.set('limit', PRODUCT_PER_PAGE.toString());
         searchParams.set('status', 'true');
         const fetchData = async () => {
             try {

@@ -1,10 +1,8 @@
 package com.sport_store.backend.service;
 
 import com.sport_store.backend.dto.ChiTietSanPhamDTO;
-import com.sport_store.backend.entity.BienThe;
-import com.sport_store.backend.entity.SanPham;
-import com.sport_store.backend.repository.BienTheRepository;
-import com.sport_store.backend.repository.SanPhamRepository;
+import com.sport_store.backend.entity.*;
+import com.sport_store.backend.repository.*;
 import com.sport_store.backend.service.service_interface.SanPhamService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -22,10 +20,20 @@ public class SanPhamServiceImplement implements SanPhamService {
 
     private final SanPhamRepository sanPhamRepository;
     private final BienTheRepository bienTheRepository;
+    private final ThuongHieuRepository thuongHieuRepository;
+    private final DanhMucRepository danhMucRepository;
+    private final BoMonRepository boMonRepository;
 
-    public SanPhamServiceImplement(SanPhamRepository sanPhamRepository, BienTheRepository bienTheRepository) {
+    public SanPhamServiceImplement(SanPhamRepository sanPhamRepository,
+                                   BienTheRepository bienTheRepository,
+                                   ThuongHieuRepository thuongHieuRepository,
+                                   DanhMucRepository danhMucRepository,
+                                   BoMonRepository boMonRepository) {
         this.sanPhamRepository = sanPhamRepository;
         this.bienTheRepository = bienTheRepository;
+        this.thuongHieuRepository = thuongHieuRepository;
+        this.danhMucRepository = danhMucRepository;
+        this.boMonRepository = boMonRepository;
     }
 
     public List<SanPham> getAllSanPham() {
@@ -115,5 +123,20 @@ public class SanPhamServiceImplement implements SanPhamService {
                 sanPham,
                 bienThe
         );
+    }
+
+    @Override
+    public List<BoMon> getAllBoMon() {
+        return boMonRepository.findAll();
+    }
+
+    @Override
+    public List<ThuongHieu> getAllThuongHieu() {
+        return thuongHieuRepository.findAll();
+    }
+
+    @Override
+    public List<DanhMuc> getAllDanhMuc() {
+        return danhMucRepository.findAll();
     }
 }

@@ -1,7 +1,11 @@
 package com.sport_store.backend.controller;
 
 import com.sport_store.backend.dto.ChiTietSanPhamDTO;
+import com.sport_store.backend.dto.DsThongTinSPDTO;
+import com.sport_store.backend.entity.BoMon;
+import com.sport_store.backend.entity.DanhMuc;
 import com.sport_store.backend.entity.SanPham;
+import com.sport_store.backend.entity.ThuongHieu;
 import com.sport_store.backend.service.service_interface.SanPhamService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -45,5 +51,17 @@ public class SanPhamController {
     @GetMapping("/{id}")
     public ResponseEntity<ChiTietSanPhamDTO> getAllBienTheOfSanPham(@PathVariable int id) {
         return ResponseEntity.ok(sanPhamService.getAllBienTheOfSanPham(id));
+    }
+
+    @GetMapping("/ds")
+    public ResponseEntity<DsThongTinSPDTO> getAllBomon() {
+        List<DanhMuc> dsDanhMuc = sanPhamService.getAllDanhMuc();
+        List<ThuongHieu> dsThuongHieu = sanPhamService.getAllThuongHieu();
+        List<BoMon> dsBoMon = sanPhamService.getAllBoMon();
+        DsThongTinSPDTO dsThongTinSPDTO = new DsThongTinSPDTO();
+        dsThongTinSPDTO.setDsDanhMuc(dsDanhMuc);
+        dsThongTinSPDTO.setDsThuongHieu(dsThuongHieu);
+        dsThongTinSPDTO.setDsBoMon(dsBoMon);
+        return ResponseEntity.ok(dsThongTinSPDTO);
     }
 }

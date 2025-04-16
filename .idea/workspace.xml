@@ -5,23 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/ui/CustomPagination.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/DsThongTinSPDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemSanPham.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/SanPhamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/SanPhamController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/SanPhamServiceImplement.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/SanPhamServiceImplement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/service_interface/SanPhamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/service_interface/SanPhamService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ui/SortFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ui/SortFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/css/admin/Admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/css/admin/Admin.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Cart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/Product.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Product.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/Admin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/Admin.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/AdminLogin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/AdminLogin.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLySanPham.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLySanPham.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/util/Constant.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/util/Constant.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/util/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/util/Helper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/util/types/ProductTypes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/util/types/ProductTypes.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +33,7 @@
         <option value="Interface" />
         <option value="com.intellij.jpb.NewClass" />
         <option value="CSS File" />
+        <option value="TypeScript JSX File" />
         <option value="Class" />
       </list>
     </option>
@@ -147,9 +141,9 @@
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\components\ui" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\components" />
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\css\admin" />
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\pages\AdminPages" />
-      <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\components" />
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\css" />
       <recent name="E:\CODE\Projects\DoAnPTTK\frontend\src\util\types" />
     </key>
