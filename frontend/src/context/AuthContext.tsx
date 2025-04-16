@@ -16,6 +16,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (userData: User) => void;
   logout: () => void;
 }
@@ -25,6 +26,8 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // thêm trạng thái loading
+
 
   // Khôi phục trạng thái đăng nhập từ localStorage khi tải lại trang
   useEffect(() => {
@@ -34,6 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(parsedUser);
       setIsAuthenticated(true);
     }
+    setIsLoading(false); // kết thúc quá trình khôi phục
   }, []);
 
   const login = (userData: User) => {
@@ -49,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

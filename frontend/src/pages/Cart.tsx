@@ -16,21 +16,23 @@ function Cart() {
     getTotalPrice,
     getTotalQuantity,
     resetCart,
+    isReady,
   } = useCart();
 
-  const { isAuthenticated, user } = useAuth(); // Lấy thông tin xác thực từ AuthContext
+  const { isAuthenticated, user , isLoading} = useAuth(); // Lấy thông tin xác thực từ AuthContext
   const navigate = useNavigate(); // Để điều hướng đến trang đăng nhập
   const { showNotification } = useNotification(); // Để hiển thị thông báo
   
   useEffect(() => {
 
     // Nếu chưa đăng nhập, hiển thị thông báo và chuyển hướng
-    if (!isAuthenticated) {
+    console.log("isAuthenticated:", isAuthenticated);
+    if (!isLoading && !isAuthenticated) {
       showNotification('Vui lòng đăng nhập để xem giỏ hàng', 'error');
       // navigate('/chua_dang_nhap'); // Chuyển hướng đến trang đăng nhập  , có thể xây dựng trang nay để thông báo cho người dùng
       navigate('/'); // Chuyển hướng đến trang chủ
     }
-  }, [isAuthenticated]);
+  }, [user]);
 
 
   useEffect(() => {
@@ -89,6 +91,10 @@ function Cart() {
        // alert("Bạn đã đặt hàng thành công!");
     // hoặc gọi API, xử lý logic đặt hàng tại đây
   };
+
+  if (isLoading || !isReady) {
+    return <div className="loading">Đang tải giỏ hàng...</div>;
+  }
 
  // Render giao diện
  return (
