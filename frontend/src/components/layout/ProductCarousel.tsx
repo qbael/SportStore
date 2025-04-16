@@ -95,7 +95,7 @@ const ProductCarousel: React.FC = () => {
             id: item.id,
             name: item.tenSanPham || 'Sản phẩm không tên',
             image: item.hinhAnh || '',
-            price: item.giaBan || 0,
+            price: item.giaNhap || 0,
             category: item.danhMuc?.loai || 'Khác',
             discount: `${discountPercent.toFixed(0)}%`,
             discountedPrice: item.giaBan || 0,
