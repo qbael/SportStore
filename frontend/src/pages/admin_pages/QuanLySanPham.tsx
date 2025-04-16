@@ -256,7 +256,9 @@ const QuanLySanPham = () => {
                     </thead>
                     <tbody>
                         {dsSanPham.map((item, index) => (
-                            <tr key={index}>
+                            <tr key={index}
+                                style={{maxHeight: '50px'}}
+                            >
                                 <td>{item.id}</td>
                                 <td>
                                     <img src={`${PRODUCT_IMAGE_BASE_PATH}${item.hinhAnh}`}

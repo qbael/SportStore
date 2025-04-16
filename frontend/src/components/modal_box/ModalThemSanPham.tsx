@@ -81,7 +81,7 @@ const ModalThemSanPham = ({
                         <Form.Control
                             type="file"
                             accept="image/*"
-                            onChange={(e) => setHinhAnh(e.target.files?.[0] || null)}
+                            onChange={(e) => setHinhAnh((e.target as HTMLInputElement).files?.[0] || null)}
                         />
                     </Form.Group>
 
@@ -125,7 +125,7 @@ const ModalThemSanPham = ({
                             onChange={(e) => setThuongHieuId(e.target.value)}
                         >
                             <option value="">Chọn thương hiệu</option>
-                            {dsThuongHieu.map((item) => (
+                            {dsThuongHieu?.map((item) => (
                                 <option key={item.id} value={item.id}>
                                     {item.tenThuongHieu}
                                 </option>
@@ -140,7 +140,7 @@ const ModalThemSanPham = ({
                             onChange={(e) => setDanhMucId(e.target.value)}
                         >
                             <option value="">Chọn danh mục</option>
-                            {dsDanhMuc.map((item) => (
+                            {dsDanhMuc?.map((item) => (
                                 <option key={item.id} value={item.id}>
                                     {item.loai}
                                 </option>
@@ -155,7 +155,7 @@ const ModalThemSanPham = ({
                             onChange={(e) => setBoMonId(e.target.value)}
                         >
                             <option value="">Chọn bộ môn</option>
-                            {dsBoMon.map((item) => (
+                            {dsBoMon?.map((item) => (
                                 <option key={item.id} value={item.id}>
                                     {item.tenBoMon}
                                 </option>

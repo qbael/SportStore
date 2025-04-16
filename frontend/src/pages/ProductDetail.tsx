@@ -125,11 +125,12 @@ const ProductDetail: React.FC = () => {
       {chiTietSanPham.sanPham && (
         <Container fluid="xxl" className="my-5 product-detail-container">
           <Row>
-            <Col xs={10} md={5} className="position-relative">
+            <Col xs={10} md={5} className="position-relative text-center">
               <Image
-                src={productImage ? productImage : ''}
-                fluid
-                className="main-product-image border border-1"
+                  src={productImage ? productImage : ''}
+                  fluid
+                  className="main-product-image border border-1 w-100 h-100"
+                  style={{ maxHeight: '530px', maxWidth: '500px', objectFit: 'contain' }}
               />
             </Col>
 
