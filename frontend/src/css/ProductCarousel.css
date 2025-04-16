@@ -1,48 +1,41 @@
-.carousel-container {
-  padding: 0 15px;
-}
 .card {
-  border: none;
-  border-radius: 15px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  transition: transform 0.2s;
 }
+
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+
 .card-img-top {
-  border-radius: 0;
+  object-fit: cover;
 }
-.card-body {
-  padding: 1.25rem;
+
+.btn-dark,
+.btn-outline-dark {
+  transition: all 0.3s;
 }
-.card-text {
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-.text-danger {
-  font-size: 1.1rem;
-}
-.text-decoration-line-through {
-  font-size: 0.9rem;
-}
-.text-dark.fw-bold {
-  font-size: 1.2rem;
-  margin: 0.5rem 0;
-}
-.btn {
-  border-radius: 25px;
-  transition: all 0.3s ease;
-}
-.btn-dark {
-  background-color: #222;
-}
-.btn-dark:hover {
-  background-color: #e44d26;
-}
+
+.btn-dark:hover,
 .btn-outline-dark:hover {
-  background-color: #e44d26;
-  color: #fff;
+  transform: scale(1.05);
+}
+
+.text-truncate {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #e0e0e0;
+  }
+  100% {
+    background-color: #f5f5f5;
+  }
 }
