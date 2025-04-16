@@ -1,14 +1,15 @@
 import AdminLogin from "./AdminLogin.tsx";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import {Container, Row, Col} from "react-bootstrap";
 import {getIconFromChucNang, mapToHanhDong, mapToTenChucVu, TenChucNang} from "../../util/Enum.tsx";
 import logo from '../../assets/img/logo.jpg';
 import QuanLySanPham from "./QuanLySanPham.tsx";
 import {useAdminContext} from "../../hook/useAdminContext.tsx";
 import {useAdminAuth} from "../../hook/useAdminAuth.tsx";
+import QuanLyHoaDon from "./QuanLyHoaDon.tsx";
 
 const Admin = () => {
-    const {taiKhoanNV, logout} = useAdminAuth()
+    const {taiKhoanNV, logout} = useAdminAuth();
     const {selectedChucNang, setSelectedChucNang, dsHanhDong, setDsHanhDong} = useAdminContext()
     const [listChucNang, setListChucNang] = useState<{id: number; tenChucNang: string}[]>([]);
     const [showSideNav, setShowSideNav] = useState(true)
@@ -18,8 +19,12 @@ const Admin = () => {
             const listChucNangMap = Array.from(
                 new Map(taiKhoanNV.chucVu.quyenList.map((item) => [item.chucNang.id, item.chucNang])).values()
             );
-            setListChucNang(listChucNangMap);
             setSelectedChucNang(listChucNangMap[0].tenChucNang)
+            setListChucNang(listChucNangMap);
+            const dsHanhDongTemp = taiKhoanNV?.chucVu.quyenList
+                .filter((item) => item.chucNang.tenChucNang === selectedChucNang)
+                .map((item) => mapToHanhDong(item.hanhDong));
+            setDsHanhDong(dsHanhDongTemp)
         }
     }, [taiKhoanNV]);
 
@@ -32,21 +37,23 @@ const Admin = () => {
         }
     }, [selectedChucNang]);
 
-    const content = useMemo(() => {
+    const content = () => {
         if (!selectedChucNang || !dsHanhDong || dsHanhDong.length === 0) return null;
-
         switch (selectedChucNang) {
             case TenChucNang.QUAN_LY_SAN_PHAM:
-                return <QuanLySanPham/>;
+                return <QuanLySanPham />;
+            case TenChucNang.QUAN_LY_HOA_DON:
+                return <QuanLyHoaDon />;
             default:
                 return null;
         }
-    }, [selectedChucNang, dsHanhDong]);
+    }
 
     return (
         <>
             {taiKhoanNV ? (
-                <Container fluid>
+                <Container fluid
+                           style={{background: 'dark'}}>
                     <Row>
                         <Col className='admin-header'>
                             <div>
@@ -59,9 +66,9 @@ const Admin = () => {
                             </div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col style={{ width: '15%' }} className={`sidenav p-0 ${showSideNav ? 'show' : 'hide'}`}>
-                            <div className={"w-100 account-info p-2 badge bg-primary text-wrap"}>
+                    <Row className={'p-1'}>
+                        <Col style={{ width: '15%' }} className={`sidenav p-0 rounded-3 ${showSideNav ? 'show' : 'hide'}`}>
+                            <div className={"w-100 account-info rounded-3 p-2 badge bg-success text-wrap"}>
                                 <div className="text-center">
                                     <h5 className={"m-0 mb-2"}>{taiKhoanNV.hoTen}</h5>
                                     <h5 className={"text-info m-0 mb-2"}>{mapToTenChucVu(taiKhoanNV.chucVu.tenChucVu)}</h5>
@@ -88,8 +95,8 @@ const Admin = () => {
                                 </ul>
                             )}
                         </Col>
-                        <Col style={{ width: '85%' }} className="content">
-                            {content}
+                        <Col style={{ width: '85%' }} className="content p-1">
+                            {content()}
                         </Col>
                     </Row>
                 </Container>

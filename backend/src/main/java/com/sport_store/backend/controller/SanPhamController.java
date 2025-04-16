@@ -31,13 +31,15 @@ public class SanPhamController {
             @RequestParam(name = "maxprice", required = false) Integer maxprice,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
             @RequestParam(name = "sortdir", required = false, defaultValue = "ASC") String sortDir,
-            @RequestParam(name = "search", required = false) String search
+            @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "searchBy", required = false) String searchBy,
+            @RequestParam(name = "status", required = false) Boolean status
     ) {
         Pageable pageable = PageRequest.of(page, limit, Sort.by(
                 sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sort
         ));
 
-        return sanPhamService.getFilteredProducts(bomon, danhmuc, thuonghieu, minprice, maxprice, search, pageable);
+        return sanPhamService.getFilteredProducts(bomon, danhmuc, thuonghieu, minprice, maxprice, search, searchBy, status, pageable);
     }
 
     @GetMapping("/{id}")

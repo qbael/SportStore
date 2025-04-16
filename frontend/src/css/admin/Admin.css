@@ -1,7 +1,7 @@
 :root{
     --sidebar-width: 15%;
     --content-width: calc(100% - var(--sidebar-width));
-    --admin-content-height: calc(100vh - 60px);
+    --admin-content-height: calc(100vh - 60px - 0.5rem);
 }
 
 .admin-header{
@@ -86,7 +86,6 @@
     width: var(--content-width);
     height: var(--admin-content-height);
     min-width: calc(100% - 300px);
-    padding: 5px;
 }
 
 @media (max-width: 1200px) {
@@ -108,5 +107,93 @@
     .content {
         width: 100%;
     }
+}
+
+
+.admin-login-container{
+    background: url('../../assets/img/admin_login_bg.png') no-repeat center center/cover;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#admin-login{
+    width: 350px;
+    position: absolute;
+    height: 560px;
+    right: 2%;
+    top: 50%;
+    transform: translateY(-36%);
+}
+
+#admin-login h1{
+    font-size: 40px;
+    color: black;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.admin-login-input{
+    width: 100%;
+    height: 52px;
+    margin-top: 17px;
+}
+
+/* .admin-login-input label {
+    color: rgba(255, 51, 0, 0.76);
+    font-size: 14px;
+    display: block;
+    margin: 5px;
+    font-family: 'Poppins-Regular', sans-serif;
+} */
+
+#admin-login input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    outline: none;
+    border: 2px solid #363636;
+    padding: 20px 45px 20px 20px;
+    font-size: 16px;
+    color: black;
+}
+
+#admin-login input::placeholder{
+    color: #8d8d8d;
+    font-size: 16px;
+}
+
+#admin-login-btn{
+    width: 100%;
+    height: 60px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+}
+
+#admin-login-btn:hover {
+    cursor: pointer;
+}
+
+#admin-login a{
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+}
+
+#admin-login a::after{
+    content: '';
+    height: 1px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: 0.3s;
+}
+
+#admin-login a:hover::after{
+    width: 0;
 }
 

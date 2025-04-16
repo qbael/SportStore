@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface SanPhamService {
     Page<SanPham> getFilteredProducts(String bomon, String danhmuc, String thuonghieu,
-                                      Integer minprice, Integer maxprice, String search, Pageable pageable);
+                                      Integer minprice, Integer maxprice, String search, String searchBy, Boolean status, Pageable pageable);
     ChiTietSanPhamDTO getAllBienTheOfSanPham(int id);
 }

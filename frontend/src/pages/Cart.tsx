@@ -1,7 +1,7 @@
 import "../css/Cart.css"
 import useCart from '../hook/useCart.tsx';
 import { useEffect } from 'react';
-import { formatPrice } from '../util/utils';
+import { formatPrice } from '../util/Helper.ts';
 import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH, BASE_URL} from "../util/Constant.tsx";
 import { useAuth } from '../hook/useAuth.tsx'; // Thêm useAuth
 import { useNavigate } from 'react-router-dom'; // Thêm useNavigate

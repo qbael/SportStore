@@ -9,7 +9,7 @@ import {NotificationContextProvider} from "./context/NotificationContext.tsx";
 import {NotificationProvider} from "./context/NotificationContext2.tsx"; // Import NotificationProvider
 import { AuthProvider } from './context/AuthContext.tsx'; // Import AuthProvider
 import { AdminAuthProvider } from './context/AdminAuthContext.tsx';
-import {AdminContextProvider} from "./context/AdminContext.tsx"; // Import AdminAuthProvider
+import {AdminContextProvider} from "./context/AdminContext.tsx";
 
 
 createRoot(document.getElementById('root')!).render(

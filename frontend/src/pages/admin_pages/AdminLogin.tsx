@@ -26,8 +26,6 @@ export default function AdminLogin() {
         if (error) {
             const timer = setTimeout(() => {
                 setError('')
-                setEmail('')
-                setPassword('')
             }, 3000)
             return () => clearTimeout(timer)
         }

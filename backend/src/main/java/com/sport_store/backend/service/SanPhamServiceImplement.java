@@ -36,7 +36,7 @@ public class SanPhamServiceImplement implements SanPhamService {
     @Override
     public Page<SanPham> getFilteredProducts(String bomon, String danhmuc, String thuonghieu,
                                              Integer minprice, Integer maxprice, String search,
-                                             Pageable pageable) {
+                                             String searchBy, Boolean status, Pageable pageable) {
         Specification<SanPham> spec = new Specification<SanPham>() {
             @Override
             public Predicate toPredicate(Root<SanPham> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
@@ -90,7 +90,11 @@ public class SanPhamServiceImplement implements SanPhamService {
                 }
 
                 if (search != null && !search.isEmpty()) {
-                    predicate = builder.and(predicate, builder.like(root.get("tenSanPham"), "%" + search + "%"));
+                    predicate = builder.and(predicate, builder.like(root.get(searchBy), "%" + search + "%"));
+                }
+
+                if (status != null) {
+                    predicate = builder.and(predicate, builder.equal(root.get("trangThai"), status));
                 }
 
                 return predicate;

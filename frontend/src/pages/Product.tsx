@@ -2,10 +2,11 @@ import {useEffect, useState} from "react";
 import {useNavigate, useSearchParams} from 'react-router-dom';
 import '../css/Product.css'
 import '../css/ui/Card.css'
-import {Container, Card, Pagination} from "react-bootstrap";
+import {Card} from "react-bootstrap";
+import CustomPagination from "../components/ui/CustomPagination.tsx";
 import {SortFilter} from "../components/ui/SortFilter.tsx";
 import {ProductType} from "../util/types/ProductTypes.tsx";
-import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH, PRODUCT_PER_PAGE} from "../util/Constant.tsx";
+import {ADMIN_PRODUCT_PER_PAGE, PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH, PRODUCT_PER_PAGE} from "../util/Constant.tsx";
 
 const Product = () => {
     const [products, setProducts] = useState<ProductType[]>([]);
@@ -14,7 +15,7 @@ const Product = () => {
     const [isLastPage, setIsLastPage] = useState<boolean>(false);
     const [isFirstPage, setIsFirstPage] = useState<boolean>(false);
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams(`limit=${PRODUCT_PER_PAGE}`);
+    const [searchParams, setSearchParams] = useSearchParams();
     const [error, setError] = useState<string | null>(null);
     let url = `${PRODUCT_API_URL}?${searchParams.toString()}`;
 
@@ -22,6 +23,8 @@ const Product = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
         const controller = new AbortController();
         const signal = controller.signal;
+        searchParams.set('limit', ADMIN_PRODUCT_PER_PAGE.toString());
+        searchParams.set('status', 'true');
         const fetchData = async () => {
             try {
                 const response = await fetch(url, { signal });
@@ -91,58 +94,16 @@ const Product = () => {
                             </Card.Body>
                         </Card>
                     ))}
-                    <Pagination className="w-100 d-flex justify-content-center mt-4 mb-5">
-                        <Pagination.First
-                            onClick={() => {
-                                searchParams.set('page', '0');
-                                setSearchParams(searchParams);
-                                setCurrentPage(0);
-                            }}
-                            disabled={isFirstPage}
+                    {totalPage > 1 && (
+                        <CustomPagination
+                            currentPage={currentPage}
+                            totalPage={totalPage}
+                            searchParams={searchParams}
+                            setSearchParams={setSearchParams}
+                            isFirstPage={isFirstPage}
+                            isLastPage={isLastPage}
                         />
-                        <Pagination.Prev
-                            onClick={() => {
-                                if (!isFirstPage) {
-                                    searchParams.set('page', (currentPage - 1).toString());
-                                    setSearchParams(searchParams);
-                                    setCurrentPage(currentPage - 1);
-                                }
-                            }}
-                            disabled={isFirstPage}
-                        />
-                        {Array.from({ length: totalPage }, (_, index) => (
-                            <Pagination.Item
-                                key={index}
-                                active={index === currentPage}
-                                onClick={() => {
-                                    searchParams.set('page', index.toString());
-                                    searchParams.set('limit', PRODUCT_PER_PAGE.toString());
-                                    setSearchParams(searchParams);
-                                    setCurrentPage(index);
-                                }}
-                            >
-                                {index + 1}
-                            </Pagination.Item>
-                        ))}
-                        <Pagination.Next
-                            onClick={() => {
-                                if (!isLastPage) {
-                                    searchParams.set('page', (currentPage + 1).toString());
-                                    setSearchParams(searchParams);
-                                    setCurrentPage(currentPage + 1);
-                                }
-                            }}
-                            disabled={isLastPage}
-                        />
-                        <Pagination.Last
-                            onClick={() => {
-                                searchParams.set('page', (totalPage - 1).toString());
-                                setSearchParams(searchParams);
-                                setCurrentPage(totalPage - 1);
-                            }}
-                            disabled={isLastPage}
-                        />
-                    </Pagination>
+                    )}
                 </>
             )}
         </div>

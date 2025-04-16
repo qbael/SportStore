@@ -19,7 +19,7 @@ import Login from './pages/Login.tsx';
 import Admin from "./pages/admin_pages/Admin.tsx";
 
 const Layout = () => {
-    const hideLayout = useLocation().pathname === '/admin';
+    const hideLayout = useLocation().pathname.includes('/admin')
     return (
         <div className="container-fluid p-0"
         >
@@ -34,6 +34,7 @@ const Layout = () => {
                     <Route path='/cart' element={<Cart/>}/>
                     <Route path='/account' element={<Login/>}/>
                     <Route path='/admin' element={<Admin/>}/>
+                    <Route path='/admin/*' element={<Admin/>}/>
                     <Route path="*" element={<NotFound />} /> {/* Route mặc định cho 404 */}
                 </Routes>
             </div>
