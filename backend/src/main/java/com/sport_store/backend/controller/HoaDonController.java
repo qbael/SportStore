@@ -1,21 +1,18 @@
 package com.sport_store.backend.controller;
 
 import com.sport_store.backend.entity.HoaDon;
-import com.sport_store.backend.entity.CTHoaDon;
-import com.sport_store.backend.repository.HoaDonRepository;
-import com.sport_store.backend.repository.TTKhachHangRepository;
-import com.sport_store.backend.repository.CTHoaDonRepository;
+import com.sport_store.backend.projection.HoaDonFullProjection;
+import com.sport_store.backend.service.HoaDonService;
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -23,101 +20,74 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class HoaDonController {
 
-    private final HoaDonRepository hoaDonRepository;
-    private final TTKhachHangRepository ttKhachHangRepository;
-    private final CTHoaDonRepository ctHoaDonRepository; // Thêm repository CTHoaDon
+    private final HoaDonService hoaDonService;
 
-    @GetMapping
-    public ResponseEntity getAllHoaDon() {
+    // @GetMapping
+    // public ResponseEntity<Map<String, Object>> getAllHoaDon() {
+    //     Map<String, Object> res = new HashMap<>();
+    //     res.put("status", 200);
+    //     res.put("message", "Thành công");
+    //     res.put("data", hoaDonService.getHoaDons(Pageable.unpaged()).getContent());  // Lấy dữ liệu mà không phân trang
+    //     return ResponseEntity.ok(res);
+    // }
 
+    @GetMapping("/page")
+    public ResponseEntity<Map<String, Object>> getAllHoaDonPage(Pageable pageable) {
         Map<String, Object> res = new HashMap<>();
-        res.put("status", 200);
-        res.put("message", "Thành công");
-        res.put("data", hoaDonRepository.findAllBy());
+        try {
+            Page<HoaDonFullProjection> hoaDonPage = hoaDonService.getHoaDons(pageable);
 
-        return ResponseEntity.ok(res);
+            if (hoaDonPage.hasContent()) {
+                res.put("status", 200);
+                res.put("message", "Thành công");
+                res.put("data", hoaDonPage.getContent());
+                res.put("totalPages", hoaDonPage.getTotalPages());
+                res.put("totalElements", hoaDonPage.getTotalElements());
+                res.put("currentPage", hoaDonPage.getNumber());
+                res.put("pageSize", hoaDonPage.getSize());
+            } else {
+                res.put("status", 404);
+                res.put("message", "Không có dữ liệu");
+            }
+
+            return ResponseEntity.ok(res);
+        } catch (Exception e) {
+            res.put("status", 500);
+            res.put("message", "Lỗi hệ thống: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> getHoaDonById(@PathVariable int id) {
         Map<String, Object> res = new HashMap<>();
+        Optional<HoaDonFullProjection> hoaDonOptional = hoaDonService.getHoaDonById(id);
 
-        return hoaDonRepository.findById(id)
-                .map(HoaDonFullProjection -> {
-                    res.put("status", 200);
-                    res.put("message", "Thành công");
-                    res.put("data", HoaDonFullProjection);
-                    return ResponseEntity.ok(res);
-                })
-                .orElseGet(() -> {
-                    res.put("status", 404);
-                    res.put("message", "Không tìm thấy hóa đơn");
-                    res.put("data", null);
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
-                });
+        if (hoaDonOptional.isPresent()) {
+            res.put("status", 200);
+            res.put("message", "Thành công");
+            res.put("data", hoaDonOptional.get());
+            return ResponseEntity.ok(res);
+        } else {
+            res.put("status", 404);
+            res.put("message", "Không tìm thấy hóa đơn");
+            res.put("data", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+        }
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<Map<String, Object>> createHoaDon(@RequestBody HoaDon hoaDon) {
-
-        if (hoaDon.getNgay() == null) {
-            hoaDon.setNgay(LocalDate.now());
-        }
-
-        if (hoaDon.getDsCTHoaDon() != null) {
-            for (CTHoaDon ct : hoaDon.getDsCTHoaDon()) {
-                ct.setHoaDon(hoaDon);
-            }
-        }
-        // int kiểu dữ liệu (không có null) interger lớp dữ liệu (có thể null);&&
-        // hoaDon.getTtKhachHang().getId() != null
-        if (hoaDon.getTtKhachHang() != null) {
-            hoaDon.setTtKhachHang(
-                    ttKhachHangRepository.findById(hoaDon.getTtKhachHang().getId()).orElse(null));
-        }
-
-        HoaDon saved = hoaDonRepository.save(hoaDon);
-
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "Tạo hóa đơn thành công");
-        response.put("hoaDonId", saved.getId());
-        response.put("ngay", saved.getNgay());
-
-        return ResponseEntity.ok(response);
+        try {
+            HoaDon savedHoaDon = hoaDonService.createHoaDon(hoaDon);
+            response.put("message", "Tạo hóa đơn thành công");
+            response.put("hoaDonId", savedHoaDon.getId());
+            response.put("ngay", savedHoaDon.getNgay());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "Lỗi khi tạo hóa đơn: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
-
-    // @PutMapping("/{id}")
-    // public ResponseEntity<HoaDon> updateHoaDon(@PathVariable int id, @RequestBody HoaDon hoaDon) {
-    //     HoaDon existingHoaDon = hoaDonRepository.findById(id).orElse(null);
-
-    //     if (existingHoaDon == null) {
-    //         return ResponseEntity.notFound().build();
-    //     }
-
-    //     existingHoaDon.setTongGiaNhap(hoaDon.getTongGiaNhap());
-    //     existingHoaDon.setTongGiaBan(hoaDon.getTongGiaBan());
-    //     existingHoaDon.setTrangThai(hoaDon.getTrangThai());
-
-    //     if (hoaDon.getDsCTHoaDon() != null) {
-    //         for (CTHoaDon ct : hoaDon.getDsCTHoaDon()) {
-    //             ct.setHoaDon(existingHoaDon);
-    //         }
-    //         existingHoaDon.setDsCTHoaDon(hoaDon.getDsCTHoaDon());
-    //     }
-
-    //     HoaDon updated = hoaDonRepository.save(existingHoaDon);
-    //     return ResponseEntity.ok(updated);
-    // }
-    // có thể không dùng <note>
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<Void> deleteHoaDon(@PathVariable int id) {
-    // hoaDonRepository.deleteById(id);
-    // return ResponseEntity.noContent().build();
-    // }
-
-    // @GetMapping("/{id}/chitiet")
-    // public List<CTHoaDon> getCTHoaDonByHoaDonId(@PathVariable int id) {
-    // return ctHoaDonRepository.findByHoaDonId(id);
-    // }
 }

@@ -102,7 +102,7 @@ function Cart() {
  return (
   // Nếu đã đăng nhập thì hiển thị giỏ hàng, nếu chưa thì không render gì (do đã điều hướng trong useEffect)
   isAuthenticated ? (
-    <div className="container">
+    <div className="container" style={{ marginTop: "100px" }}>
       <div className="header_name">
         <div>Giỏ hàng của bạn</div>
       </div>

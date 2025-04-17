@@ -81,7 +81,7 @@ const useCart = () => {
     if (!isReady) return;
     setCart((prev) =>
       prev?.map((item) =>
-        item.bienthesp?.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item.bienthesp?.id === id && checkQuantity(item) ? { ...item, quantity: item.quantity + 1 } : item
       ) || []
     );
   };
@@ -91,10 +91,19 @@ const useCart = () => {
     setCart((prev) =>
       (prev || [])
         .map((item) =>
-          item.bienthesp?.id === id ? { ...item, quantity: item.quantity - 1 } : item
+          item.bienthesp?.id === id  ? { ...item, quantity: item.quantity - 1 } : item
         )
         .filter((item) => item.quantity > 0)
     );
+  };
+
+  const checkQuantity = (item: CartItem) => {
+    if (!isReady) return 0;
+    if (item.quantity === item.bienthesp?.soLuongTon){
+      showNotification('Sản phẩm đã hết hàng', 'error');
+      return false;
+    }
+    return true;
   };
 
   const getTotalQuantity = () => {

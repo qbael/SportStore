@@ -1,0 +1,70 @@
+.header{
+    padding: 10px;
+    display: flex;
+}
+
+.header__search{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header__search div {
+    display: flex;
+    gap: 10px;
+}
+
+.header__table{
+    display: flex;
+    justify-content: space-around;
+}
+
+.content{
+    padding: 10px;
+    width: 100%;
+
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+    text-transform: capitalize;
+    min-width: 100px;
+    color: white;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.status-badge.dagiao {
+    background: linear-gradient(45deg, #28a745, #218838);
+}
+
+.status-badge.danggiao {
+    background: linear-gradient(45deg, #ffc107, #e0a800);
+    color: black;
+}
+
+.status-badge.dangxuly {
+    background: linear-gradient(45deg, #17a2b8, #138496);
+}
+
+.status-badge.dahuy {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+}
+
+.info-hoadon{
+    display: flex;
+}
+
+.info-khachhang{
+    flex: 1;
+}
+
+.info-chung{
+    flex: 1;
+}
+
