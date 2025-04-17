@@ -1,9 +1,26 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, Card, Tabs, Tab } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card, Tabs, Tab, ListGroup } from 'react-bootstrap';
 import '../css/Login.css';
 import { useNotification } from '../hook/useNotification2'; // Import hook
 import { useAuth } from '../hook/useAuth'; // Thêm useAuth
 
+interface PurchaseItem {
+  id: number;
+  soLuong: number;
+  giaBan: number;
+  bienThe: {
+    tenBienThe: string;
+    hinhAnh: string;
+  };
+}
+
+interface Purchase {
+  id: number;
+  ngay: string;
+  tongGiaBan: number;
+  trangThai: string;
+  dsCTHoaDon: PurchaseItem[];
+}
 
 const Login: React.FC = () => {
   const { showNotification } = useNotification(); // Sử dụng hook
@@ -30,6 +47,8 @@ const Login: React.FC = () => {
     diaChi: '',
     sdt: '',
   });
+  const [purchaseHistory, setPurchaseHistory] = useState<Purchase[]>([]);
+  const [showHistory, setShowHistory] = useState<boolean>(false);
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target; // Lấy name và value từ input
@@ -115,6 +134,51 @@ const Login: React.FC = () => {
     showNotification('Đã đăng xuất', 'info');
   };
 
+  const fetchPurchaseHistory = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/hoadon', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user?.token}`,
+        },
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.status === 200) {
+        // Lọc các hóa đơn của người dùng hiện tại
+        const userPurchases = result.data.filter(
+          (purchase: any) => purchase.ttKhachHang.taiKhoan.username === user?.username
+        );
+        setPurchaseHistory(userPurchases);
+        setShowHistory(true);
+        showNotification('Lấy lịch sử mua hàng thành công!', 'success');
+      } else {
+        showNotification(result.error || 'Không thể lấy lịch sử mua hàng', 'error');
+      }
+    } catch (err) {
+      showNotification('Có lỗi xảy ra khi lấy lịch sử mua hàng', 'error');
+    }
+  };
+
+   // Hàm chuyển đổi trạng thái sang tiếng Việt
+   const getStatusText = (status: string) => {
+    switch (status) {
+      case 'DAGIAO':
+        return 'Đã giao';
+      case 'DANGGIAO':
+        return 'Đang giao';
+      case 'DANGXULY':
+        return 'Đang xử lý';
+      case 'DAHUY':
+        return 'Đã hủy';
+      default:
+        return status;
+    }
+  };
+
+
   if (isAuthenticated && user) {
     return (
       <Container className="my-5">
@@ -126,9 +190,41 @@ const Login: React.FC = () => {
                 <p><strong>Tên người dùng:</strong> {user.username}</p>
                 <p><strong>Email:</strong> {user.email}</p>
                 {user.profiles?.[0]?.hoTen && <p><strong>Họ tên:</strong> {user.profiles[0].hoTen}</p>}
-                <Button variant="danger" onClick={handleLogout}>
+                <Button variant="primary" onClick={fetchPurchaseHistory} className="mb-3">
+                  Lịch sử mua hàng
+                </Button>
+                <Button variant="danger" onClick={handleLogout} className="mb-3 ms-4">
                   Đăng xuất
                 </Button>
+                {showHistory && (
+                  <div className="mt-4">
+                    <h5>Lịch sử mua hàng</h5>
+                    {purchaseHistory.length > 0 ? (
+                      <ListGroup>
+                        {purchaseHistory.map((purchase) => (
+                          <ListGroup.Item key={purchase.id}>
+                            <p><strong>Mã hóa đơn:</strong> {purchase.id}</p>
+                            <p><strong>Ngày:</strong> {new Date(purchase.ngay).toLocaleDateString('vi-VN')}</p>
+                            <p><strong>Tổng tiền:</strong> {purchase.tongGiaBan.toLocaleString('vi-VN')} VND</p>
+                            <p><strong>Trạng thái:</strong> {getStatusText(purchase.trangThai)}</p>
+                            <p><strong>Chi tiết sản phẩm:</strong></p>
+                            <ListGroup variant="flush">
+                              {purchase.dsCTHoaDon.map((item) => (
+                                <ListGroup.Item key={item.id}>
+                                  <p>{item.bienThe.tenBienThe}</p>
+                                  <p>Số lượng: {item.soLuong}</p>
+                                  <p>Giá: {item.giaBan.toLocaleString('vi-VN')} VND</p>
+                                </ListGroup.Item>
+                              ))}
+                            </ListGroup>
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    ) : (
+                      <p>Chưa có lịch sử mua hàng.</p>
+                    )}
+                  </div>
+                )}
               </Card.Body>
             </Card>
           </Col>
@@ -136,6 +232,7 @@ const Login: React.FC = () => {
       </Container>
     );
   }
+
 
   return (
     <Container className="my-5">
