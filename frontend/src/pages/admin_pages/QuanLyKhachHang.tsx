@@ -35,7 +35,7 @@ const QuanLyKhachHang: React.FC = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${taiKhoanNV?.token}`,
+          // 'Authorization': `Bearer ${taiKhoanNV?.token}`,
         },
       });
 
@@ -53,7 +53,7 @@ const QuanLyKhachHang: React.FC = () => {
             const taiKhoanRes = await fetch(`http://localhost:8080/api/taikhoan/${customer.taiKhoanId}`, {
               headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${taiKhoanNV?.token}`,
+                // 'Authorization': `Bearer ${taiKhoanNV?.token}`,
               },
             });
             if (!taiKhoanRes.ok) {
@@ -95,7 +95,7 @@ const QuanLyKhachHang: React.FC = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${taiKhoanNV?.token}`,
+          // 'Authorization': `Bearer ${taiKhoanNV?.token}`,
         },
         body: JSON.stringify({ isActive: lockAction }),
       });
@@ -113,7 +113,7 @@ const QuanLyKhachHang: React.FC = () => {
       fetchCustomers();
     } catch (err: any) {
       setError(err.message || 'Lỗi khi cập nhật trạng thái tài khoản');
-      showNotification(err.message || 'Lỗi khi cập nhật trạng thái tài khoản!', 'danger');
+      showNotification(err.message || 'Lỗi khi cập nhật trạng thái tài khoản!', 'error');
     } finally {
       setLoading(false);
     }
