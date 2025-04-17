@@ -1,6 +1,5 @@
 package com.sport_store.backend.service;
 
-import com.sport_store.backend.controller.SanPhamController;
 import com.sport_store.backend.dto.ChiTietSanPhamDTO;
 import com.sport_store.backend.entity.*;
 import com.sport_store.backend.repository.*;
@@ -14,12 +13,9 @@ import jakarta.persistence.criteria.Root;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -34,17 +30,29 @@ public class SanPhamServiceImplement implements SanPhamService {
     private final ThuongHieuRepository thuongHieuRepository;
     private final DanhMucRepository danhMucRepository;
     private final BoMonRepository boMonRepository;
+    private final CTHoaDonRepository ctHoaDonRepository;
+    private final CTNhapHangRepository ctNhapHangRepository;
+    private final MauRepository mauRepository;
+    private final SizeRepository sizeRepository;
 
     public SanPhamServiceImplement(SanPhamRepository sanPhamRepository,
                                    BienTheRepository bienTheRepository,
                                    ThuongHieuRepository thuongHieuRepository,
                                    DanhMucRepository danhMucRepository,
-                                   BoMonRepository boMonRepository) {
+                                   BoMonRepository boMonRepository,
+                                   CTHoaDonRepository ctHoaDonRepository,
+                                   CTNhapHangRepository ctNhapHangRepository,
+                                   MauRepository mauRepository,
+                                   SizeRepository sizeRepository) {
         this.sanPhamRepository = sanPhamRepository;
         this.bienTheRepository = bienTheRepository;
         this.thuongHieuRepository = thuongHieuRepository;
         this.danhMucRepository = danhMucRepository;
         this.boMonRepository = boMonRepository;
+        this.ctHoaDonRepository = ctHoaDonRepository;
+        this.ctNhapHangRepository = ctNhapHangRepository;
+        this.mauRepository = mauRepository;
+        this.sizeRepository = sizeRepository;
     }
 
     public List<SanPham> getAllSanPham() {
@@ -109,7 +117,14 @@ public class SanPhamServiceImplement implements SanPhamService {
                 }
 
                 if (search != null && !search.isEmpty()) {
-                    predicate = builder.and(predicate, builder.like(root.get(searchBy), "%" + search + "%"));
+                    switch (searchBy) {
+                        case "boMon", "danhMuc", "thuongHieu" ->
+                                predicate = builder.and(predicate, builder.equal(root.get(searchBy).get("id"), search));
+                        case "tenSanPham" ->
+                                predicate = builder.and(predicate, builder.like(root.get(searchBy), "%" + search + "%"));
+                        case "trangThai" ->
+                                predicate = builder.and(predicate, builder.equal(root.get(searchBy), Boolean.parseBoolean(search)));
+                    }
                 }
 
                 if (status != null) {
@@ -201,6 +216,27 @@ public class SanPhamServiceImplement implements SanPhamService {
             }
 
             return signal;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public int deleteSanPham(int id) {
+        try {
+            Optional<SanPham> sp = sanPhamRepository.findById(id);
+            if (sp.isEmpty()) {
+                return -1;
+            }
+            if (ctHoaDonRepository.existsByBienThe_SanPham_Id(id) || ctNhapHangRepository.existsByBienThe_SanPham_Id(id)) {
+                return -2;
+            }
+            String oldFileName = HashingName.generateImageName(sp.get().getTenSanPham(), sp.get().getHinhAnh());
+            Path oldImagePath = Helper.getPath(oldFileName);
+            Files.deleteIfExists(oldImagePath);
+            sanPhamRepository.delete(sp.get());
+            return id;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;

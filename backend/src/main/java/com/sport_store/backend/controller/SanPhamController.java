@@ -40,7 +40,7 @@ public class SanPhamController {
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
             @RequestParam(name = "sortdir", required = false, defaultValue = "ASC") String sortDir,
             @RequestParam(name = "search", required = false) String search,
-            @RequestParam(name = "searchBy", required = false) String searchBy,
+            @RequestParam(name = "searchBy", required = false, defaultValue = "tenSanPham") String searchBy,
             @RequestParam(name = "status", required = false) Boolean status
     ) {
         Pageable pageable = PageRequest.of(page, limit, Sort.by(
@@ -103,6 +103,22 @@ public class SanPhamController {
             return ResponseEntity.ok(new savedSanPhamResponseDTO("Cập nhật sản phẩm thành công", signal));
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi cập nhật sản phẩm");
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSanPham(@PathVariable int id) {
+        int signal = sanPhamService.deleteSanPham(id);
+        if(signal == -2) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Sản phẩm có tồn tại trong đơn hàng nên không thể xóa");
+        }
+        if(signal == -1) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sản phẩm không tồn tại");
+        }
+        if(signal > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Xóa sản phẩm thành công", signal));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xóa sản phẩm");
         }
     }
 }

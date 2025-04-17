@@ -294,7 +294,7 @@
     }
 
     .search-btn {
-        min-width: 40px; /* ??m b?o nút có kích th??c t?i thi?u */
+        min-width: 40px; /* ??m b?o nï¿½t cï¿½ kï¿½ch th??c t?i thi?u */
     }
 
     .action-buttons {
@@ -354,7 +354,7 @@
 
     .nav-item {
         width: auto;
-        margin-right: 10px;
+        margin-right: 15px;
     }
 
     .dropdown-menu {
@@ -368,11 +368,11 @@
     }
 
     .mobile-close-btn {
-        display: none; /* ??m b?o nút X không hi?n th? trên desktop */
+        display: none; /* ??m b?o nï¿½t X khï¿½ng hi?n th? trï¿½n desktop */
     }
 }
 
-/* Ngo?i l? x? lý */
+/* Ngo?i l? x? lï¿½ */
 .dropdown-toggle::after {
     display: none !important;
 }

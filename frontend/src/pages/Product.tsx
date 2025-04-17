@@ -17,14 +17,13 @@ const Product = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [error, setError] = useState<string | null>(null);
-    let url = `${PRODUCT_API_URL}?${searchParams.toString()}`;
+    let url = `${PRODUCT_API_URL}?${searchParams.toString()}&status=true`;
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
         const controller = new AbortController();
         const signal = controller.signal;
         searchParams.set('limit', PRODUCT_PER_PAGE.toString());
-        searchParams.set('status', 'true');
         const fetchData = async () => {
             try {
                 const response = await fetch(url, { signal });

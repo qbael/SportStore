@@ -1,5 +1,5 @@
 import {useEffect, useReducer} from "react";
-import {dsFull, ProductType} from "../../util/types/ProductTypes.tsx";
+import {BienTheType, dsFull, ProductType} from "../../util/types/ProductTypes.tsx";
 import '../../css/admin/QuanLySanPham.css'
 import {Button, Container, Form, Row, Table} from "react-bootstrap";
 import {useAdminContext} from "../../hook/useAdminContext.tsx";
@@ -8,9 +8,10 @@ import {useSearchParams} from "react-router-dom";
 import CustomPagination from "../../components/ui/CustomPagination.tsx";
 import {HanhDong} from "../../util/Enum.tsx";
 import {formatPrice} from "../../util/Helper.ts";
-import { useNotification } from '../../hook/useNotification2.tsx';
+import {useNotification} from '../../hook/useNotification2.tsx';
 import ModalThemSanPham from "../../components/modal_box/ModalThemSanPham.tsx";
 import ModalSuaSanPham from "../../components/modal_box/ModalSuaSanPham.tsx";
+import ModalChiTietSanPham from "../../components/modal_box/ModalChiTietSanPham.tsx";
 
 const initialState = {
     dsSanPham: [] as ProductType[],
@@ -26,6 +27,8 @@ const initialState = {
     selectedSanPham: null as ProductType | null,
     showAddModal: false,
     showUpdateModal: false,
+    showDetailModal: false,
+    dsBienThe: [] as BienTheType[],
 };
 
 type State = typeof initialState;
@@ -43,7 +46,9 @@ type Action =
     | { type: 'SET_DSFULL', payload: dsFull | null }
     | { type: 'SET_SELECTED_SANPHAM', payload: ProductType | null }
     | { type: 'SET_SHOW_ADD_MODAL', payload?: boolean }
-    | { type: 'SET_SHOW_UPDATE_MODAL', payload?: boolean };
+    | { type: 'SET_SHOW_UPDATE_MODAL', payload?: boolean }
+    | { type: 'SET_SHOW_DETAIL_MODAL', payload?: boolean }
+    | { type: 'SET_DS_BIENTHE', payload: BienTheType[] };
 
 const reducer = (state: State, action: Action): State => {
     switch (action.type) {
@@ -60,6 +65,8 @@ const reducer = (state: State, action: Action): State => {
         case 'SET_SHOW_UPDATE_MODAL': return { ...state, showUpdateModal: action.payload ?? !state.showUpdateModal };
         case 'SET_SELECTED_SANPHAM': return { ...state, selectedSanPham: action.payload };
         case 'SET_DSFULL': return { ...state, dsFull: action.payload };
+        case 'SET_SHOW_DETAIL_MODAL': return { ...state, showDetailModal: action.payload ?? !state.showDetailModal };
+        case 'SET_DS_BIENTHE': return { ...state, dsBienThe: action.payload };
         default: return state;
     }
 };
@@ -105,6 +112,17 @@ const QuanLySanPham = () => {
         return () => controller.abort();
     }, [searchParams.toString()]);
 
+    const fetchBienTheBySanPham = async (sanPhamId: number) => {
+        try {
+            const res = await fetch(`${PRODUCT_API_URL}/${sanPhamId}`);
+            if (!res.ok) throw new Error("Không lấy được biến thể");
+            const data = await res.json();
+            dispatch({ type: 'SET_DS_BIENTHE', payload: data.bienThe });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     const hasPermission = (action: HanhDong) => {
         return dsHanhDong?.includes(action);
     }
@@ -117,10 +135,7 @@ const QuanLySanPham = () => {
             });
             if (!res.ok) throw new Error("Lỗi khi thêm sản phẩm");
             showNotification("Thêm sản phẩm thành công!", "success");
-            setSearchParams(prev => {
-                prev.delete("page");
-                return prev;
-            });
+            setSearchParams({});
         } catch (e) {
             console.error(e);
             showNotification("Thêm sản phẩm thất bại", "error");
@@ -135,13 +150,39 @@ const QuanLySanPham = () => {
             });
             if (!res.ok) throw new Error("Lỗi khi cập nhật sản phẩm");
             showNotification("Cập nhật sản phẩm thành công!", "success");
-            setSearchParams(prev => {
-                prev.delete("page");
-                return prev;
-            });
+            setSearchParams({});
         } catch (e) {
             console.error(e);
             showNotification("Cập nhật sản phẩm thất bại", "error");
+        }
+    };
+
+    const handleDeleteSanPham = async (id: number) => {
+        try {
+            const res = await fetch(`${PRODUCT_API_URL}/${id}`, {
+                method: "DELETE",
+            });
+            if (res.status === 406) {
+                const data = await res.text();
+                showNotification(data, "error");
+                return;
+            }
+            if (res.status === 404) throw new Error("Khong tìm thấy sản phẩm");
+            if (!res.ok) throw new Error("Lỗi khi cập nhật sản phẩm");
+            showNotification("Xóa sản phẩm thành công!", "success");
+            setSearchParams({});
+        } catch (e) {
+            console.error(e);
+            showNotification("Xóa sản phẩm thất bại", "error");
+        }
+    };
+
+    const handleXemChiTietSanPham = async (e: React.MouseEvent<HTMLTableRowElement>, item: ProductType) => {
+        e.stopPropagation();
+        if (hasPermission(HanhDong.XEM)){
+            dispatch({ type: 'SET_SELECTED_SANPHAM', payload: item });
+            await fetchBienTheBySanPham(item.id);
+            dispatch({ type: 'SET_SHOW_DETAIL_MODAL', payload: true });
         }
     };
 
@@ -160,17 +201,70 @@ const QuanLySanPham = () => {
                             <option value="thuongHieu">Thương hiệu</option>
                             <option value="boMon">Bộ môn</option>
                             <option value="danhMuc">Phân loại</option>
+                            <option value="trangThai">Trạng thái</option>
                         </Form.Select>
                     </Form.Group>
+                    {state.searchType === "tenSanPham" && (
+                        <Form.Group controlId="searchKeyword">
+                            <Form.Control
+                                type="text"
+                                placeholder="Nhập từ khóa..."
+                                onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
+                                value={state.keyword}
+                            />
+                        </Form.Group>
+                    )}
 
-                    <Form.Group controlId="searchKeyword">
-                        <Form.Control
-                            type="text"
-                            placeholder="Nhập từ khóa..."
-                            onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
-                            value={state.keyword}
-                        />
-                    </Form.Group>
+                    {state.searchType === "thuongHieu" && (
+                        <Form.Group controlId="searchKeyword">
+                            <Form.Select
+                                onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
+                                defaultValue={state.keyword}
+                            >
+                                {state.dsFull?.dsThuongHieu.map((item, index) => (
+                                    <option key={index} value={item.id}>{item.tenThuongHieu}</option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                    )}
+
+                    {state.searchType === "boMon" && (
+                        <Form.Group controlId="searchKeyword">
+                            <Form.Select
+                                onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
+                                defaultValue={state.keyword}
+                            >
+                                {state.dsFull?.dsBoMon.map((item, index) => (
+                                    <option key={index} value={item.id}>{item.tenBoMon}</option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                    )}
+
+                    {state.searchType === "danhMuc" && (
+                        <Form.Group controlId="searchKeyword">
+                            <Form.Select
+                                onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
+                                defaultValue={state.keyword}
+                            >
+                                {state.dsFull?.dsDanhMuc.map((item, index) => (
+                                    <option key={index} value={item.id}>{item.loai}</option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                    )}
+
+                    {state.searchType === "trangThai" && (
+                        <Form.Group controlId="searchKeyword">
+                            <Form.Select
+                                onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
+                                defaultValue={state.keyword}
+                            >
+                                <option value={"true"}>Đang kinh doanh</option>
+                                <option value={"false"}>Ngừng kinh doanh</option>
+                            </Form.Select>
+                        </Form.Group>
+                    )}
 
                     <Form.Group controlId="minPrice" style={{width:'150px'}}>
                         <Form.Control
@@ -295,6 +389,9 @@ const QuanLySanPham = () => {
                         <th>Phân loại</th>
                         <th>Bộ môn</th>
                         <th>Trạng thái</th>
+                        {/*{hasPermission(HanhDong.XEM) && (*/}
+                        {/*    <th></th>*/}
+                        {/*)}*/}
                         {hasPermission(HanhDong.SUA) && (
                             <th></th>
                         )}
@@ -305,7 +402,7 @@ const QuanLySanPham = () => {
                     </thead>
                     <tbody>
                     {state.dsSanPham.map((item, index) => (
-                        <tr key={index}>
+                        <tr key={index} onClick={(e) => handleXemChiTietSanPham(e, item)}>
                             <td>{item.id}</td>
                             <td>
                                 <img src={`${PRODUCT_IMAGE_BASE_PATH}${item.hinhAnh}`}
@@ -322,21 +419,29 @@ const QuanLySanPham = () => {
                             <td className={`fs-6 ${item.trangThai ? '': 'text-danger'}`} >{item.trangThai ? "Đang kinh doanh" : "Dừng kinh doanh"}</td>
                             {hasPermission(HanhDong.SUA) && (
                                 <td>
-                                    <button className={"btn btn-warning"}
-                                            onClick={() => {
+                                    <Button className={"btn btn-warning"}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 dispatch({ type: 'SET_SELECTED_SANPHAM', payload: item });
                                                 dispatch({ type: 'SET_SHOW_UPDATE_MODAL', payload: true });
                                             }}
                                     >
                                         Sửa
-                                    </button>
+                                    </Button>
                                 </td>
                             )}
                             {hasPermission(HanhDong.XOA) && (
                                 <td>
-                                    <button className={"btn btn-danger"}>
+                                    <Button className={"btn btn-danger"}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (confirm(`Bạn có chắc chắn muốn xóa sản phẩm ${item.tenSanPham}?`)) {
+                                                    handleDeleteSanPham(item.id);
+                                                }
+                                            }}
+                                    >
                                         Xóa
-                                    </button>
+                                    </Button>
                                 </td>
                             )}
                         </tr>
@@ -373,6 +478,16 @@ const QuanLySanPham = () => {
                 dsDanhMuc={state.dsFull?.dsDanhMuc}
                 dsThuongHieu={state.dsFull?.dsThuongHieu}
                 dsBoMon={state.dsFull?.dsBoMon}
+            />
+            <ModalChiTietSanPham
+                show={state.showDetailModal}
+                handleClose={() => dispatch({ type: 'SET_SHOW_DETAIL_MODAL', payload: false })}
+                sanPham={state.selectedSanPham}
+                dsBienThe={state.dsBienThe}
+                hasPermission={hasPermission}
+                onAddBienThe={() => {/* mở modal thêm biến thể */}}
+                onEditBienThe={(bienThe) => {/* mở modal sửa biến thể */}}
+                onDeleteBienThe={(bienThe) => {/* gọi API xóa biến thể */}}
             />
         </Container>
     );

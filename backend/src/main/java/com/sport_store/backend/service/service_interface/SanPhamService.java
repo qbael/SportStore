@@ -25,6 +25,8 @@ public interface SanPhamService {
                       String moTa, Integer thuongHieuId, Integer danhMucId,
                       Integer boMonId, Boolean trangThai, MultipartFile hinhAnh);
 
+    int deleteSanPham(int id);
+
     SanPham getSanPhamById(int id);
 
     ChiTietSanPhamDTO getAllBienTheOfSanPham(int id);

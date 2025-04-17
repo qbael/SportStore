@@ -181,7 +181,9 @@ const Login: React.FC = () => {
 
   if (isAuthenticated && user) {
     return (
-      <Container className="my-5">
+      <Container className="mb-5"
+                 style={{marginTop: "100px"}}
+      >
         <Row className="justify-content-center">
           <Col md={6} lg={4}>
             <Card className="shadow-sm">
