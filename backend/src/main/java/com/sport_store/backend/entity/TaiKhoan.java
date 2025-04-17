@@ -29,6 +29,9 @@ public class TaiKhoan {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
+
     @OneToMany(mappedBy = "taiKhoan", cascade = CascadeType.ALL, orphanRemoval = true)
     List<TTKhachHang> dsTTKhachHang;
 }

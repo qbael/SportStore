@@ -40,11 +40,13 @@ public class AuthController {
                 registerRequest.getEmail(),
                 registerRequest.getHoTen(),
                 registerRequest.getDiaChi(),
-                registerRequest.getSdt()
+                registerRequest.getSdt(),
+                registerRequest.getIs_active()
         );
         if (response.getError() != null) {
             return ResponseEntity.badRequest().body(response);
         }
         return ResponseEntity.ok(response);
     }
+
 }
