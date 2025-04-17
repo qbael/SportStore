@@ -21,30 +21,38 @@ public class AuthService {
 
     public LoginResponseDTO login(String username, String password) {
         try {
+            // Kiểm tra đầu vào
+            if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+                return new LoginResponseDTO("Tên người dùng và mật khẩu không được để trống");
+            }
+
             TaiKhoan taiKhoan = entityManager.createQuery(
-                    "SELECT t FROM TaiKhoan t WHERE t.username = :username", TaiKhoan.class)
+                            "SELECT t FROM TaiKhoan t WHERE t.username = :username", TaiKhoan.class)
                     .setParameter("username", username)
                     .getSingleResult();
 
             // Kiểm tra mật khẩu
             if (taiKhoan != null && taiKhoan.getPassword().equals(password)) {
-                // String hoTen = taiKhoan.getDsTTKhachHang() != null &&
-                // !taiKhoan.getDsTTKhachHang().isEmpty()
-                // ? taiKhoan.getDsTTKhachHang().get(0).getHoTen() : null;
+                // Kiểm tra is_active
+                if (!taiKhoan.getIsActive()) {
+                    return new LoginResponseDTO("Tài khoản của bạn bị khóa");
+                }
+
                 // Chuyển đổi danh sách TTKhachHang thành danh sách TTKhachHangDTO
-                List<TTKhachHangDTO> profileList = taiKhoan.getDsTTKhachHang().stream()
-                .map(kh -> new TTKhachHangDTO(
-                        kh.getId(),
-                        kh.getHoTen(),
-                        kh.getSdt(),
-                        kh.getDiaChi(),
-                        kh.getTaiKhoan().getId())) // Constructor này được tạo tự động
-                .collect(Collectors.toList());
-                return new LoginResponseDTO(taiKhoan.getUsername(), taiKhoan.getEmail(), profileList, null);
+                List<TTKhachHangDTO> profile = taiKhoan.getDsTTKhachHang().stream()
+                        .map(kh -> new TTKhachHangDTO(
+                                kh.getId(),
+                                kh.getHoTen(),
+                                kh.getSdt(),
+                                kh.getDiaChi(),
+                                kh.getTaiKhoan().getId()))
+                        .collect(Collectors.toList());
+
+                return new LoginResponseDTO(taiKhoan.getUsername(), taiKhoan.getEmail(), taiKhoan.getIsActive(), profile);
             }
-            return new LoginResponseDTO(null, null, null, "Tên người dùng hoặc mật khẩu không đúng");
+            return new LoginResponseDTO("Tên người dùng hoặc mật khẩu không đúng");
         } catch (NoResultException e) {
-            return new LoginResponseDTO(null, null, null, "Tên người dùng hoặc mật khẩu không đúng"); // user sai ne
+            return new LoginResponseDTO("Tên người dùng hoặc mật khẩu không đúng");
         } catch (Exception e) {
             throw new RuntimeException("Lỗi trong quá trình đăng nhập: " + e.getMessage());
         }
@@ -52,44 +60,60 @@ public class AuthService {
 
     @Transactional
     public LoginResponseDTO register(String username, String password, String email,
-            String hoTen, String diaChi, Integer sdt) {
+                                     String hoTen, String diaChi, Integer sdt, Boolean isActive) {
         try {
+            // Kiểm tra đầu vào
+            if (username == null || username.trim().isEmpty() ||
+                    password == null || password.trim().isEmpty() ||
+                    email == null || email.trim().isEmpty() ||
+                    hoTen == null || hoTen.trim().isEmpty() ||
+                    diaChi == null || diaChi.trim().isEmpty()) {
+                return new LoginResponseDTO("Thông tin bắt buộc không được để trống");
+            }
+
+            // Kiểm tra username đã tồn tại
             Long count = entityManager.createQuery(
-                    "SELECT COUNT(t) FROM TaiKhoan t WHERE t.username = :username", Long.class)
+                            "SELECT COUNT(t) FROM TaiKhoan t WHERE t.username = :username", Long.class)
                     .setParameter("username", username)
                     .getSingleResult();
 
             if (count > 0) {
-                return new LoginResponseDTO(null, null, null, "Username already exists");
+                return new LoginResponseDTO("Tên người dùng đã tồn tại");
             }
 
+            // Tạo tài khoản mới
             TaiKhoan taiKhoan = new TaiKhoan();
             taiKhoan.setUsername(username);
-            taiKhoan.setPassword(password);
+            taiKhoan.setPassword(password); // Nên mã hóa mật khẩu trong thực tế
             taiKhoan.setEmail(email);
+            taiKhoan.setIsActive(isActive != null ? isActive : true); // Mặc định là true nếu isActive null
             taiKhoan.setDsTTKhachHang(new ArrayList<>());
 
+            // Tạo thông tin khách hàng
             TTKhachHang ttKhachHang = new TTKhachHang();
-            // ttKhachHang.setHoTen(hoTen);
+            ttKhachHang.setHoTen(hoTen);
             ttKhachHang.setDiaChi(diaChi);
             ttKhachHang.setSdt(sdt);
             ttKhachHang.setTaiKhoan(taiKhoan);
-            List<TTKhachHangDTO> profileList = taiKhoan.getDsTTKhachHang().stream()
-            .map(kh -> new TTKhachHangDTO(
-                    kh.getId(),
-                    kh.getHoTen(),
-                    kh.getSdt(),
-                    kh.getDiaChi(),
-                    kh.getTaiKhoan().getId())) // Constructor này được tạo tự động
-            .collect(Collectors.toList());
 
             taiKhoan.getDsTTKhachHang().add(ttKhachHang);
 
+            // Lưu vào cơ sở dữ liệu
             entityManager.persist(taiKhoan);
 
-            return new LoginResponseDTO(taiKhoan.getUsername(), taiKhoan.getEmail(), profileList, null);
+            // Chuyển đổi danh sách TTKhachHang thành danh sách TTKhachHangDTO
+            List<TTKhachHangDTO> profile = taiKhoan.getDsTTKhachHang().stream()
+                    .map(kh -> new TTKhachHangDTO(
+                            kh.getId(),
+                            kh.getHoTen(),
+                            kh.getSdt(),
+                            kh.getDiaChi(),
+                            kh.getTaiKhoan().getId()))
+                    .collect(Collectors.toList());
+
+            return new LoginResponseDTO(taiKhoan.getUsername(), taiKhoan.getEmail(), taiKhoan.getIsActive(), profile);
         } catch (Exception e) {
-            return new LoginResponseDTO(null, null, null, "Registration failed: " + e.getMessage());
+            return new LoginResponseDTO("Đăng ký thất bại: " + e.getMessage());
         }
     }
 }
