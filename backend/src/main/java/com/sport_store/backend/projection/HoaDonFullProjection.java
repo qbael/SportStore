@@ -17,7 +17,7 @@ public interface HoaDonFullProjection {
     interface TTKhachHangInfo {
         Integer getId();
         String getHoTen();
-        Integer getSdt();
+        String getSdt();
         String getDiaChi();
 
         TaiKhoanInfo getTaiKhoan();

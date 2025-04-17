@@ -89,7 +89,7 @@ public class HoaDonService {
     }
 
     @Transactional
-    public Page<HoaDon> searchHoaDons(
+    public Page<HoaDonFullProjection> searchHoaDons(
             Integer id,
             LocalDate ngay,
             String tenKhachHang,

@@ -99,7 +99,7 @@ public class HoaDonController {
     }
 
     @GetMapping("/search")
-    public Page<HoaDon> searchHoaDons(
+    public Page<HoaDonFullProjection> searchHoaDons(
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngay,
             @RequestParam(required = false) String tenKhachHang,

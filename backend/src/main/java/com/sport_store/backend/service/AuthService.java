@@ -52,7 +52,7 @@ public class AuthService {
 
     @Transactional
     public LoginResponseDTO register(String username, String password, String email,
-            String hoTen, String diaChi, Integer sdt) {
+            String hoTen, String diaChi, String sdt) {
         try {
             Long count = entityManager.createQuery(
                     "SELECT COUNT(t) FROM TaiKhoan t WHERE t.username = :username", Long.class)

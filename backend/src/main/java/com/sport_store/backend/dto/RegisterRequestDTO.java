@@ -13,5 +13,5 @@ public class RegisterRequestDTO {// dien cai form dang ky
     private String email;
     private String hoTen;
     private String diaChi;
-    private Integer sdt;
+    private String sdt;
 }
