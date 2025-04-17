@@ -16,6 +16,8 @@ import com.sport_store.backend.repository.BienTheRepository;
 import com.sport_store.backend.repository.CTHoaDonRepository;
 import com.sport_store.backend.repository.HoaDonRepository;
 import com.sport_store.backend.repository.TTKhachHangRepository;
+import com.sport_store.backend.entity.Enum.TrangThaiHoaDon;
+
 
 @Service
 public class HoaDonService {
@@ -24,11 +26,11 @@ public class HoaDonService {
     private HoaDonRepository hoaDonRepository;
 
     @Autowired
-    private CTHoaDonRepository ctHoaDonRepository; 
+    private CTHoaDonRepository ctHoaDonRepository;
 
     @Autowired
     private TTKhachHangRepository ttKhachHangRepository;
-    
+
     @Autowired
     private BienTheRepository bienTheRepository;
 
@@ -55,7 +57,7 @@ public class HoaDonService {
             hoaDon.setTtKhachHang(ttKhachHangRepository.findById(hoaDon.getTtKhachHang().getId()).orElse(null));
         }
 
-        // check số lượng hàng hóa 
+        // check số lượng hàng hóa
         if (hoaDon.getDsCTHoaDon() != null) {
             boolean isValid = true;
             for (CTHoaDon ct : hoaDon.getDsCTHoaDon()) {
@@ -67,10 +69,10 @@ public class HoaDonService {
                 // Cập nhật số lượng hàng hóa
                 // bienTheRepository.updateSoLuong(ct.getBienThe().getId(), ct.getSoLuong());
             }
-            if (isValid){
+            if (isValid) {
                 for (CTHoaDon ct : hoaDon.getDsCTHoaDon()) {
                     // Cập nhật số lượng hàng hóa
-                    int sl =  bienTheRepository.getSoLuong(ct.getBienThe().getId()) - ct.getSoLuong();
+                    int sl = bienTheRepository.getSoLuong(ct.getBienThe().getId()) - ct.getSoLuong();
                     System.out.println("Số lượng tồn kho sau khi bán: " + sl);
                     bienTheRepository.updateSoLuong(ct.getBienThe().getId(), sl);
                 }
@@ -80,9 +82,23 @@ public class HoaDonService {
         // Lưu hóa đơn vào database và trả về đối tượng đã lưu
         return hoaDonRepository.save(hoaDon);
     }
-    
-    @Transactional  
+
+    @Transactional
     public Optional<HoaDonFullProjection> getHoaDonById(int id) {
         return hoaDonRepository.findById(id); // Tìm hóa đơn bằng id từ repository
+    }
+
+    @Transactional
+    public Page<HoaDon> searchHoaDons(
+            Integer id,
+            LocalDate ngay,
+            String tenKhachHang,
+            TrangThaiHoaDon trangThai,
+            String soDienThoai,
+            Integer minTongGiaBan,
+            Integer maxTongGiaBan,
+            Pageable pageable) {
+        return hoaDonRepository.searchHoaDon(id, ngay, tenKhachHang, trangThai, soDienThoai, minTongGiaBan,
+                maxTongGiaBan, pageable);
     }
 }

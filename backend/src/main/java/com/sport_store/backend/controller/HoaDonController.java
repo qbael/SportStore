@@ -9,6 +9,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.sport_store.backend.entity.Enum.TrangThaiHoaDon;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort;
+
+import java.time.LocalDate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +30,12 @@ public class HoaDonController {
 
     // @GetMapping
     // public ResponseEntity<Map<String, Object>> getAllHoaDon() {
-    //     Map<String, Object> res = new HashMap<>();
-    //     res.put("status", 200);
-    //     res.put("message", "Thành công");
-    //     res.put("data", hoaDonService.getHoaDons(Pageable.unpaged()).getContent());  // Lấy dữ liệu mà không phân trang
-    //     return ResponseEntity.ok(res);
+    // Map<String, Object> res = new HashMap<>();
+    // res.put("status", 200);
+    // res.put("message", "Thành công");
+    // res.put("data", hoaDonService.getHoaDons(Pageable.unpaged()).getContent());
+    // // Lấy dữ liệu mà không phân trang
+    // return ResponseEntity.ok(res);
     // }
 
     @GetMapping("/page")
@@ -90,4 +97,19 @@ public class HoaDonController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @GetMapping("/search")
+    public Page<HoaDon> searchHoaDons(
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngay,
+            @RequestParam(required = false) String tenKhachHang,
+            @RequestParam(required = false) TrangThaiHoaDon trangThai,
+            @RequestParam(required = false) String soDienThoai,
+            @RequestParam(required = false) Integer minTongGiaBan,
+            @RequestParam(required = false) Integer maxTongGiaBan,
+            @PageableDefault(size = 10, sort = "ngay", direction = Sort.Direction.DESC) Pageable pageable) {
+        return hoaDonService.searchHoaDons(id, ngay, tenKhachHang, trangThai, soDienThoai, minTongGiaBan, maxTongGiaBan,
+                pageable);
+    }
+
 }

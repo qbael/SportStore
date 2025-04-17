@@ -29,13 +29,23 @@ export default function QuanlyHoaDon() {
     const [hoaDons, setHoaDons] = useState<HoaDon[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
-    // const [selectedHoaDon, setSelectedHoaDon] = useState<HoaDon | null>(null);
     const [currentPage, setCurrentPage] = useState(0);
     const [selectedHoaDon, setSelectedHoaDon] = useState<HoaDon | undefined>(undefined);
-
-    const [totalPages, setTotalPages] = useState(0);
     const [pageSize, setPageSize] = useState(10);
+    const [totalPages, setTotalPages] = useState(0);
+    const [searchText, setSearchText] = useState("");
+    const [selectedColumn, setSelectedColumn] = useState("");
+    const [fromDate, setFromDate] = useState("");
+    const [toDate, setToDate] = useState("");
 
+    const handleSearch = () => {
+        console.log("Tìm kiếm:", { selectedColumn, searchText });
+        // Gọi API tìm kiếm ở đây
+    };
+
+    const handleFilterDate = () => {
+
+    };
 
     const handleEdit = (id: number) => {
         console.log("Sửa hóa đơn với ID:", id);
@@ -91,7 +101,7 @@ export default function QuanlyHoaDon() {
             <div className="header">
                 <div className="header__search">
                     <div>
-                        <select name="" id="">
+                        <select name="" id="column_select" value={selectedColumn} onChange={(e) => setSelectedColumn(e.target.value)}>
                             {header_arr.map((item, index) => {
                                 return (
                                     <option key={index} value="">{item}</option>
@@ -99,15 +109,24 @@ export default function QuanlyHoaDon() {
                             }
                             )}
                         </select>
-                        <input type="text" placeholder="Tìm kiếm" />
-                        <button className="btn btn--primary">Tìm kiếm</button>
+                        <input type="text" placeholder="Tìm kiếm" value={searchText} onChange={(e) => setSearchText(e.target.value)}/>
+                        <button className="btn btn--primary" onClick={handleSearch}>Tìm kiếm</button>
                     </div>
                     <div className="boloc">
-                        {/* lọc từ ngày đến ngày */}
-                        <input type="date" />
-                        <input type="date" />
-                        <button className="btn btn--primary">Áp dụng</button>
-                    </div>
+                    <input
+                        type="date"
+                        value={fromDate}
+                        onChange={(e) => setFromDate(e.target.value)}
+                    />
+                    <input
+                        type="date"
+                        value={toDate}
+                        onChange={(e) => setToDate(e.target.value)}
+                    />
+                    <button className="btn btn--primary" onClick={handleFilterDate}>
+                        Áp dụng
+                    </button>
+                </div>
                 </div>
             </div>
             <div className="content">
