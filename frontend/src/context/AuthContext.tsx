@@ -11,6 +11,7 @@ interface User {
   username: string;
   email: string;
   profiles: Profile[];
+  is_active : boolean;
 }
 
 interface AuthContextType {

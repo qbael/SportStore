@@ -73,7 +73,11 @@ const Login: React.FC = () => {
       const data = await response.json();
 
       if (response.ok && !data.error) { // Kiểm tra nếu không có lỗi
-        login({ username: data.username, email: data.email, profiles: data.profile }); // Gọi login từ AuthContext
+        if (data.isActive === false) {
+          showNotification('Tài khoản của bạn bị khóa', 'error');
+          return;
+        }
+        login({ username: data.username, email: data.email, profiles: data.profile, is_active: data.isActive }); // Gọi login từ AuthContext
         setLoginData({ username: '', password: '' });
         showNotification('Đăng nhập thành công!', 'success');
       } else {
@@ -103,13 +107,14 @@ const Login: React.FC = () => {
           hoTen: registerData.hoTen,
           diaChi: registerData.diaChi,
           sdt: parseInt(registerData.sdt) || 0,
+          is_active: true,
         }),
       });
 
       const data = await response.json();
 
       if (response.ok && !data.error) {
-        login({ username: data.username, email: data.email, profiles: data.profile }); // Gọi login từ AuthContext
+        login({ username: data.username, email: data.email, profiles: data.profile,is_active : data.isActive, }); // Gọi login từ AuthContext
         setRegisterData({
           username: '',
           email: '',
@@ -357,7 +362,7 @@ const Login: React.FC = () => {
                     <Form.Group className="mb-3" controlId="registerSdt">
                       <Form.Label>Số điện thoại</Form.Label>
                       <Form.Control
-                        type="number"
+                        type="numbers"
                         name="sdt"
                         value={registerData.sdt}
                         onChange={handleRegisterChange}
