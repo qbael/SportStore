@@ -94,6 +94,7 @@ const ProductDetail: React.FC = () => {
               ).values()
             ).sort((a, b) => a.id - b.id);
             setAvailableSizes(sizes);
+            setSelectedSize(null);
           } else {
             const bienthe = chiTietSanPham?.bienThe.find((bt) => bt.mau?.id === selectedColor.id);
             setSelectedBienThe(bienthe || null);
