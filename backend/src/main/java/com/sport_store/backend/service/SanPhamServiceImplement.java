@@ -59,7 +59,6 @@ public class SanPhamServiceImplement implements SanPhamService {
         return sanPhamRepository.findAll();
     }
 
-
     @Override
     public Page<SanPham> getFilteredProducts(String bomon, String danhmuc, String thuonghieu,
                                              Integer minprice, Integer maxprice, String search,
