@@ -145,7 +145,7 @@ const Login: React.FC = () => {
       if (response.ok && result.status === 200) {
         // Lọc các hóa đơn của người dùng hiện tại
         const userPurchases = result.data.filter(
-          (purchase: any) => purchase.ttKhachHang.taiKhoan.username === user?.username
+            (purchase: any) => purchase.ttKhachHang.taiKhoan.username === user?.username
         );
         setPurchaseHistory(userPurchases);
         setShowHistory(true);
@@ -158,6 +158,7 @@ const Login: React.FC = () => {
     }
   };
 
+<<<<<<< HEAD
     // Hàm chuyển đổi trạng thái sang tiếng Việt
     const getStatusText = (status: string) => {
       switch (status) {
@@ -227,158 +228,229 @@ const Login: React.FC = () => {
                       </ListGroup>
                     ) : (
                       <p className="text-muted">Chưa có lịch sử mua hàng.</p>
+=======
+  // Hàm chuyển đổi trạng thái sang tiếng Việt
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'DAGIAO':
+        return 'Đã giao';
+      case 'DANGGIAO':
+        return 'Đang giao';
+      case 'DANGXULY':
+        return 'Đang xử lý';
+      case 'DAHUY':
+        return 'Đã hủy';
+      default:
+        return status;
+    }
+  };
+
+  if (isAuthenticated && user) {
+    return (
+        <Container className="my-5">
+          <Row className="justify-content-center">
+            <Col md={8} lg={6}>
+              <Card className="shadow-lg border-0">
+                <Card.Body className="p-4">
+                  <Card.Title className="text-center mb-4 fs-4 fw-bold">Thông tin tài khoản</Card.Title>
+                  <div className="text-start mb-4">
+                    <p className="mb-2"><strong>Tên người dùng:</strong> {user.username}</p>
+                    <p className="mb-2"><strong>Email:</strong> {user.email}</p>
+                    {user.profiles?.[0]?.hoTen && (
+                        <p className="mb-2"><strong>Họ tên:</strong> {user.profiles[0].hoTen}</p>
+>>>>>>> main
                     )}
                   </div>
-                )}
+                  <div className="d-flex justify-content-center gap-3 mb-4">
+                    <Button variant="primary" onClick={fetchPurchaseHistory}>
+                      Lịch sử mua hàng
+                    </Button>
+                    <Button variant="outline-danger" onClick={handleLogout}>
+                      Đăng xuất
+                    </Button>
+                  </div>
+                  {showHistory && (
+                      <div className="mt-4">
+                        <h5 className="mb-3 fw-semibold">Lịch sử mua hàng</h5>
+                        {purchaseHistory.length > 0 ? (
+                            <ListGroup variant="flush">
+                              {purchaseHistory.map((purchase) => (
+                                  <ListGroup.Item key={purchase.id} className="border rounded mb-2 p-3">
+                                    <p className="mb-1"><strong>Mã hóa đơn:</strong> {purchase.id}</p>
+                                    <p className="mb-1"><strong>Ngày:</strong> {new Date(purchase.ngay).toLocaleDateString('vi-VN')}</p>
+                                    <p className="mb-1"><strong>Tổng tiền:</strong> {purchase.tongGiaBan.toLocaleString('vi-VN')} VND</p>
+                                    <p className="mb-1"><strong>Trạng thái:</strong>
+                                      <span className={`badge ${purchase.trangThai === 'DAGIAO' ? 'bg-success' : purchase.trangThai === 'DAHUY' ? 'bg-danger' : 'bg-warning'}`}>
+                                {getStatusText(purchase.trangThai)}
+                              </span>
+                                    </p>
+                                    <p className="mb-2 mt-2"><strong>Chi tiết sản phẩm:</strong></p>
+                                    <ListGroup variant="flush">
+                                      {purchase.dsCTHoaDon.map((item) => (
+                                          <ListGroup.Item key={item.id} className="py-2">
+                                            <p className="mb-1">{item.bienThe.tenBienThe}</p>
+                                            <p className="mb-1">Số lượng: {item.soLuong}</p>
+                                            <p className="mb-1">Giá: {item.giaBan.toLocaleString('vi-VN')} VND</p>
+                                          </ListGroup.Item>
+                                      ))}
+                                    </ListGroup>
+                                  </ListGroup.Item>
+                              ))}
+                            </ListGroup>
+                        ) : (
+                            <p className="text-muted">Chưa có lịch sử mua hàng.</p>
+                        )}
+                      </div>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+    );
+  }
+
+  return (
+      <Container className="my-5">
+        <Row className="justify-content-center">
+          <Col md={8} lg={5}>
+            <Card className="shadow-lg border-0">
+              <Card.Body className="p-4">
+                <Tabs
+                    activeKey={activeTab}
+                    onSelect={(k) => setActiveTab(k || 'login')}
+                    className="mb-4"
+                    justify
+                    variant="pills"
+                >
+                  <Tab eventKey="login" title="Đăng nhập">
+                    <Form onSubmit={handleLoginSubmit}>
+                      <Form.Group className="mb-3" controlId="loginUsername">
+                        <Form.Label className="fw-medium">Tên người dùng</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="username"
+                            value={loginData.username}
+                            onChange={handleLoginChange}
+                            placeholder="Nhập tên người dùng"
+                            required
+                            className="rounded-3"
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="loginPassword">
+                        <Form.Label className="fw-medium">Mật khẩu</Form.Label>
+                        <Form.Control
+                            type="password"
+                            name="password"
+                            value={loginData.password}
+                            onChange={handleLoginChange}
+                            placeholder="Nhập mật khẩu"
+                            required
+                            className="rounded-3"
+                        />
+                      </Form.Group>
+                      <Button variant="primary" type="submit" className="w-100 rounded-3 py-2">
+                        Đăng nhập
+                      </Button>
+                    </Form>
+                  </Tab>
+                  <Tab eventKey="register" title="Đăng ký">
+                    <Form onSubmit={handleRegisterSubmit}>
+                      <Form.Group className="mb-3" controlId="registerUsername">
+                        <Form.Label className="fw-medium">Tên người dùng</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="username"
+                            value={registerData.username}
+                            onChange={handleRegisterChange}
+                            placeholder="Nhập tên người dùng"
+                            required
+                            className="rounded-3"
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="registerEmail">
+                        <Form.Label className="fw-medium">Email</Form.Label>
+                        <Form.Control
+                            type="email"
+                            name="email"
+                            value={registerData.email}
+                            onChange={handleRegisterChange}
+                            placeholder="Nhập email"
+                            required
+                            className="rounded-3"
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="registerPassword">
+                        <Form.Label className="fw-medium">Mật khẩu</Form.Label>
+                        <Form.Control
+                            type="password"
+                            name="password"
+                            value={registerData.password}
+                            onChange={handleRegisterChange}
+                            placeholder="Nhập mật khẩu"
+                            required
+                            className="rounded-3"
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="registerConfirmPassword">
+                        <Form.Label className="fw-medium">Xác nhận mật khẩu</Form.Label>
+                        <Form.Control
+                            type="password"
+                            name="confirmPassword"
+                            value={registerData.confirmPassword}
+                            onChange={handleRegisterChange}
+                            placeholder="Xác nhận mật khẩu"
+                            required
+                            className="rounded-3"
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="registerHoTen">
+                        <Form.Label className="fw-medium">Họ tên</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="hoTen"
+                            value={registerData.hoTen}
+                            onChange={handleRegisterChange}
+                            placeholder="Nhập họ tên"
+                            required
+                            className="rounded-3"
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="registerDiaChi">
+                        <Form.Label className="fw-medium">Địa chỉ</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="diaChi"
+                            value={registerData.diaChi}
+                            onChange={handleRegisterChange}
+                            placeholder="Nhập địa chỉ"
+                            required
+                            className="rounded-3"
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="registerSdt">
+                        <Form.Label className="fw-medium">Số điện thoại</Form.Label>
+                        <Form.Control
+                            type="tel"
+                            name="sdt"
+                            value={registerData.sdt}
+                            onChange={handleRegisterChange}
+                            placeholder="Nhập số điện thoại"
+                            required
+                            className="rounded-3"
+                        />
+                      </Form.Group>
+                      <Button variant="success" type="submit" className="w-100 rounded-3 py-2">
+                        Đăng ký
+                      </Button>
+                    </Form>
+                  </Tab>
+                </Tabs>
               </Card.Body>
             </Card>
           </Col>
         </Row>
       </Container>
-    );
-  }
-
-  return (
-    <Container className="my-5">
-      <Row className="justify-content-center">
-        <Col md={8} lg={5}>
-          <Card className="shadow-lg border-0">
-            <Card.Body className="p-4">
-              <Tabs
-                activeKey={activeTab}
-                onSelect={(k) => setActiveTab(k || 'login')}
-                className="mb-4"
-                justify
-                variant="pills"
-              >
-                <Tab eventKey="login" title="Đăng nhập">
-                  <Form onSubmit={handleLoginSubmit}>
-                    <Form.Group className="mb-3" controlId="loginUsername">
-                      <Form.Label className="fw-medium">Tên người dùng</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="username"
-                        value={loginData.username}
-                        onChange={handleLoginChange}
-                        placeholder="Nhập tên người dùng"
-                        required
-                        className="rounded-3"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="loginPassword">
-                      <Form.Label className="fw-medium">Mật khẩu</Form.Label>
-                      <Form.Control
-                        type="password"
-                        name="password"
-                        value={loginData.password}
-                        onChange={handleLoginChange}
-                        placeholder="Nhập mật khẩu"
-                        required
-                        className="rounded-3"
-                      />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" className="w-100 rounded-3 py-2">
-                      Đăng nhập
-                    </Button>
-                  </Form>
-                </Tab>
-                <Tab eventKey="register" title="Đăng ký">
-                  <Form onSubmit={handleRegisterSubmit}>
-                    <Form.Group className="mb-3" controlId="registerUsername">
-                      <Form.Label className="fw-medium">Tên người dùng</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="username"
-                        value={registerData.username}
-                        onChange={handleRegisterChange}
-                        placeholder="Nhập tên người dùng"
-                        required
-                        className="rounded-3"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="registerEmail">
-                      <Form.Label className="fw-medium">Email</Form.Label>
-                      <Form.Control
-                        type="email"
-                        name="email"
-                        value={registerData.email}
-                        onChange={handleRegisterChange}
-                        placeholder="Nhập email"
-                        required
-                        className="rounded-3"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="registerPassword">
-                      <Form.Label className="fw-medium">Mật khẩu</Form.Label>
-                      <Form.Control
-                        type="password"
-                        name="password"
-                        value={registerData.password}
-                        onChange={handleRegisterChange}
-                        placeholder="Nhập mật khẩu"
-                        required
-                        className="rounded-3"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="registerConfirmPassword">
-                      <Form.Label className="fw-medium">Xác nhận mật khẩu</Form.Label>
-                      <Form.Control
-                        type="password"
-                        name="confirmPassword"
-                        value={registerData.confirmPassword}
-                        onChange={handleRegisterChange}
-                        placeholder="Xác nhận mật khẩu"
-                        required
-                        className="rounded-3"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="registerHoTen">
-                      <Form.Label className="fw-medium">Họ tên</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="hoTen"
-                        value={registerData.hoTen}
-                        onChange={handleRegisterChange}
-                        placeholder="Nhập họ tên"
-                        required
-                        className="rounded-3"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="registerDiaChi">
-                      <Form.Label className="fw-medium">Địa chỉ</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="diaChi"
-                        value={registerData.diaChi}
-                        onChange={handleRegisterChange}
-                        placeholder="Nhập địa chỉ"
-                        required
-                        className="rounded-3"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="registerSdt">
-                      <Form.Label className="fw-medium">Số điện thoại</Form.Label>
-                      <Form.Control
-                        type="tel"
-                        name="sdt"
-                        value={registerData.sdt}
-                        onChange={handleRegisterChange}
-                        placeholder="Nhập số điện thoại"
-                        required
-                        className="rounded-3"
-                      />
-                    </Form.Group>
-                    <Button variant="success" type="submit" className="w-100 rounded-3 py-2">
-                      Đăng ký
-                    </Button>
-                  </Form>
-                </Tab>
-              </Tabs>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
   );
 };
 

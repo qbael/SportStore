@@ -49,7 +49,7 @@ const Admin = () => {
             case TenChucNang.QUAN_LY_KHACH_HANG:
                 return <QuanLyKhachHang/>;
             case TenChucNang.QUAN_LY_TAI_KHOAN:
-                return <QuanLyTaiKhoan/>;    
+                return <QuanLyTaiKhoan/>;
             default:
                 return null;
         }
