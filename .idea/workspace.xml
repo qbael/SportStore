@@ -5,8 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/yarn.lock" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/ChucVuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/NhanVienController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/ChucVuDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/NhanVienDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/NhanVienRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/NhanVienRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyTaiKhoan.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyTaiKhoan.tsx" afterDir="false" />
+>>>>>>> main
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,8 +38,8 @@
         <option value="Interface" />
         <option value="com.intellij.jpb.NewClass" />
         <option value="CSS File" />
-        <option value="Class" />
         <option value="TypeScript JSX File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -44,11 +57,14 @@
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/qbael/SportStore.git&quot;,
     &quot;accountId&quot;: &quot;197bc58e-d94a-44c2-b42b-171a4b33486f&quot;
+<<<<<<< HEAD
 =======
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/qbael/SportStore.git",
     "accountId": "197bc58e-d94a-44c2-b42b-171a4b33486f"
+>>>>>>> main
+=======
 >>>>>>> main
   }
 }]]></component>
@@ -359,6 +375,11 @@
       <workItem from="1744870582482" duration="12026000" />
       <workItem from="1744908099040" duration="1013000" />
       <workItem from="1744910194744" duration="261000" />
+<<<<<<< HEAD
+>>>>>>> main
+=======
+      <workItem from="1744969796356" duration="236000" />
+      <workItem from="1744970041534" duration="6277000" />
 >>>>>>> main
     </task>
     <servers />
