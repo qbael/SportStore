@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CTHoaDonRepository extends JpaRepository<CTHoaDon, Integer> {
     boolean existsByBienThe_SanPham_Id(int sanPhamId);
+    boolean existsByBienThe_Id(int bienTheId);
 }

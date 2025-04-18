@@ -2,10 +2,7 @@ package com.sport_store.backend.controller;
 
 import com.sport_store.backend.dto.ChiTietSanPhamDTO;
 import com.sport_store.backend.dto.DsThongTinSPDTO;
-import com.sport_store.backend.entity.BoMon;
-import com.sport_store.backend.entity.DanhMuc;
-import com.sport_store.backend.entity.SanPham;
-import com.sport_store.backend.entity.ThuongHieu;
+import com.sport_store.backend.entity.*;
 import com.sport_store.backend.service.service_interface.SanPhamService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -119,6 +116,80 @@ public class SanPhamController {
             return ResponseEntity.ok(new savedSanPhamResponseDTO("Xóa sản phẩm thành công", signal));
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xóa sản phẩm");
+        }
+    }
+
+    public record dsMauSizeResponseDTO(List<Mau> dsMau, List<Size> dsSize) {
+    }
+
+    @GetMapping("/mausize")
+    public ResponseEntity<?> getAllMau() {
+        List<Mau> dsMau = sanPhamService.getAllMau();
+        List<Size> dsSize = sanPhamService.getAllSize();
+        if (dsMau == null || dsSize == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi lấy danh sách màu và size");
+        }
+        dsMauSizeResponseDTO dsMauSize = new dsMauSizeResponseDTO(dsMau, dsSize);
+        return ResponseEntity.ok(dsMauSize);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<?> createBienTheSanPham(@PathVariable int id,
+                                                  @RequestParam("mauId") int mauId,
+                                                  @RequestParam("sizeId") int sizeId,
+                                                  @RequestParam("soLuongTon") int soLuongTon,
+                                                  @RequestParam("hinhAnh") MultipartFile hinhAnh) {
+        int signal = sanPhamService.createBienTheSanPham(id, mauId, sizeId, soLuongTon, hinhAnh);
+
+        if (signal == -1) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tồn tại sản phẩm hoặc màu hoặc size không tồn tại");
+        }
+        if (signal == -3) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Biến thể sản phẩm đã tồn tại");
+        }
+
+        if (signal > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Thêm biến thể sản phẩm thành công", signal));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi thêm biến thể sản phẩm");
+        }
+    }
+
+    @PutMapping("/bienthe/{id}")
+    public ResponseEntity<?> updateBienTheSanPham(@PathVariable int id,
+                                                  @RequestParam("tenBienThe") String tenBienThe,
+                                                  @RequestParam("sanPhamId") int sanPhamId,
+                                                  @RequestParam("mauId") int mauId,
+                                                  @RequestParam("sizeId") int sizeId,
+                                                  @RequestParam("soLuongTon") int soLuongTon,
+                                                  @RequestParam("hinhAnh") MultipartFile hinhAnh) {
+        int signal = sanPhamService.updateBienTheSanPham(id, tenBienThe, sanPhamId, mauId, sizeId, soLuongTon, hinhAnh);
+        if (signal == -1) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tồn tại biến thể sản phẩm hoặc sản phẩm không tồn tại");
+        }
+        if (signal == -3) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Biến thể sản phẩm đã tồn tại");
+        }
+        if (signal > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Cập nhật biến thể sản phẩm thành công", signal));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi cập nhật biến thể sản phẩm");
+        }
+    }
+
+    @DeleteMapping("/bienthe/{id}")
+    public ResponseEntity<?> deleteBienTheSanPham(@PathVariable int id) {
+        int signal = sanPhamService.deleteBienTheSanPham(id);
+        if (signal == -1) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tồn tại biến thể sản phẩm");
+        }
+        if (signal == -2) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Biến thể sản phẩm có tồn tại trong đơn hàng nên không thể xóa");
+        }
+        if (signal > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Xóa biến thể sản phẩm thành công", signal));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xóa biến thể sản phẩm");
         }
     }
 }

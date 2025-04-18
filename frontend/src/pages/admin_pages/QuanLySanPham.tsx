@@ -135,7 +135,7 @@ const QuanLySanPham = () => {
             });
             if (!res.ok) throw new Error("Lỗi khi thêm sản phẩm");
             showNotification("Thêm sản phẩm thành công!", "success");
-            setSearchParams({});
+            setSearchParams({sort: "id", sortdir: "DESC"});
         } catch (e) {
             console.error(e);
             showNotification("Thêm sản phẩm thất bại", "error");
@@ -150,7 +150,7 @@ const QuanLySanPham = () => {
             });
             if (!res.ok) throw new Error("Lỗi khi cập nhật sản phẩm");
             showNotification("Cập nhật sản phẩm thành công!", "success");
-            setSearchParams({});
+            location.reload();
         } catch (e) {
             console.error(e);
             showNotification("Cập nhật sản phẩm thất bại", "error");
@@ -485,9 +485,6 @@ const QuanLySanPham = () => {
                 sanPham={state.selectedSanPham}
                 dsBienThe={state.dsBienThe}
                 hasPermission={hasPermission}
-                onAddBienThe={() => {/* mở modal thêm biến thể */}}
-                onEditBienThe={(bienThe) => {/* mở modal sửa biến thể */}}
-                onDeleteBienThe={(bienThe) => {/* gọi API xóa biến thể */}}
             />
         </Container>
     );

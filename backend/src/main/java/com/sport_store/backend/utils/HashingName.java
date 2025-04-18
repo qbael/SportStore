@@ -20,6 +20,4 @@ public class HashingName {
         String normalized = Normalizer.normalize(str, Normalizer.Form.NFD);
         return normalized.replaceAll("\\p{M}", "");
     }
-
-
 }

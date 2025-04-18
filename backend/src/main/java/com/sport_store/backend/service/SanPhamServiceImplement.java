@@ -183,7 +183,6 @@ public class SanPhamServiceImplement implements SanPhamService {
             }
 
             SanPham sanPham = sp.get();
-            sanPham.setTenSanPham(tenSanPham);
             sanPham.setGiaNhap(giaNhap);
             sanPham.setGiaBan(giaBan);
             sanPham.setMoTa(moTa);
@@ -198,11 +197,11 @@ public class SanPhamServiceImplement implements SanPhamService {
             sanPham.setBoMon(bm.get());
             sanPham.setThuongHieu(th.get());
 
-            String oldFileName = HashingName.generateImageName(tenSanPham, sanPham.getHinhAnh());
             String fileName = HashingName.generateImageName(tenSanPham, hinhAnh.getOriginalFilename());
-            Path oldImagePath = Helper.getPath(oldFileName);
+            Path oldImagePath = Helper.getPath(sanPham.getHinhAnh());
             Path imagePath = Helper.getPath(fileName);
             sanPham.setHinhAnh(fileName);
+            sanPham.setTenSanPham(tenSanPham);
 
             int signal = sanPhamRepository.save(sanPham).getId();
 
@@ -290,5 +289,139 @@ public class SanPhamServiceImplement implements SanPhamService {
     @Override
     public BoMon getBoMonById(int id) {
         return boMonRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Mau> getAllMau() {
+        return mauRepository.findAll();
+    }
+
+    @Override
+    public List<Size> getAllSize() {
+        return sizeRepository.findAll();
+    }
+
+    @Override
+    public int createBienTheSanPham(int sanPhamId, int mauId, int sizeId, int soLuong, MultipartFile hinhAnh) {
+        try {
+            Optional<SanPham> sp = sanPhamRepository.findById(sanPhamId);
+            Optional<Mau> mau = mauRepository.findById(mauId);
+
+            if (sp.isEmpty() || mau.isEmpty()) {
+                return -1;
+            }
+
+            SanPham sanPham = sp.get();
+            Mau selectedMau = mau.get();
+            String tenBienThe = sanPham.getTenSanPham() + " - " + selectedMau.getTenMau();
+            String fileName = HashingName.generateImageName(tenBienThe, hinhAnh.getOriginalFilename());
+            Path imagePath = Helper.getPath(fileName);
+            BienThe bienThe = new BienThe();
+
+            if (!sanPham.getDanhMuc().getLoai().equals("Vợt")) {
+                Optional<Size> size = sizeRepository.findById(sizeId);
+                if (size.isEmpty() || bienTheRepository.existsBySanPham_IdAndMau_IdAndSize_Id(sanPhamId, mauId, sizeId)) {
+                    return size.isEmpty() ? -1 : -3;
+                }
+                bienThe.setSize(size.get());
+                tenBienThe += ", size " + size.get().getSize();
+            } else if (bienTheRepository.existsBySanPham_IdAndMau_Id(sanPhamId, mauId)) {
+                return -3;
+            }
+
+            bienThe.setMau(selectedMau);
+            bienThe.setSoLuongTon(soLuong);
+            bienThe.setHinhAnh(fileName);
+            bienThe.setSanPham(sanPham);
+            bienThe.setTenBienThe(tenBienThe);
+
+            int id = bienTheRepository.save(bienThe).getId();
+
+            if (id > 0) {
+                Files.createDirectories(imagePath.getParent());
+                Files.copy(hinhAnh.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+                return id;
+            }
+            return -2;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public int updateBienTheSanPham(int id, String tenBienThe, int sanPhamId, int mauId, int sizeId, int soLuong, MultipartFile hinhAnh) {
+        try {
+            // Fetch all required entities in one go
+            Optional<BienThe> bienTheOpt = bienTheRepository.findById(id);
+            Optional<Mau> mauOpt = mauRepository.findById(mauId);
+            Optional<SanPham> sanPhamOpt = sanPhamRepository.findById(sanPhamId);
+
+            if (bienTheOpt.isEmpty() || mauOpt.isEmpty() || sanPhamOpt.isEmpty()) {
+                return -1; // Return -1 if any entity is missing
+            }
+
+            BienThe bienThe = bienTheOpt.get();
+            Mau mau = mauOpt.get();
+            SanPham sanPham = sanPhamOpt.get();
+
+            String tenBienTheMoi = sanPham.getTenSanPham() + " - " + mau.getTenMau();
+            String fileName = HashingName.generateImageName(tenBienTheMoi, hinhAnh.getOriginalFilename());
+            Path oldImagePath = Helper.getPath(bienThe.getHinhAnh());
+            Path imagePath = Helper.getPath(fileName);
+
+            if (sizeId != 0) {
+                Optional<Size> sizeOpt = sizeRepository.findById(sizeId);
+                if (sizeOpt.isEmpty() || bienTheRepository.existsBySanPham_IdAndMau_IdAndSize_Id(sanPhamId, mauId, sizeId)) {
+                    return sizeOpt.isEmpty() ? -1 : -3; // Return -3 if duplicate size exists
+                }
+                bienThe.setSize(sizeOpt.get());
+                tenBienTheMoi += ", size " + sizeOpt.get().getSize();
+            } else if (bienTheRepository.existsBySanPham_IdAndMau_Id(sanPhamId, mauId)) {
+                return -3; // Return -3 if duplicate mau exists
+            } else {
+                bienThe.setSize(null);
+            }
+
+
+            // Update BienThe properties
+            bienThe.setTenBienThe(tenBienTheMoi);
+            bienThe.setMau(mau);
+            bienThe.setSoLuongTon(soLuong);
+            bienThe.setHinhAnh(fileName);
+            bienThe.setSanPham(sanPham);
+
+            int bienTheId = bienTheRepository.save(bienThe).getId();
+
+            if (bienTheId > 0) {
+                Files.createDirectories(imagePath.getParent());
+                Files.copy(hinhAnh.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+                return bienTheId;
+            }
+            return -2; // Return -2 if save fails
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1; // Return -1 for any exception
+        }
+    }
+
+
+    @Override
+    public int deleteBienTheSanPham(int id) {
+        try {
+            Optional<BienThe> bienThe = bienTheRepository.findById(id);
+            if (bienThe.isEmpty()) {
+                return -1;
+            }
+            if (ctHoaDonRepository.existsByBienThe_Id(id) || ctNhapHangRepository.existsByBienThe_Id(id)) {
+                return -2;
+            }
+            Path oldImagePath = Helper.getPath(bienThe.get().getHinhAnh());
+            bienTheRepository.delete(bienThe.get());
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }

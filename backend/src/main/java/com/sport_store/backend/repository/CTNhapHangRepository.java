@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CTNhapHangRepository extends JpaRepository<CTNhapHang, Integer> {
     boolean existsByBienThe_SanPham_Id(int sanPhamId);
+    boolean existsByBienThe_Id(int bienTheId);
 }

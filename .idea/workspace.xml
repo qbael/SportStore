@@ -5,9 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/exception/GlobalException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/product/giay_tennis_nike_vapor_en.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalSuaBienThe.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/SanPhamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/SanPhamController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/BienTheRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/BienTheRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/CTHoaDonRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/CTHoaDonRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/CTNhapHangRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/CTNhapHangRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/SanPhamServiceImplement.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/SanPhamServiceImplement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/service_interface/SanPhamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/service_interface/SanPhamService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/utils/HashingName.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/utils/HashingName.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalChiTietSanPham.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalChiTietSanPham.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemBienThe.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemBienThe.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLySanPham.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLySanPham.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,9 +37,9 @@
         <option value="Interface" />
         <option value="com.intellij.jpb.NewClass" />
         <option value="CSS File" />
-        <option value="TypeScript JSX File" />
         <option value="Class" />
         <option value="Exception" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -68,6 +79,7 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.GenerateFileName.executor": "Run",
     "Application.HashName.executor": "Run",
+    "Application.HashingName.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
     "DtoCreateDialog.EQUALS_HASH_CODE_INITIAL_PROP_KEY": "false",
     "DtoCreateDialog.TO_STRING_INITIAL_PROP_KEY": "false",
@@ -100,7 +112,7 @@
     "javascript.nodejs.core.library.configured.version": "22.14.0",
     "javascript.nodejs.core.library.typings.version": "22.14.1",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "E:/CODE/Projects/DoAnPTTK/frontend/src/css",
+    "last_opened_file_path": "E:/CODE/Projects/DoAnPTTK/frontend/public/product",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -110,7 +122,7 @@
     "project.structure.last.edited": "Global Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "configurable.tailwindcss",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
     "ts.external.directory.path": "E:\\CODE\\Projects\\DoAnPTTK\\frontend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   },
@@ -174,6 +186,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="HashingName" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.sport_store.backend.utils.HashingName" />
+      <module name="backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sport_store.backend.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="BackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="backend" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.sport_store.backend.BackendApplication" />
@@ -183,6 +208,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.HashingName" />
         <item itemvalue="Application.HashName" />
         <item itemvalue="Application.GenerateFileName" />
       </list>
@@ -301,6 +327,7 @@
       <workItem from="1744870582482" duration="12026000" />
       <workItem from="1744908099040" duration="1013000" />
       <workItem from="1744910285756" duration="554000" />
+      <workItem from="1744977962990" duration="18128000" />
     </task>
     <servers />
   </component>
