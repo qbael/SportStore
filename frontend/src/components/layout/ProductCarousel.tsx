@@ -89,16 +89,16 @@ const ProductCarousel: React.FC = () => {
         const mappedProducts: ProductType[] = ress.content.map((item: any) => {
           const discountPercent =
             item.giaNhap && item.giaNhap > 0
-              ? ((item.giaBan - item.giaNhap) / item.giaNhap) * 100
+              ? (item.giaNhap / item.giaBan)*100
               : 0;
           return {
             id: item.id,
             name: item.tenSanPham || 'Sản phẩm không tên',
             image: item.hinhAnh || '',
-            price: item.giaNhap || 0,
+            price: item.giaBan || 0,
             category: item.danhMuc?.loai || 'Khác',
             discount: `${discountPercent.toFixed(0)}%`,
-            discountedPrice: item.giaBan || 0,
+            discountedPrice: item.giaNhap || 0,
             type: item.boMon?.tenBoMon || 'Khác',
           };
         });
