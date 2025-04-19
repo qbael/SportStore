@@ -132,6 +132,7 @@ public class NhanVienController {
         dto.setSdt(nhanVien.getSdt());
         dto.setChucVuId(nhanVien.getChucVu().getId());
         dto.setTenChucVu(nhanVien.getChucVu().getTenChucVu().name());
+        dto.setPassword(nhanVien.getPassword());  //trả về api mật khẩu có thể để tróng ?
         return dto;
     }
 
