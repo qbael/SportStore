@@ -1,10 +1,7 @@
 package com.sport_store.backend.service.service_interface;
 
 import com.sport_store.backend.dto.ChiTietSanPhamDTO;
-import com.sport_store.backend.entity.BoMon;
-import com.sport_store.backend.entity.DanhMuc;
-import com.sport_store.backend.entity.SanPham;
-import com.sport_store.backend.entity.ThuongHieu;
+import com.sport_store.backend.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,4 +35,11 @@ public interface SanPhamService {
     List<ThuongHieu> getAllThuongHieu();
     List<DanhMuc> getAllDanhMuc();
     List<BoMon> getAllBoMon();
+
+    List<Mau> getAllMau();
+    List<Size> getAllSize();
+
+    int createBienTheSanPham(int sanPhamId, int mauId, int sizeId, int soLuong, MultipartFile hinhAnh);
+    int updateBienTheSanPham(int id, String tenBienThe, int sanPhamId, int mauId, int sizeId, int soLuong, MultipartFile hinhAnh);
+    int deleteBienTheSanPham(int id);
 }

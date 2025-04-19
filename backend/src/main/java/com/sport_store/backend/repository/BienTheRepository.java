@@ -12,4 +12,8 @@ public interface BienTheRepository extends JpaRepository<BienThe, Integer> {
     @Query(value = "SELECT b.* FROM bienthe b " +
             "WHERE b.sanpham = :sanPhamId", nativeQuery = true)
     List<BienThe> findAllBySanPhamId(@Param("sanPhamId") int sanPhamId);
+
+    boolean existsBySanPham_IdAndMau_IdAndSize_Id(int sanPhamId, int mauId, int sizeId);
+
+    boolean existsBySanPham_IdAndMau_Id(int sanPhamId, int mauId);
 }
