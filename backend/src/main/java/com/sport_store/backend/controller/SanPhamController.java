@@ -57,10 +57,12 @@ public class SanPhamController {
         List<DanhMuc> dsDanhMuc = sanPhamService.getAllDanhMuc();
         List<ThuongHieu> dsThuongHieu = sanPhamService.getAllThuongHieu();
         List<BoMon> dsBoMon = sanPhamService.getAllBoMon();
+        List<NhaCungCap> dsNhaCungCap = sanPhamService.getAllNhaCungCap();
         DsThongTinSPDTO dsThongTinSPDTO = new DsThongTinSPDTO();
         dsThongTinSPDTO.setDsDanhMuc(dsDanhMuc);
         dsThongTinSPDTO.setDsThuongHieu(dsThuongHieu);
         dsThongTinSPDTO.setDsBoMon(dsBoMon);
+        dsThongTinSPDTO.setDsNhaCungCap(dsNhaCungCap);
         return ResponseEntity.ok(dsThongTinSPDTO);
     }
 
@@ -190,6 +192,78 @@ public class SanPhamController {
             return ResponseEntity.ok(new savedSanPhamResponseDTO("Xóa biến thể sản phẩm thành công", signal));
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xóa biến thể sản phẩm");
+        }
+    }
+
+    public record thuongHieuDTO(String tenThuongHieu) {}
+    public record danhMucDTO(String loai) {}
+    public record boMonDTO(String tenBoMon) {}
+    public record mauDTO(String tenMau) {}
+    public record sizeDTO(String tenSize) {}
+
+    @PostMapping("/thuonghieu")
+    public ResponseEntity<?> createThuongHieu(@RequestBody thuongHieuDTO thuongHieuDTO) {
+        int signal = sanPhamService.createThuongHieu(thuongHieuDTO.tenThuongHieu);
+        if (signal == -1) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Tên thương hiệu đã tồn tại");
+        }
+        if (signal > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Thêm thương hiệu thành công", signal));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi thêm thương hiệu");
+        }
+    }
+
+    @PostMapping("/bomon")
+    public ResponseEntity<?> createBoMon(@RequestBody boMonDTO boMonDTO) {
+        int signal = sanPhamService.createBoMon(boMonDTO.tenBoMon);
+        if (signal == -1) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Tên bộ môn đã tồn tại");
+        }
+        if (signal > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Thêm bộ môn thành công", signal));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi thêm bộ môn");
+        }
+    }
+
+    @PostMapping("/danhmuc")
+    public ResponseEntity<?> createLoaiSanPham(@RequestBody danhMucDTO danhMucDTO) {
+        int signal = sanPhamService.createDanhMuc(danhMucDTO.loai);
+        if (signal == -1) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Tên loại sản phẩm đã tồn tại");
+        }
+        if (signal > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Thêm loại sản phẩm thành công", signal));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi thêm loại sản phẩm");
+        }
+    }
+
+    @PostMapping("/size")
+    public ResponseEntity<?> createSize(@RequestBody sizeDTO size) {
+        int signal = sanPhamService.createSize(size.tenSize);
+        if (signal == -1) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Size đã tồn tại");
+        }
+        if (signal > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Thêm size thành công", signal));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi thêm size");
+        }
+    }
+
+    @PostMapping("/mau")
+    public ResponseEntity<?> createMau(@RequestBody mauDTO mau) {
+        int signal = sanPhamService.createMau(mau.tenMau);
+        if (signal == -1) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Màu đã tồn tại");
+        }
+        if (signal > 0) {
+            return ResponseEntity.ok(new savedSanPhamResponseDTO("Thêm màu thành công", signal));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi thêm màu");
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.sport_store.backend.entity;
 
+import com.sport_store.backend.entity.Enum.TrangThaiHoaDon;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,10 @@ public class NhapHang {
 
     @Column(name = "tonggianhap")
     private int tongGiaNhap;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "trangthai")
+    private TrangThaiHoaDon trangThai;
 
     @ManyToOne
     @JoinColumn(name = "nhacungcap")

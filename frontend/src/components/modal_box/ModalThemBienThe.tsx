@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {SizeType, MauType, ProductType} from "../../util/types/ProductTypes";
 import {useNotification} from '../../hook/useNotification2.tsx';
+import {PRODUCT_API_URL} from "../../util/Constant.tsx";
+import ModalThemBoMon from "./ModalThemBoMon.tsx";
+import ModalThemMau from "./ModalThemMau.tsx";
+import ModalThemSize from "./ModalThemSize.tsx";
 
 type Props = {
     show: boolean;
@@ -21,6 +25,8 @@ const ModalThemBienThe = ({ show, handleClose, handleAdd, dsSize, dsMau, sanPham
     });
     const [previewImage, setPreviewImage] = useState<string>("");
     const {showNotification} = useNotification();
+    const [showModalThemMau, setShowModalThemMau] = useState(false);
+    const [showModalThemSize, setShowModalThemSize] = useState(false);
 
     useEffect(() => {
         if (show) {
@@ -100,22 +106,28 @@ const ModalThemBienThe = ({ show, handleClose, handleAdd, dsSize, dsMau, sanPham
 
                     {sanPham?.danhMuc.loai !== "Vợt" && (<Form.Group className="mb-2">
                         <Form.Label>Size</Form.Label>
-                        <Form.Select name="sizeId" value={form.sizeId} onChange={handleChange}>
-                            <option value="">-- Chọn size --</option>
-                            {dsSize.map(size => (
-                                <option key={size.id} value={size.id}>{size.size}</option>
-                            ))}
-                        </Form.Select>
+                        <div className="d-flex gap-2">
+                            <Form.Select name="sizeId" value={form.sizeId} onChange={handleChange}>
+                                <option value="">-- Chọn size --</option>
+                                {dsSize.map(size => (
+                                    <option key={size.id} value={size.id}>{size.size}</option>
+                                ))}
+                            </Form.Select>
+                            <Button variant="outline-primary" onClick={() => setShowModalThemSize(true)}>+</Button>
+                        </div>
                     </Form.Group>)}
 
                     <Form.Group className="mb-2">
                         <Form.Label>Màu</Form.Label>
-                        <Form.Select name="mauId" value={form.mauId} onChange={handleChange}>
-                            <option value="">-- Chọn màu --</option>
-                            {dsMau.map(mau => (
-                                <option key={mau.id} value={mau.id}>{mau.tenMau}</option>
-                            ))}
-                        </Form.Select>
+                        <div className="d-flex gap-2">
+                            <Form.Select name="mauId" value={form.mauId} onChange={handleChange}>
+                                <option value="">-- Chọn màu --</option>
+                                {dsMau.map(mau => (
+                                    <option key={mau.id} value={mau.id}>{mau.tenMau}</option>
+                                ))}
+                            </Form.Select>
+                            <Button variant="outline-primary" onClick={() => setShowModalThemMau(true)}>+</Button>
+                        </div>
                     </Form.Group>
 
                     <Form.Group className="mb-2">
@@ -137,6 +149,56 @@ const ModalThemBienThe = ({ show, handleClose, handleAdd, dsSize, dsMau, sanPham
                 <Button variant="secondary" onClick={handleClose}>Hủy</Button>
                 <Button variant="primary" onClick={handleSubmit}>Thêm biến thể</Button>
             </Modal.Footer>
+
+            <ModalThemMau
+                show={showModalThemMau}
+                onHide={() => setShowModalThemMau(false)}
+                onSave={async (tenMau) => {
+                    try {
+                        const response = await fetch(`${PRODUCT_API_URL}/mau`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ tenMau: tenMau }),
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.text();
+                            throw new Error(errorData);
+                        }
+                        setShowModalThemMau(false);
+                        window.location.reload();
+                    } catch (error) {
+                        console.error("Error adding mau:", error);
+                        showNotification("Đã có lỗi xảy ra khi thêm màu!", "error");
+                    }
+                }}
+            />
+
+            <ModalThemSize
+                show={showModalThemSize}
+                onHide={() => setShowModalThemSize(false)}
+                onSave={async (tenSize) => {
+                    try {
+                        const response = await fetch(`${PRODUCT_API_URL}/size`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ tenSize: tenSize }),
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.text();
+                            throw new Error(errorData);
+                        }
+                        setShowModalThemSize(false);
+                        window.location.reload();
+                    } catch (error) {
+                        console.error("Error adding size:", error);
+                        showNotification("Đã có lỗi xảy ra khi thêm size!", "error");
+                    }
+                }}
+            />
         </Modal>
     );
 };

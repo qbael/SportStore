@@ -50,6 +50,15 @@ CREATE TABLE bomon
     tenbomon NVARCHAR(255)
 );
 
+CREATE TABLE nhacungcap
+(
+    id     INT PRIMARY KEY AUTO_INCREMENT,
+    email  NVARCHAR(255),
+    ten    NVARCHAR(255),
+    diachi NVARCHAR(255),
+    sdt    INT
+);
+
 CREATE TABLE sanpham
 (
     id         INT PRIMARY KEY AUTO_INCREMENT,
@@ -62,9 +71,11 @@ CREATE TABLE sanpham
     thuonghieu INT,
     danhmuc    INT,
     bomon      INT,
+    ncc        INT DEFAULT NULL,
     FOREIGN KEY (thuonghieu) REFERENCES thuonghieu (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (danhmuc) REFERENCES danhmuc (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (bomon) REFERENCES bomon (id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (bomon) REFERENCES bomon (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (ncc) REFERENCES nhacungcap (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE mau
@@ -103,15 +114,6 @@ CREATE TABLE cthoadon
     gianhap INT,
     FOREIGN KEY (hoadon) REFERENCES hoadon (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (bienthe) REFERENCES bienthe (id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE nhacungcap
-(
-    id     INT PRIMARY KEY AUTO_INCREMENT,
-    email  NVARCHAR(255),
-    ten    NVARCHAR(255),
-    diachi NVARCHAR(255),
-    sdt    INT
 );
 
 CREATE TABLE chucnang
@@ -158,6 +160,7 @@ CREATE TABLE nhaphang
     ngay        DATE DEFAULT (CURRENT_DATE),
     tonggianhap INT,
     nhacungcap  INT,
+    trangthai   ENUM ('DANGXULY', 'DAHUY', 'DANGGIAO', 'DAGIAO') DEFAULT 'DANGXULY',
     FOREIGN KEY (nhacungcap) REFERENCES nhacungcap (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (nhanvien) REFERENCES nhanvien (id) ON UPDATE CASCADE ON DELETE CASCADE
 );

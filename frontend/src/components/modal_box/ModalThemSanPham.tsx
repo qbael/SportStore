@@ -3,16 +3,20 @@ import {
     Modal, Button, Form, Row, Col
 } from "react-bootstrap";
 
-import {boMonType, danhMucType, thuongHieuType} from "../../util/types/ProductTypes.tsx";
+import {BoMonType, DanhMucType, thuongHieuType} from "../../util/types/ProductTypes.tsx";
 import {useNotification} from "../../hook/useNotification2.tsx";
+import ModalThemDanhMuc from "./ModalThemDanhMuc.tsx";
+import ModalThemThuongHieu from "./ModalThemThuongHieu.tsx";
+import ModalThemBoMon from "./ModalThemBoMon.tsx";
+import {PRODUCT_API_URL} from "../../util/Constant.tsx";
 
 type Props = {
     show: boolean;
     handleClose: () => void;
     handleSave: (product: FormData) => void;
     dsThuongHieu: thuongHieuType[] | undefined;
-    dsDanhMuc: danhMucType[] | undefined;
-    dsBoMon: boMonType[] | undefined;
+    dsDanhMuc: DanhMucType[] | undefined;
+    dsBoMon: BoMonType[] | undefined;
 };
 
 const ModalThemSanPham = ({
@@ -33,6 +37,10 @@ const ModalThemSanPham = ({
     const [boMonId, setBoMonId] = useState("");
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const {showNotification} = useNotification()
+
+    const [showModalDanhMuc, setShowModalDanhMuc] = useState(false);
+    const [showModalThuongHieu, setShowModalThuongHieu] = useState(false);
+    const [showModalBoMon, setShowModalBoMon] = useState(false);
 
     const handleSubmit = () => {
         if(!tenSanPham || !giaNhap || !giaBan || !moTa || !thuongHieuId || !danhMucId || !boMonId || !hinhAnh) {
@@ -157,47 +165,57 @@ const ModalThemSanPham = ({
 
                     <Form.Group controlId="thuongHieu" className="mb-3">
                         <Form.Label>Thương hiệu</Form.Label>
-                        <Form.Select
-                            value={thuongHieuId}
-                            onChange={(e) => setThuongHieuId(e.target.value)}
-                        >
-                            <option value="">Chọn thương hiệu</option>
-                            {dsThuongHieu?.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                    {item.tenThuongHieu}
-                                </option>
-                            ))}
-                        </Form.Select>
+                        <div className="d-flex gap-2">
+                            <Form.Select
+                                value={thuongHieuId}
+                                onChange={(e) => setThuongHieuId(e.target.value)}
+                            >
+                                <option value="">Chọn thương hiệu</option>
+                                {dsThuongHieu?.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.tenThuongHieu}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                            <Button variant="outline-primary" onClick={() => setShowModalThuongHieu(true)}>+</Button>
+                        </div>
                     </Form.Group>
 
                     <Form.Group controlId="danhMuc" className="mb-3">
                         <Form.Label>Danh mục</Form.Label>
-                        <Form.Select
-                            value={danhMucId}
-                            onChange={(e) => setDanhMucId(e.target.value)}
-                        >
-                            <option value="">Chọn danh mục</option>
-                            {dsDanhMuc?.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                    {item.loai}
-                                </option>
-                            ))}
-                        </Form.Select>
+                        <div className="d-flex gap-2">
+                            <Form.Select
+                                value={danhMucId}
+                                onChange={(e) => setDanhMucId(e.target.value)}
+                            >
+                                <option value="">Chọn danh mục</option>
+                                {dsDanhMuc?.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.loai}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                            <Button variant="outline-primary" onClick={() => setShowModalDanhMuc(true)}>+</Button>
+                        </div>
                     </Form.Group>
+
 
                     <Form.Group controlId="boMon" className="mb-3">
                         <Form.Label>Bộ môn</Form.Label>
-                        <Form.Select
-                            value={boMonId}
-                            onChange={(e) => setBoMonId(e.target.value)}
-                        >
-                            <option value="">Chọn bộ môn</option>
-                            {dsBoMon?.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                    {item.tenBoMon}
-                                </option>
-                            ))}
-                        </Form.Select>
+                        <div className="d-flex gap-2">
+                            <Form.Select
+                                value={boMonId}
+                                onChange={(e) => setBoMonId(e.target.value)}
+                            >
+                                <option value="">Chọn bộ môn</option>
+                                {dsBoMon?.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.tenBoMon}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                            <Button variant="outline-primary" onClick={() => setShowModalBoMon(true)}>+</Button>
+                        </div>
                     </Form.Group>
                 </Form>
             </Modal.Body>
@@ -209,6 +227,80 @@ const ModalThemSanPham = ({
                     Lưu sản phẩm
                 </Button>
             </Modal.Footer>
+            <ModalThemDanhMuc
+                show={showModalDanhMuc}
+                onHide={() => setShowModalDanhMuc(false)}
+                onSave={async (newLoai) => {
+                    try {
+                        const response = await fetch(`${PRODUCT_API_URL}/danhmuc`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ loai: newLoai }),
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.text();
+                            throw new Error(`Lỗi khi tạo danh mục: ${errorData}`);
+                        }
+                        showNotification("Thêm danh mục thành công!", "success");
+                        window.location.reload();
+                    } catch (error) {
+                        console.error("Lỗi khi tạo danh mục:", error);
+                        showNotification("Lỗi khi tạo danh mục!", "error");
+                    }
+                }}
+            />
+
+            <ModalThemThuongHieu
+                show={showModalThuongHieu}
+                onHide={() => setShowModalThuongHieu(false)}
+                onSave={async (tenThuongHieu) => {
+                    try {
+                        const response = await fetch(`${PRODUCT_API_URL}/thuonghieu`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ tenThuongHieu: tenThuongHieu }),
+                        })
+                        if (!response.ok){
+                            const errorData = await response.text();
+                            throw new Error(`Lỗi khi tạo thương hiệu: ${errorData}`);
+                        }
+                        showNotification("Thêm thương hiệu thành công!", "success");
+                        window.location.reload();
+                    } catch (error : any) {
+                        showNotification("Lỗi khi tạo thương hiệu: " + error.message, "error");
+                    }
+                }}
+            />
+
+            <ModalThemBoMon
+                show={showModalBoMon}
+                onHide={() => setShowModalBoMon(false)}
+                onSave={async (tenBoMon) => {
+                    try {
+                        const response = await fetch(`${PRODUCT_API_URL}/bomon`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ tenBoMon: tenBoMon }),
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.text();
+                            throw new Error(`Lỗi khi tạo bộ môn: ${errorData}`);
+                        }
+                        showNotification("Thêm bộ môn thành công!", "success");
+                        window.location.reload();
+                    } catch (error) {
+                        console.error("Lỗi khi tạo bộ môn:", error);
+                        showNotification("Lỗi khi tạo bộ môn!", "error");
+                    }
+                }}
+            />
+
         </Modal>
     );
 };

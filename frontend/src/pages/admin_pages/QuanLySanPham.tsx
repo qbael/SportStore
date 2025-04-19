@@ -202,6 +202,7 @@ const QuanLySanPham = () => {
                             <option value="boMon">Bộ môn</option>
                             <option value="danhMuc">Phân loại</option>
                             <option value="trangThai">Trạng thái</option>
+                            <option value="nhaCungCap">Nhà cung cấp</option>
                         </Form.Select>
                     </Form.Group>
                     {state.searchType === "tenSanPham" && (
@@ -221,6 +222,7 @@ const QuanLySanPham = () => {
                                 onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
                                 defaultValue={state.keyword}
                             >
+                                <option value={""}>--Chọn--</option>
                                 {state.dsFull?.dsThuongHieu.map((item, index) => (
                                     <option key={index} value={item.id}>{item.tenThuongHieu}</option>
                                 ))}
@@ -234,6 +236,7 @@ const QuanLySanPham = () => {
                                 onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
                                 defaultValue={state.keyword}
                             >
+                                <option value={""}>--Chọn--</option>
                                 {state.dsFull?.dsBoMon.map((item, index) => (
                                     <option key={index} value={item.id}>{item.tenBoMon}</option>
                                 ))}
@@ -247,6 +250,7 @@ const QuanLySanPham = () => {
                                 onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
                                 defaultValue={state.keyword}
                             >
+                                <option value={""}>--Chọn--</option>
                                 {state.dsFull?.dsDanhMuc.map((item, index) => (
                                     <option key={index} value={item.id}>{item.loai}</option>
                                 ))}
@@ -260,8 +264,23 @@ const QuanLySanPham = () => {
                                 onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
                                 defaultValue={state.keyword}
                             >
+                                <option value={""}>--Chọn--</option>
                                 <option value={"true"}>Đang kinh doanh</option>
                                 <option value={"false"}>Ngừng kinh doanh</option>
+                            </Form.Select>
+                        </Form.Group>
+                    )}
+
+                    {state.searchType === "nhaCungCap" && (
+                        <Form.Group controlId="searchKeyword">
+                            <Form.Select
+                                onChange={(e) => dispatch({ type: 'SET_KEYWORD', payload: e.target.value })}
+                                defaultValue={state.keyword}
+                            >
+                                <option value={""}>--Chọn--</option>
+                                {state.dsFull?.dsNhaCungCap.map((item, index) => (
+                                    <option key={index} value={item.id}>{item.tenNCC}</option>
+                                ))}
                             </Form.Select>
                         </Form.Group>
                     )}
@@ -389,9 +408,7 @@ const QuanLySanPham = () => {
                         <th>Phân loại</th>
                         <th>Bộ môn</th>
                         <th>Trạng thái</th>
-                        {/*{hasPermission(HanhDong.XEM) && (*/}
-                        {/*    <th></th>*/}
-                        {/*)}*/}
+                        <th>Nhà cung cấp</th>
                         {hasPermission(HanhDong.SUA) && (
                             <th></th>
                         )}
@@ -417,6 +434,7 @@ const QuanLySanPham = () => {
                             <td>{item.danhMuc.loai}</td>
                             <td>{item.boMon.tenBoMon}</td>
                             <td className={`fs-6 ${item.trangThai ? '': 'text-danger'}`} >{item.trangThai ? "Đang kinh doanh" : "Dừng kinh doanh"}</td>
+                            <td>{item.nhaCungCap.tenNCC}</td>
                             {hasPermission(HanhDong.SUA) && (
                                 <td>
                                     <Button className={"btn btn-warning"}

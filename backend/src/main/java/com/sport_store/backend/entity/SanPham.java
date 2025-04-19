@@ -3,6 +3,7 @@ package com.sport_store.backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Getter
 @Setter
@@ -46,4 +47,9 @@ public class SanPham {
     @ManyToOne
     @JoinColumn(name = "bomon")
     private BoMon boMon;
+
+    @ColumnDefault("NULL")
+    @ManyToOne
+    @JoinColumn(name = "ncc")
+    private NhaCungCap nhaCungCap;
 }

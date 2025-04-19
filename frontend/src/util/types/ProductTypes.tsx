@@ -1,11 +1,19 @@
-export type danhMucType = {
+export type DanhMucType = {
     id: number;
     loai: string;
 }
 
-export type boMonType = {
+export type BoMonType = {
     id: number;
     tenBoMon: string;
+}
+
+export type NhaCungCapType = {
+    id: number;
+    tenNCC: string;
+    diaChi: string;
+    sdt: string;
+    email: string;
 }
 
 export type thuongHieuType = {
@@ -21,9 +29,10 @@ export type ProductType = {
     giaNhap?: number;
     moTa: string;
     trangThai: boolean;
-    danhMuc: danhMucType;
+    danhMuc: DanhMucType;
     thuongHieu: thuongHieuType
-    boMon: boMonType
+    boMon: BoMonType
+    nhaCungCap: NhaCungCapType;
 }
 
 export type SizeType = {
@@ -52,6 +61,7 @@ export type ChiTietSanPhamType = {
 
 export type dsFull = {
     dsThuongHieu: thuongHieuType[];
-    dsDanhMuc: danhMucType[];
-    dsBoMon: boMonType[];
+    dsDanhMuc: DanhMucType[];
+    dsBoMon: BoMonType[];
+    dsNhaCungCap: NhaCungCapType[];
 }

@@ -1,5 +1,6 @@
 package com.sport_store.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,8 +28,12 @@ public class NhaCungCap {
     private String diaChi;
 
     @Column(name = "email")
+    private String email;
+
+    @Column(name = "sdt")
     private String sdt;
 
     @OneToMany(mappedBy = "nhaCungCap", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<NhapHang> dsNhapHang;
 }

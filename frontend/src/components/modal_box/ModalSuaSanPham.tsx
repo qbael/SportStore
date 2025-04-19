@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import {ProductType, danhMucType, thuongHieuType, boMonType} from "../../util/types/ProductTypes";
+import {ProductType, DanhMucType, thuongHieuType, BoMonType} from "../../util/types/ProductTypes";
 import {useNotification} from "../../hook/useNotification2";
 import {PRODUCT_IMAGE_BASE_PATH} from "../../util/Constant.tsx";
 
@@ -9,9 +9,9 @@ type Props = {
     handleClose: () => void;
     handleUpdate: (formData: FormData) => void;
     sanPham: ProductType | null;
-    dsDanhMuc: danhMucType[] | undefined;
+    dsDanhMuc: DanhMucType[] | undefined;
     dsThuongHieu: thuongHieuType[] | undefined;
-    dsBoMon: boMonType[] | undefined;
+    dsBoMon: BoMonType[] | undefined;
 };
 
 const ModalSuaSanPham = ({
@@ -34,6 +34,7 @@ const ModalSuaSanPham = ({
         thuongHieuId: "",
         boMonId: "",
         hinhAnh: null as File | null,
+        nhaCungCap: ""
     });
     const {showNotification} = useNotification();
     const [previewImage, setPreviewImage] = useState<string>("");
@@ -51,6 +52,7 @@ const ModalSuaSanPham = ({
                 thuongHieuId: sanPham.thuongHieu.id.toString(),
                 boMonId: sanPham.boMon.id.toString(),
                 hinhAnh: null,
+                nhaCungCap: sanPham.nhaCungCap.tenNCC
             });
             const imageUrl = `${PRODUCT_IMAGE_BASE_PATH}${sanPham.hinhAnh}`;
             setPreviewImage(imageUrl);
@@ -214,6 +216,16 @@ const ModalSuaSanPham = ({
                                 <option key={b.id} value={b.id}>{b.tenBoMon}</option>
                             ))}
                         </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-2">
+                        <Form.Label>Nhà cung cấp</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="id"
+                            disabled={true}
+                            value={form.nhaCungCap}
+                            readOnly
+                        />
                     </Form.Group>
                     <Form.Group className="mb-2">
                         <Form.Label>Hình ảnh</Form.Label>

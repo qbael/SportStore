@@ -138,7 +138,7 @@ const ModalChiTietSanPham = ({
                     <p><strong>Giá bán:</strong> {formatPrice(sanPham.giaBan || 0)}</p>
                     <p><strong>Giá nhập:</strong> {formatPrice(sanPham.giaNhap || 0)}</p>
                     <p><strong>Trạng thái:</strong> {sanPham.trangThai ? "Đang kinh doanh" : "Ngừng kinh doanh"}</p>
-
+                    <p><strong>Nhà cung cấp:</strong> {sanPham.nhaCungCap.tenNCC}</p>
                     <h5 className="mt-3">Danh sách biến thể</h5>
                     <Table bordered hover responsive className="text-center mt-2">
                         <thead>

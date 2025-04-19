@@ -1,5 +1,6 @@
 package com.sport_store.backend.service.service_interface;
 
+import ch.qos.logback.core.model.INamedModel;
 import com.sport_store.backend.dto.ChiTietSanPhamDTO;
 import com.sport_store.backend.entity.*;
 import org.springframework.data.domain.Page;
@@ -35,9 +36,17 @@ public interface SanPhamService {
     List<ThuongHieu> getAllThuongHieu();
     List<DanhMuc> getAllDanhMuc();
     List<BoMon> getAllBoMon();
+    List<NhaCungCap> getAllNhaCungCap();
+
+    int createThuongHieu(String tenThuongHieu);
+    int createDanhMuc(String tenDanhMuc);
+    int createBoMon(String tenBoMon);
 
     List<Mau> getAllMau();
     List<Size> getAllSize();
+
+    int createMau(String tenMau);
+    int createSize(String tenSize);
 
     int createBienTheSanPham(int sanPhamId, int mauId, int sizeId, int soLuong, MultipartFile hinhAnh);
     int updateBienTheSanPham(int id, String tenBienThe, int sanPhamId, int mauId, int sizeId, int soLuong, MultipartFile hinhAnh);

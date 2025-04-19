@@ -34,6 +34,7 @@ public class SanPhamServiceImplement implements SanPhamService {
     private final CTNhapHangRepository ctNhapHangRepository;
     private final MauRepository mauRepository;
     private final SizeRepository sizeRepository;
+    private final NhaCungCapRepository nhaCungCapRepository;
 
     public SanPhamServiceImplement(SanPhamRepository sanPhamRepository,
                                    BienTheRepository bienTheRepository,
@@ -43,7 +44,8 @@ public class SanPhamServiceImplement implements SanPhamService {
                                    CTHoaDonRepository ctHoaDonRepository,
                                    CTNhapHangRepository ctNhapHangRepository,
                                    MauRepository mauRepository,
-                                   SizeRepository sizeRepository) {
+                                   SizeRepository sizeRepository,
+                                   NhaCungCapRepository nhaCungCapRepository) {
         this.sanPhamRepository = sanPhamRepository;
         this.bienTheRepository = bienTheRepository;
         this.thuongHieuRepository = thuongHieuRepository;
@@ -53,6 +55,7 @@ public class SanPhamServiceImplement implements SanPhamService {
         this.ctNhapHangRepository = ctNhapHangRepository;
         this.mauRepository = mauRepository;
         this.sizeRepository = sizeRepository;
+        this.nhaCungCapRepository = nhaCungCapRepository;
     }
 
     public List<SanPham> getAllSanPham() {
@@ -117,7 +120,7 @@ public class SanPhamServiceImplement implements SanPhamService {
 
                 if (search != null && !search.isEmpty()) {
                     switch (searchBy) {
-                        case "boMon", "danhMuc", "thuongHieu" ->
+                        case "boMon", "danhMuc", "thuongHieu", "nhaCungCap" ->
                                 predicate = builder.and(predicate, builder.equal(root.get(searchBy).get("id"), search));
                         case "tenSanPham" ->
                                 predicate = builder.and(predicate, builder.like(root.get(searchBy), "%" + search + "%"));
@@ -262,6 +265,39 @@ public class SanPhamServiceImplement implements SanPhamService {
     }
 
     @Override
+    public List<NhaCungCap> getAllNhaCungCap() { return nhaCungCapRepository.findAll(); }
+
+    @Override
+    public int createThuongHieu(String tenThuongHieu) {
+        if (thuongHieuRepository.existsByTenThuongHieu(tenThuongHieu)) {
+            return -1;
+        }
+        ThuongHieu thuongHieu = new ThuongHieu();
+        thuongHieu.setTenThuongHieu(tenThuongHieu);
+        return thuongHieuRepository.save(thuongHieu).getId();
+    }
+
+    @Override
+    public int createDanhMuc(String tenDanhMuc) {
+        if (danhMucRepository.existsByLoai(tenDanhMuc)) {
+            return -1;
+        }
+        DanhMuc danhMuc = new DanhMuc();
+        danhMuc.setLoai(tenDanhMuc);
+        return danhMucRepository.save(danhMuc).getId();
+    }
+
+    @Override
+    public int createBoMon(String tenBoMon) {
+        if (boMonRepository.existsByTenBoMon(tenBoMon)) {
+            return -1;
+        }
+        BoMon boMon = new BoMon();
+        boMon.setTenBoMon(tenBoMon);
+        return boMonRepository.save(boMon).getId();
+    }
+
+    @Override
     public List<ThuongHieu> getAllThuongHieu() {
         return thuongHieuRepository.findAll();
     }
@@ -299,6 +335,26 @@ public class SanPhamServiceImplement implements SanPhamService {
     @Override
     public List<Size> getAllSize() {
         return sizeRepository.findAll();
+    }
+
+    @Override
+    public int createMau(String tenMau) {
+        if (mauRepository.existsByTenMau(tenMau)) {
+            return -1;
+        }
+        Mau mau = new Mau();
+        mau.setTenMau(tenMau);
+        return mauRepository.save(mau).getId();
+    }
+
+    @Override
+    public int createSize(String tenSize) {
+        if (sizeRepository.existsBySize(tenSize)) {
+            return -1;
+        }
+        Size size = new Size();
+        size.setSize(tenSize);
+        return sizeRepository.save(size).getId();
     }
 
     @Override
