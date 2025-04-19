@@ -199,9 +199,9 @@ export default function Navbar() {
                 <Link to="/account" className="btn btn-icon" title="Tài khoản">
                   <i className="fas fa-user"></i>
                 </Link>
-                <Link to="/wishlist" className="btn btn-icon" title="Yêu thích">
+                {/* <Link to="/wishlist" className="btn btn-icon" title="Yêu thích">
                   <i className="fas fa-heart"></i>
-                </Link>
+                </Link> */}
                 <Link to="/cart" className="btn btn-icon" title="Giỏ hàng">
                   <i className="fas fa-shopping-cart"></i>
                 </Link>
