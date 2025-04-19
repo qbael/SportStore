@@ -170,9 +170,16 @@ const ProductCarousel: React.FC = () => {
      
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="fw-bold text-uppercase">Khuyến mãi đặc biệt</h2>
-        <a href="#all-products" className="text-dark text-decoration-none fw-bold">
+        {/* <a href="#all-products" className="text-dark text-decoration-none fw-bold">
           Xem tất cả
-        </a>
+        </a> */}
+        <div
+            className="text-dark text-decoration-none fw-bold"
+            onClick={() => navigate('/product')}
+            style={{ cursor: 'pointer' }}
+          >
+            Xem tất cả
+        </div>
       </div>
       <div className="d-flex flex-wrap gap-2 mb-4">
         {categories.map((category) => (
