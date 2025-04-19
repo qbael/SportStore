@@ -6,6 +6,7 @@ import { FaHeart } from 'react-icons/fa';
 import { Container, Button } from 'react-bootstrap';
 import '../../css/ProductCarousel.css';
 import { PRODUCT_IMAGE_BASE_PATH } from '../../util/Constant';
+import { useAuth } from '../../hook/useAuth.tsx'; // Thêm useAuth để lấy user
 
 // Định nghĩa type cho Product
 type ProductType = {
@@ -55,20 +56,40 @@ const formatCurrency = (value: number): string => {
 };
 
 const ProductCarousel: React.FC = () => {
+  const { user } = useAuth(); // Lấy thông tin user từ AuthContext
   const [products, setProducts] = useState<ProductType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<number[]>(() => {
-    const saved = localStorage.getItem('favorites');
+    // Tạo key động dựa trên username
+    const favoritesKey = user ? `favorites_${user.username}` : 'favorites_guest';
+    const saved = localStorage.getItem(favoritesKey);
     return saved ? JSON.parse(saved) : [];
   });
   const [selectedCategory, setSelectedCategory] = useState<string>('Hot');
   const navigate = useNavigate();
 
-  // Lưu favorites vào localStorage
+  // Lưu favorites vào localStorage khi favorites hoặc user thay đổi
   useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
+    const favoritesKey = user ? `favorites_${user.username}` : 'favorites_guest';
+    try {
+      localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+    } catch (error) {
+      console.error('Lỗi khi lưu favorites vào localStorage:', error);
+    }
+  }, [favorites, user]);
+
+  // Tải lại favorites khi user thay đổi (đăng nhập/đăng xuất)
+  useEffect(() => {
+    const favoritesKey = user ? `favorites_${user.username}` : 'favorites_guest';
+    try {
+      const saved = localStorage.getItem(favoritesKey);
+      setFavorites(saved ? JSON.parse(saved) : []);
+    } catch (error) {
+      console.error('Lỗi khi đọc favorites từ localStorage:', error);
+      setFavorites([]);
+    }
+  }, [user]);
 
   // Gọi API lấy sản phẩm
   useEffect(() => {
@@ -85,11 +106,10 @@ const ProductCarousel: React.FC = () => {
           throw new Error(`Lỗi HTTP! trạng thái: ${response.status}`);
         }
         const ress = await response.json();
-        // console.log('ress:', ress.content);
         const mappedProducts: ProductType[] = ress.content.map((item: any) => {
           const discountPercent =
             item.giaNhap && item.giaNhap > 0
-              ? (item.giaNhap / item.giaBan)*100
+              ? (item.giaNhap / item.giaBan) * 100
               : 0;
           return {
             id: item.id,
@@ -161,24 +181,16 @@ const ProductCarousel: React.FC = () => {
     return <div className="text-center my-5">Không có sản phẩm nào.</div>;
   }
 
-  
-//  console.log('products:', products);
-   
-
   return (
     <div className="container my-5">
-     
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="fw-bold text-uppercase">Khuyến mãi đặc biệt</h2>
-        {/* <a href="#all-products" className="text-dark text-decoration-none fw-bold">
-          Xem tất cả
-        </a> */}
         <div
-            className="text-dark text-decoration-none fw-bold"
-            onClick={() => navigate('/product')}
-            style={{ cursor: 'pointer' }}
-          >
-            Xem tất cả
+          className="text-dark text-decoration-none fw-bold"
+          onClick={() => navigate('/product')}
+          style={{ cursor: 'pointer' }}
+        >
+          Xem tất cả
         </div>
       </div>
       <div className="d-flex flex-wrap gap-2 mb-4">
