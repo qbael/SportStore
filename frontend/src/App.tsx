@@ -34,6 +34,7 @@ const Layout = () => {
                     <Route path='/cart' element={<Cart/>}/>
                     <Route path='/account' element={<Login/>}/>
                     <Route path='/admin' element={<Admin/>}/>
+                    {/* <Route path='/admin/hoadon' element={<Admin/>}/> */}
                     <Route path='/admin/*' element={<Admin/>}/>
                     <Route path="*" element={<NotFound />} /> {/* Route mặc định cho 404 */}
                 </Routes>

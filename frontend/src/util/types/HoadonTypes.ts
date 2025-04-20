@@ -22,7 +22,7 @@ type ThongTinKhachHang = {
     id: number;
     hoTen: string;
     diaChi: string;
-    sdt: number;
+    sdt: string;
     taiKhoan: TaiKhoan;
 };
 

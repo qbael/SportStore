@@ -38,20 +38,66 @@ export default function QuanlyHoaDon() {
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
 
+    const fetchHoaDon = async () => {
+        setLoading(true);
+        try {
+            const params = new URLSearchParams({
+                page: currentPage.toString(),
+                size: pageSize.toString(),
+            });
+
+            if (selectedColumn && searchText) {
+                switch (selectedColumn) {
+                    case "ID hóa đơn":
+                        params.append("id", searchText);
+                        break;
+                    case "khách hàng":
+                        params.append("tenKhachHang", searchText);
+                        break;
+                    case "Trạng thái":
+                        params.append("trangThai", searchText);
+                        break;
+                    case "Số điện thoại":
+                        params.append("soDienThoai", searchText);
+                        break;
+                }
+            }
+
+            if (fromDate) params.append("ngayTu", fromDate);
+            if (toDate) params.append("ngayDen", toDate);
+
+            const url = `http://localhost:8080/api/hoadon/search?${params.toString()}`;
+            console.log(url);
+            const res = await fetch(url);
+            const json: ApiResponse = await res.json();
+            setHoaDons(json.data || []);
+            setTotalPages(json.totalPages || 0);
+        } catch (error) {
+            console.error("Lỗi khi gọi API:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchHoaDon();
+    }, [currentPage, pageSize]);
+
     const handleSearch = () => {
-        console.log("Tìm kiếm:", { selectedColumn, searchText });
-        // Gọi API tìm kiếm ở đây
+        setCurrentPage(0);
+        fetchHoaDon();
     };
 
     const handleFilterDate = () => {
-
+        setCurrentPage(0);
+        fetchHoaDon();
     };
 
     const handleEdit = (id: number) => {
         console.log("Sửa hóa đơn với ID:", id);
     };
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = (id: number) => {
         console.log("Xóa hóa đơn với ID:", id);
     };
 
@@ -60,26 +106,26 @@ export default function QuanlyHoaDon() {
         setShowModal(true);
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await fetch(`http://localhost:8080/api/hoadon/page?page=${currentPage}&size=${pageSize}`); // 🔁 Thay bằng API thật của bạn
-                const json: ApiResponse = await res.json();
-                setHoaDons(json.data);
-                if (totalPages !== json.totalPages) {
-                    setTotalPages(json.totalPages);
-                }
-                console.log(json.data);
-                console.log(hoaDons);
-            } catch (error) {
-                console.error("Lỗi khi gọi API:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const res = await fetch(`http://localhost:8080/api/hoadon/page?page=${currentPage}&size=${pageSize}`); // 🔁 Thay bằng API thật của bạn
+    //             const json: ApiResponse = await res.json();
+    //             setHoaDons(json.data);
+    //             if (totalPages !== json.totalPages) {
+    //                 setTotalPages(json.totalPages);
+    //             }
+    //             console.log(json.data);
+    //             console.log(hoaDons);
+    //         } catch (error) {
+    //             console.error("Lỗi khi gọi API:", error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
 
-        fetchData();
-    }, [currentPage, pageSize]); // Chỉ gọi API khi currentPage hoặc pageSize thay đổi
+    //     fetchData();
+    // }, [currentPage, pageSize]); // Chỉ gọi API khi currentPage hoặc pageSize thay đổi
 
     useEffect(() => {
         if (hoaDons.length > 0) {
@@ -104,7 +150,7 @@ export default function QuanlyHoaDon() {
                         <select name="" id="column_select" value={selectedColumn} onChange={(e) => setSelectedColumn(e.target.value)}>
                             {header_arr.map((item, index) => {
                                 return (
-                                    <option key={index} value="">{item}</option>
+                                    <option key={index} value={item}>{item}</option>
                                 )
                             }
                             )}
@@ -160,18 +206,18 @@ export default function QuanlyHoaDon() {
                                             >
                                                 Xem chi tiết
                                             </button>
-                                            <button
+                                            {/* <button
                                                 className="btn btn-warning"
                                                 style={{ marginRight: '5px' }}
                                                 onClick={() => handleEdit(item.id)}
                                             >
                                                 Sửa
-                                            </button>
+                                            </button> */}
                                             <button
                                                 className="btn btn-danger"
-                                                onClick={() => handleDelete(item.id)}
+                                                onClick={() => handleEdit(item.id)}
                                             >
-                                                Xoá
+                                                Cập nhật trạng thái
                                             </button>
                                         </td>
 

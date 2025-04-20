@@ -5,6 +5,7 @@ import com.sport_store.backend.projection.HoaDonFullProjection;
 import com.sport_store.backend.service.HoaDonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,7 +100,7 @@ public class HoaDonController {
     }
 
     @GetMapping("/search")
-    public Page<HoaDonFullProjection> searchHoaDons(
+    public ResponseEntity<Map<String, Object>> searchHoaDons(
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngay,
             @RequestParam(required = false) String tenKhachHang,
@@ -107,9 +108,31 @@ public class HoaDonController {
             @RequestParam(required = false) String soDienThoai,
             @RequestParam(required = false) Integer minTongGiaBan,
             @RequestParam(required = false) Integer maxTongGiaBan,
-            @PageableDefault(size = 10, sort = "ngay", direction = Sort.Direction.DESC) Pageable pageable) {
-        return hoaDonService.searchHoaDons(id, ngay, tenKhachHang, trangThai, soDienThoai, minTongGiaBan, maxTongGiaBan,
-                pageable);
+            @RequestParam(required = false, defaultValue = "id") String sort, // Default sort field
+            @RequestParam(required = false, defaultValue = "DESC") String sortDir, // Default sort direction
+            @PageableDefault(size = 10) Pageable pageable) {
+
+        // Tạo Sort từ tham số sort và sortDir từ request
+        Sort sortOrder = Sort.by(
+                sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sort);
+
+        // Tạo Pageable với Sort dynamic
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
+
+        // Gọi phương thức tìm kiếm hóa đơn với Pageable
+        Page<HoaDonFullProjection> page = hoaDonService.searchHoaDons(
+                id, ngay, tenKhachHang, trangThai, soDienThoai, minTongGiaBan, maxTongGiaBan, sortedPageable);
+
+        // Tạo map trả về kết quả
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", page.getContent()); // Danh sách hóa đơn
+        response.put("totalElements", page.getTotalElements());
+        response.put("totalPages", page.getTotalPages());
+        response.put("currentPage", page.getNumber());
+        response.put("pageSize", page.getSize());
+
+        // Trả về kết quả với status 200 OK
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -7,6 +7,7 @@ import QuanLySanPham from "./QuanLySanPham.tsx";
 import {useAdminContext} from "../../hook/useAdminContext.tsx";
 import {useAdminAuth} from "../../hook/useAdminAuth.tsx";
 import QuanLyHoaDon from "./QuanLyHoaDon.tsx";
+import QuanLyNhapHang from "./QuanLyNhapHang.tsx";
 
 const Admin = () => {
     const {taiKhoanNV, logout} = useAdminAuth();
@@ -44,6 +45,8 @@ const Admin = () => {
                 return <QuanLySanPham />;
             case TenChucNang.QUAN_LY_HOA_DON:
                 return <QuanLyHoaDon />;
+            case TenChucNang.QUAN_LY_NHAP_HANG:
+                return <QuanLyNhapHang />;
             default:
                 return null;
         }
