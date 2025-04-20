@@ -1,4 +1,4 @@
-import {Container, Form, Row, Table} from "react-bootstrap";
+import {Container, Row, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {useAdminContext} from "../../hook/useAdminContext.tsx";
 import {HanhDong} from "../../util/Enum.tsx";
@@ -51,28 +51,11 @@ const QuanLyQuyenHan = () => {
         setShowModal(true);
     };
 
-
-
     return (
         <Container fluid className={"w-100 h-100 rounded-3"}
                    style={{background: "linear-gradient(to right, rgb(246, 247, 244), rgb(237, 243, 230), rgb(234, 245, 234), rgb(227, 245, 227))"}}
         >
-            <Row className={"h-15 align-content-center"}>
-                <Form className="d-flex flex-wrap gap-2">
-                    <Form.Group controlId="selectSearchType">
-                        <Form.Select
-                        >
-                            <option value="tenSanPham">Tên sản phẩm</option>
-                            <option value="thuongHieu">Thương hiệu</option>
-                            <option value="boMon">Bộ môn</option>
-                            <option value="danhMuc">Phân loại</option>
-                            <option value="trangThai">Trạng thái</option>
-                            <option value="nhaCungCap">Nhà cung cấp</option>
-                        </Form.Select>
-                    </Form.Group>
-                </Form>
-            </Row>
-            <Row className={"h-85"}>
+            <Row>
                 <Table striped bordered hover className={"text-center"}
                        style={{verticalAlign: 'middle'}}
                 >
@@ -84,10 +67,11 @@ const QuanLyQuyenHan = () => {
                     </thead>
                     <tbody>
                     {Object.entries(dsChucVu ?? {}).map(([chucVu, dsNhanVien]) => (
-                            <tr key={chucVu}>
-                                <td style={{ cursor: "pointer" }}
-                                    onClick={() => handleChucVuClick(chucVu, dsNhanVien[0].chucVu.id)}
-                                >
+                            <tr key={chucVu}
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleChucVuClick(chucVu, dsNhanVien[0].chucVu.id)}
+                            >
+                                <td>
                                     {chucVu}
                                 </td>
                                 <td>

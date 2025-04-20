@@ -93,7 +93,6 @@ const QuanLySanPham = () => {
 
                 const sanPhamData = await resSanPham.json();
                 const dsData = await resDs.json();
-                console.log(dsData);
                 dispatch({ type: 'SET_DS_SANPHAM', payload: sanPhamData.content || [] });
                 dispatch({ type: 'SET_TOTAL_PAGE', payload: sanPhamData.totalPages || 0 });
                 dispatch({ type: 'SET_CURRENT_PAGE', payload: sanPhamData.number || 0 });
@@ -390,7 +389,7 @@ const QuanLySanPham = () => {
                     )}
                 </Form>
             </Row>
-            <Row className={"h-85"}>
+            <Row>
                 <Table striped bordered hover className={"text-center"}
                        style={{verticalAlign: 'middle'}}
                 >

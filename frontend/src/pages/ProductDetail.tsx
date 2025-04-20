@@ -26,7 +26,7 @@ const ProductDetail: React.FC = () => {
     const [uniqueColors, setUniqueColors] = useState<MauType[]>([]);
     const [availableSizes, setAvailableSizes] = useState<SizeType[]>([]);
     const [productImage, setProductImage] = useState<string>('');
-
+    const [soLuong, setSoLuong] = useState<number>(0);
 
     const location = useLocation();
     const id = location.pathname.split('/').pop() || '';
@@ -78,6 +78,8 @@ const ProductDetail: React.FC = () => {
           const colors = Array.from(
             new Map(chiTietSanPham.bienThe.map((bt) => [bt.mau!.id, bt.mau!])).values()
           ).sort((a, b) => a.id - b.id);
+          const tongSoLuong = chiTietSanPham.bienThe.reduce((total, bt) => total + bt.soLuongTon, 0);
+          setSoLuong(tongSoLuong);
           setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${chiTietSanPham.sanPham?.hinhAnh}`);
           setUniqueColors(colors);
         }
@@ -115,6 +117,7 @@ const ProductDetail: React.FC = () => {
 
     useEffect(() => {
         if (selectedBienThe) {
+            setSoLuong(selectedBienThe.soLuongTon);
           setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${selectedBienThe.hinhAnh}`);
         }
     }, [selectedBienThe]);
@@ -135,10 +138,13 @@ const ProductDetail: React.FC = () => {
 
             <Col xs={12} md={6}>
               <div className="d-flex justify-content-between align-items-start mb-3">
-                <h1 className="h2">
-                  {selectedBienThe ? selectedBienThe.tenBienThe : chiTietSanPham?.sanPham?.tenSanPham}
-                </h1>
+                  <h1 className="h2">
+                      {selectedBienThe ? selectedBienThe.tenBienThe : chiTietSanPham?.sanPham?.tenSanPham}
+                  </h1>
               </div>
+                <h6 className="mb-3">
+                    Số lượng: {soLuong}
+                </h6>
 
               <h2 className="mb-4 text-danger">
                 {chiTietSanPham.sanPham.giaBan?.toLocaleString('de-DE') + ' VND'}
