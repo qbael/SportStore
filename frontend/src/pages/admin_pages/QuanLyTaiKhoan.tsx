@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Button, Modal, Spinner, Alert, Form } from 'react-bootstrap';
-import { useAdminAuth } from '../../hook/useAdminAuth';
+import { useAdminContext } from '../../hook/useAdminContext.tsx'; // Import useAdminContext
 import { useNotification } from '../../hook/useNotification2';
-import { HanhDong, mapToTenChucVu } from '../../util/Enum.tsx'; // Giả định đường dẫn import
+import { HanhDong, mapToTenChucVu } from '../../util/Enum.tsx';
 
 interface NhanVien {
     id: number;
     hoTen: string;
-    ngaySinh: string; // LocalDate được chuyển thành string (YYYY-MM-DD)
+    ngaySinh: string;
     gioiTinh: boolean;
     diaChi: string;
     email: string;
@@ -22,17 +22,17 @@ interface ChucVu {
 }
 
 const QuanLyTaiKhoan: React.FC = () => {
-    const { taiKhoanNV } = useAdminAuth();
+    const { dsHanhDong } = useAdminContext(); // Lấy dsHanhDong từ context
     const { showNotification } = useNotification();
     const [nhanViens, setNhanViens] = useState<NhanVien[]>([]);
-    const [chucVus, setChucVus] = useState<ChucVu[]>([]);
+    const [chucVus, setChucVus] = useState<ChuccoVu[]>([]);
     const [selectedNhanVien, setSelectedNhanVien] = useState<NhanVien | null>(null);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [filterChucVuId, setFilterChucVuId] = useState<number>(0); // 0: Tất cả
+    const [filterChucVuId, setFilterChucVuId] = useState<number>(0);
     const [formData, setFormData] = useState({
         hoTen: '',
         ngaySinh: '',
@@ -52,6 +52,11 @@ const QuanLyTaiKhoan: React.FC = () => {
         password: '',
     });
 
+    // Hàm kiểm tra quyền
+    const hasPermission = (action: HanhDong) => {
+        return dsHanhDong?.includes(action);
+    };
+
     useEffect(() => {
         fetchChucVus();
         fetchNhanViens(filterChucVuId);
@@ -61,14 +66,13 @@ const QuanLyTaiKhoan: React.FC = () => {
         setLoading(true);
         setError(null);
         try {
-            const url = chucVuId === 0 
+            const url = chucVuId === 0
                 ? 'http://localhost:8080/api/nhanvien'
                 : `http://localhost:8080/api/nhanvien/chucvu/${chucVuId}`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `Bearer ${taiKhoanNV?.token}`,
                 },
             });
 
@@ -93,7 +97,6 @@ const QuanLyTaiKhoan: React.FC = () => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `Bearer ${taiKhoanNV?.token}`,
                 },
             });
 
@@ -185,7 +188,6 @@ const QuanLyTaiKhoan: React.FC = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `Bearer ${taiKhoanNV?.token}`,
                 },
                 body: JSON.stringify(formData),
             });
@@ -218,7 +220,6 @@ const QuanLyTaiKhoan: React.FC = () => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `Bearer ${taiKhoanNV?.token}`,
                 },
                 body: JSON.stringify(formData),
             });
@@ -249,7 +250,6 @@ const QuanLyTaiKhoan: React.FC = () => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `Bearer ${taiKhoanNV?.token}`,
                 },
             });
 
@@ -275,7 +275,6 @@ const QuanLyTaiKhoan: React.FC = () => {
             ...prev,
             [name]: name === 'gioiTinh' ? value === 'true' : name === 'chucVuId' || name === 'sdt' ? parseInt(value) || '' : value,
         }));
-        // Xóa lỗi khi người dùng bắt đầu nhập
         setErrors((prev) => ({
             ...prev,
             [name]: '',
@@ -337,13 +336,15 @@ const QuanLyTaiKhoan: React.FC = () => {
                                 })}
                             </Form.Select>
                         </Form.Group>
-                        <Button
-                            variant="primary"
-                            className="mt-4"
-                            onClick={handleOpenAddModal}
-                        >
-                            {HanhDong.THEM}
-                        </Button>
+                        {hasPermission(HanhDong.THEM) && ( // Chỉ hiển thị nút Thêm nếu có quyền
+                            <Button
+                                variant="primary"
+                                className="mt-4"
+                                onClick={handleOpenAddModal}
+                            >
+                                Thêm nhân viên
+                            </Button>
+                        )}
                     </div>
                     {error && <Alert variant="danger" className="mb-4">{error}</Alert>}
                     {loading && (
@@ -386,24 +387,28 @@ const QuanLyTaiKhoan: React.FC = () => {
                                             <td>{nhanVien.sdt}</td>
                                             <td>{tenChucVu || nhanVien.tenChucVu}</td>
                                             <td>
-                                                <Button
-                                                    variant="warning"
-                                                    size="sm"
-                                                    className="me-2"
-                                                    onClick={() => handleOpenEditModal(nhanVien)}
-                                                >
-                                                    {HanhDong.SUA}
-                                                </Button>
-                                                <Button
-                                                    variant="danger"
-                                                    size="sm"
-                                                    onClick={() => {
-                                                        setSelectedNhanVien(nhanVien);
-                                                        setShowDeleteModal(true);
-                                                    }}
-                                                >
-                                                    {HanhDong.XOA}
-                                                </Button>
+                                                {hasPermission(HanhDong.SUA) && ( // Chỉ hiển thị nút Sửa nếu có quyền
+                                                    <Button
+                                                        variant="warning"
+                                                        size="sm"
+                                                        className="me-2"
+                                                        onClick={() => handleOpenEditModal(nhanVien)}
+                                                    >
+                                                        Sửa
+                                                    </Button>
+                                                )}
+                                                {hasPermission(HanhDong.XOA) && ( // Chỉ hiển thị nút Xóa nếu có quyền
+                                                    <Button
+                                                        variant="danger"
+                                                        size="sm"
+                                                        onClick={() => {
+                                                            setSelectedNhanVien(nhanVien);
+                                                            setShowDeleteModal(true);
+                                                        }}
+                                                    >
+                                                        Xóa
+                                                    </Button>
+                                                )}
                                             </td>
                                         </tr>
                                     );
@@ -420,297 +425,303 @@ const QuanLyTaiKhoan: React.FC = () => {
             </Row>
 
             {/* Modal Thêm Nhân Viên */}
-            <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered>
-                <Modal.Header closeButton className="bg-primary text-white">
-                    <Modal.Title>{HanhDong.THEM} nhân viên</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Họ tên</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="hoTen"
-                                value={formData.hoTen}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.hoTen}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.hoTen}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Ngày sinh</Form.Label>
-                            <Form.Control
-                                type="date"
-                                name="ngaySinh"
-                                value={formData.ngaySinh}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.ngaySinh}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.ngaySinh}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Giới tính</Form.Label>
-                            <Form.Select
-                                name="gioiTinh"
-                                value={formData.gioiTinh ? 'true' : 'false'}
-                                onChange={handleInputChange}
-                            >
-                                <option value="true">Nam</option>
-                                <option value="false">Nữ</option>
-                            </Form.Select>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Địa chỉ</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="diaChi"
-                                value={formData.diaChi}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.diaChi}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.diaChi}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.email}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.email}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Số điện thoại</Form.Label>
-                            <Form.Control
-                                type="tel"
-                                pattern="[0-9]*"
-                                name="sdt"
-                                value={formData.sdt}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.sdt}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.sdt}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Mật khẩu</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.password}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.password}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Chức vụ</Form.Label>
-                            <Form.Select
-                                name="chucVuId"
-                                value={formData.chucVuId}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                {chucVus.length > 0 ? (
-                                    chucVus.map((chucVu) => {
-                                        const tenChucVu = mapToTenChucVu(chucVu.tenChucVu);
-                                        return (
-                                            <option key={chucVu.id} value={chucVu.id}>
-                                                {tenChucVu || chucVu.tenChucVu}
-                                            </option>
-                                        );
-                                    })
-                                ) : (
-                                    <option value="">Không có chức vụ</option>
-                                )}
-                            </Form.Select>
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowAddModal(false)}>
-                        Hủy
-                    </Button>
-                    <Button variant="primary" onClick={handleAddNhanVien} disabled={loading}>
-                        {loading ? <Spinner animation="border" size="sm" /> : HanhDong.THEM}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            {hasPermission(HanhDong.THEM) && (
+                <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered>
+                    <Modal.Header closeButton className="bg-primary text-white">
+                        <Modal.Title>Thêm nhân viên</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Họ tên</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="hoTen"
+                                    value={formData.hoTen}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.hoTen}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.hoTen}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Ngày sinh</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    name="ngaySinh"
+                                    value={formData.ngaySinh}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.ngaySinh}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.ngaySinh}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Giới tính</Form.Label>
+                                <Form.Select
+                                    name="gioiTinh"
+                                    value={formData.gioiTinh ? 'true' : 'false'}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="true">Nam</option>
+                                    <option value="false">Nữ</option>
+                                </Form.Select>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Địa chỉ</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="diaChi"
+                                    value={formData.diaChi}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.diaChi}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.diaChi}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.email}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.email}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Số điện thoại</Form.Label>
+                                <Form.Control
+                                    type="tel"
+                                    pattern="[0-9]*"
+                                    name="sdt"
+                                    value={formData.sdt}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.sdt}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.sdt}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Mật khẩu</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.password}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.password}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Chức vụ</Form.Label>
+                                <Form.Select
+                                    name="chucVuId"
+                                    value={formData.chucVuId}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    {chucVus.length > 0 ? (
+                                        chucVus.map((chucVu) => {
+                                            const tenChucVu = mapToTenChucVu(chucVu.tenChucVu);
+                                            return (
+                                                <option key={chucVu.id} value={chucVu.id}>
+                                                    {tenChucVu || chucVu.tenChucVu}
+                                                </option>
+                                            );
+                                        })
+                                    ) : (
+                                        <option value="">Không có chức vụ</option>
+                                    )}
+                                </Form.Select>
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowAddModal(false)}>
+                            Hủy
+                        </Button>
+                        <Button variant="primary" onClick={handleAddNhanVien} disabled={loading}>
+                            {loading ? <Spinner animation="border" size="sm" /> : 'Thêm'}
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            )}
 
             {/* Modal Sửa Nhân Viên */}
-            <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
-                <Modal.Header closeButton className="bg-primary text-white">
-                    <Modal.Title>{HanhDong.SUA} nhân viên</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Họ tên</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="hoTen"
-                                value={formData.hoTen}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.hoTen}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.hoTen}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Ngày sinh</Form.Label>
-                            <Form.Control
-                                type="date"
-                                name="ngaySinh"
-                                value={formData.ngaySinh}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.ngaySinh}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.ngaySinh}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Giới tính</Form.Label>
-                            <Form.Select
-                                name="gioiTinh"
-                                value={formData.gioiTinh ? 'true' : 'false'}
-                                onChange={handleInputChange}
-                            >
-                                <option value="true">Nam</option>
-                                <option value="false">Nữ</option>
-                            </Form.Select>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Địa chỉ</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="diaChi"
-                                value={formData.diaChi}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.diaChi}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.diaChi}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.email}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.email}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Số điện thoại</Form.Label>
-                            <Form.Control
-                                type="tel"
-                                pattern="[0-9]*"
-                                name="sdt"
-                                value={formData.sdt}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.sdt}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.sdt}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Mật khẩu</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                isInvalid={!!errors.password}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.password}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Chức vụ</Form.Label>
-                            <Form.Select
-                                name="chucVuId"
-                                value={formData.chucVuId}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                {chucVus.length > 0 ? (
-                                    chucVus.map((chucVu) => {
-                                        const tenChucVu = mapToTenChucVu(chucVu.tenChucVu);
-                                        return (
-                                            <option key={chucVu.id} value={chucVu.id}>
-                                                {tenChucVu || chucVu.tenChucVu}
-                                            </option>
-                                        );
-                                    })
-                                ) : (
-                                    <option value="">Không có chức vụ</option>
-                                )}
-                            </Form.Select>
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-                        Hủy
-                    </Button>
-                    <Button variant="primary" onClick={handleEditNhanVien} disabled={loading}>
-                        {loading ? <Spinner animation="border" size="sm" /> : HanhDong.SUA}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            {hasPermission(HanhDong.SUA) && (
+                <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
+                    <Modal.Header closeButton className="bg-primary text-white">
+                        <Modal.Title>Sửa nhân viên</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Họ tên</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="hoTen"
+                                    value={formData.hoTen}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.hoTen}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.hoTen}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Ngày sinh</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    name="ngaySinh"
+                                    value={formData.ngaySinh}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.ngaySinh}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.ngaySinh}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Giới tính</Form.Label>
+                                <Form.Select
+                                    name="gioiTinh"
+                                    value={formData.gioiTinh ? 'true' : 'false'}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="true">Nam</option>
+                                    <option value="false">Nữ</option>
+                                </Form.Select>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Địa chỉ</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="diaChi"
+                                    value={formData.diaChi}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.diaChi}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.diaChi}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.email}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.email}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Số điện thoại</Form.Label>
+                                <Form.Control
+                                    type="tel"
+                                    pattern="[0-9]*"
+                                    name="sdt"
+                                    value={formData.sdt}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.sdt}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.sdt}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Mật khẩu</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    isInvalid={!!errors.password}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.password}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Chức vụ</Form.Label>
+                                <Form.Select
+                                    name="chucVuId"
+                                    value={formData.chucVuId}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    {chucVus.length > 0 ? (
+                                        chucVus.map((chucVu) => {
+                                            const tenChucVu = mapToTenChucVu(chucVu.tenChucVu);
+                                            return (
+                                                <option key={chucVu.id} value={chucVu.id}>
+                                                    {tenChucVu || chucVu.tenChucVu}
+                                                </option>
+                                            );
+                                        })
+                                    ) : (
+                                        <option value="">Không có chức vụ</option>
+                                    )}
+                                </Form.Select>
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+                            Hủy
+                        </Button>
+                        <Button variant="primary" onClick={handleEditNhanVien} disabled={loading}>
+                            {loading ? <Spinner animation="border" size="sm" /> : 'Sửa'}
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            )}
 
             {/* Modal Xóa Nhân Viên */}
-            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
-                <Modal.Header closeButton className="bg-primary text-white">
-                    <Modal.Title>Xác nhận {HanhDong.XOA} nhân viên</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="fs-5">
-                    Bạn có chắc chắn muốn {HanhDong.XOA} nhân viên <strong>{selectedNhanVien?.hoTen}</strong> (Email:{' '}
-                    {selectedNhanVien?.email}) không?
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                        Hủy
-                    </Button>
-                    <Button variant="danger" onClick={handleDeleteNhanVien} disabled={loading}>
-                        {loading ? <Spinner animation="border" size="sm" /> : HanhDong.XOA}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            {hasPermission(HanhDong.XOA) && (
+                <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+                    <Modal.Header closeButton className="bg-primary text-white">
+                        <Modal.Title>Xác nhận xóa nhân viên</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="fs-5">
+                        Bạn có chắc chắn muốn xóa nhân viên <strong>{selectedNhanVien?.hoTen}</strong> (Email:{' '}
+                        {selectedNhanVien?.email}) không?
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                            Hủy
+                        </Button>
+                        <Button variant="danger" onClick={handleDeleteNhanVien} disabled={loading}>
+                            {loading ? <Spinner animation="border" size="sm" /> : 'Xóa'}
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            )}
         </Container>
     );
 };
