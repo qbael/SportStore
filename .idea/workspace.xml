@@ -5,34 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemBoMon.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemDanhMuc.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemMau.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemSize.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemThuongHieu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/QuyenController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/NhanVienTheoChucVuDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/QuyenDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/QuyenService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalPhanQuyen.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyThongKe.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/SanPhamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/SanPhamController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/DsThongTinSPDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/DsThongTinSPDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/NhaCungCap.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/NhaCungCap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/NhapHang.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/NhapHang.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/SanPham.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/entity/SanPham.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/BoMonRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/BoMonRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/DanhMucRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/DanhMucRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/MauRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/MauRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/SizeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/SizeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/ThuongHieuRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/ThuongHieuRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/SanPhamServiceImplement.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/SanPhamServiceImplement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/service_interface/SanPhamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/service_interface/SanPhamService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/NhanVienController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/NhanVienController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/ChucVuDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/ChucVuDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/QuyenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/QuyenRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/sport_store.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/sport_store.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalChiTietSanPham.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalChiTietSanPham.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalSuaSanPham.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalSuaSanPham.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemBienThe.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemBienThe.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemSanPham.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal_box/ModalThemSanPham.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/css/admin/QuanLySanPham.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/css/admin/QuanLySanPham.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/Admin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/Admin.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyQuyenHan.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyQuyenHan.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLySanPham.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLySanPham.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/util/types/ProductTypes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/util/types/ProductTypes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/util/Enum.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/util/Enum.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/util/types/PhanQuyenTypes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/util/types/PhanQuyenTypes.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,9 +41,9 @@
         <option value="com.intellij.jpb.NewClass" />
         <option value="CSS File" />
         <option value="Exception" />
-        <option value="Class" />
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -68,12 +57,12 @@
     &quot;assignee&quot;: &quot;qbael&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/qbael/SportStore.git",
-    "accountId": "b6495330-7424-499e-a759-034b11fe5c1b"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/qbael/SportStore.git&quot;,
+    &quot;accountId&quot;: &quot;b6495330-7424-499e-a759-034b11fe5c1b&quot;
   }
-}]]></component>
+}</component>
   <component name="JpbToolWindowState">
     <option name="isToolWindowVisible" value="false" />
   </component>
@@ -339,7 +328,9 @@
       <workItem from="1744794282547" duration="347000" />
       <workItem from="1744870582482" duration="12026000" />
       <workItem from="1744908099040" duration="1013000" />
-      <workItem from="1745051153428" duration="5397000" />
+      <workItem from="1745051153428" duration="5742000" />
+      <workItem from="1745070318263" duration="20704000" />
+      <workItem from="1745122873915" duration="4992000" />
     </task>
     <servers />
   </component>

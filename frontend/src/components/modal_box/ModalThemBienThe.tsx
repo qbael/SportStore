@@ -3,7 +3,6 @@ import {Button, Form, Modal} from "react-bootstrap";
 import {SizeType, MauType, ProductType} from "../../util/types/ProductTypes";
 import {useNotification} from '../../hook/useNotification2.tsx';
 import {PRODUCT_API_URL} from "../../util/Constant.tsx";
-import ModalThemBoMon from "./ModalThemBoMon.tsx";
 import ModalThemMau from "./ModalThemMau.tsx";
 import ModalThemSize from "./ModalThemSize.tsx";
 

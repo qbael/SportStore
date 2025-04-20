@@ -1,12 +1,12 @@
 package com.sport_store.backend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class ChucVuDTO {
     private Integer id;
     private String tenChucVu;

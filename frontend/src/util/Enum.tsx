@@ -19,6 +19,7 @@ export enum TenChucNang {
     QUAN_LY_TAI_KHOAN = "Quản lý tài khoản",
     QUAN_LY_QUYEN_HAN = "Quản lý quyền hạn",
     QUAN_LY_KHACH_HANG = "Quản lý khách hàng",
+    QUAN_LY_THONG_KE = "Quản lý thống kê",
 }
 
 export const iconMap = new Map([
@@ -28,6 +29,7 @@ export const iconMap = new Map([
     [TenChucNang.QUAN_LY_TAI_KHOAN, 'fa-solid fa-user'],
     [TenChucNang.QUAN_LY_QUYEN_HAN, 'fa-solid fa-user-shield'],
     [TenChucNang.QUAN_LY_KHACH_HANG, 'fa-solid fa-users'],
+    [TenChucNang.QUAN_LY_THONG_KE, 'fa fa-bar-chart'],
 ]);
 
 export const getIconFromChucNang = (value: string): string | undefined => {

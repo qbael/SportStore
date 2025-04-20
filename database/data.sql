@@ -262,7 +262,8 @@ VALUES ('Quản lý sản phẩm'),
        ('Quản lý khách hàng'),
        ('Quản lý nhập hàng'),
        ('Quản lý tài khoản'),
-       ('Quản lý quyền hạn');
+       ('Quản lý quyền hạn'),
+       ('Quản lý thống kê');
 
 -- Insert data into quyen (permissions)  cai nay bi loi
 INSERT INTO quyen (chucvu, chucnang, hanhdong)
@@ -280,11 +281,15 @@ VALUES (1, 5, 'XEM'),  -- Admin: Xem Quản lý sản phẩm
        (2, 2, 'XEM'),
        (2, 2, 'THEM'),
        (2, 2, 'SUA'),
-       (2, 2, 'XOA'),  -- Nhân viên bán hàng: Thêm, sửa, xóa Quản lý hóa đơn
+       (2, 2, 'XOA'),
        (2, 3, 'XEM'),
        (2, 3, 'THEM'),
        (2, 3, 'SUA'),
-       (2, 3, 'XOA'),-- Nhân viên bán hàng: Xem Quản lý khách hàng
+       (2, 3, 'XOA'),
+       (2, 7, 'XEM'),
+       (2, 7, 'THEM'),
+       (2, 7, 'SUA'),
+       (2, 7, 'XOA'),
 # Nhân viên kho
        (3, 1, 'XEM'),
        (3, 1, 'THEM'),
@@ -315,7 +320,11 @@ VALUES (1, 5, 'XEM'),  -- Admin: Xem Quản lý sản phẩm
        (4, 5, 'THEM'),
        (4, 5, 'SUA'),
        (4, 5, 'XOA'),
-       (4, 6, 'XEM');
+       (4, 6, 'XEM'),
+       (4, 7, 'XEM'),
+       (4, 7, 'THEM'),
+       (4, 7, 'SUA'),
+       (4, 7, 'XOA');
 
 
 -- Insert data into ctnhaphang (import order details)

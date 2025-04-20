@@ -317,9 +317,7 @@ const QuanLySanPham = () => {
                         <Button className={"btn-primary"}
                                 onClick={() => {
                                     const newParams = new URLSearchParams(searchParams.toString());
-                                    newParams.delete('page');
-                                    newParams.delete('sort');
-                                    newParams.delete('sortdir');
+                                    newParams.forEach((_, key) => newParams.delete(key));
 
                                     const min = parseInt(state.minPrice || "0");
                                     const max = parseInt(state.maxPrice || "0");
@@ -391,7 +389,6 @@ const QuanLySanPham = () => {
                         </Form.Group>
                     )}
                 </Form>
-
             </Row>
             <Row className={"h-85"}>
                 <Table striped bordered hover className={"text-center"}
@@ -419,7 +416,9 @@ const QuanLySanPham = () => {
                     </thead>
                     <tbody>
                     {state.dsSanPham.map((item, index) => (
-                        <tr key={index} onClick={(e) => handleXemChiTietSanPham(e, item)}>
+                        <tr key={index} onClick={(e) => handleXemChiTietSanPham(e, item)}
+                            style={{cursor: 'pointer'}}
+                        >
                             <td>{item.id}</td>
                             <td>
                                 <img src={`${PRODUCT_IMAGE_BASE_PATH}${item.hinhAnh}`}

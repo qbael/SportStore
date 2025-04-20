@@ -1,9 +1,13 @@
 package com.sport_store.backend.controller;
 
+import com.sport_store.backend.dto.ChucVuDTO;
 import com.sport_store.backend.dto.NhanVienDTO;
+import com.sport_store.backend.dto.NhanVienTheoChucVuDTO;
+import com.sport_store.backend.entity.ChucVu;
 import com.sport_store.backend.entity.NhanVien;
 import com.sport_store.backend.repository.ChucVuRepository;
 import com.sport_store.backend.repository.NhanVienRepository;
+import com.sport_store.backend.service.NhanVienService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +37,29 @@ public class NhanVienController {
         } catch (Exception e) {
             return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Lỗi khi lấy danh sách nhân viên: " + e.getMessage(), null);
         }
+    }
+
+    @GetMapping("/chucvu")
+    public ResponseEntity<Map<String, List<NhanVienTheoChucVuDTO>>> getNhanVienTheoChucVu() {
+        List<NhanVien> ds = nhanVienRepository.findAll();
+
+        // Map sang DTO
+        List<NhanVienTheoChucVuDTO> dsDTO = ds.stream().map(nv -> new NhanVienTheoChucVuDTO(
+                nv.getId(),
+                nv.getHoTen(),
+                nv.getNgaySinh(),
+                nv.isGioiTinh(),
+                nv.getDiaChi(),
+                nv.getEmail(),
+                nv.getSdt(),
+                new ChucVuDTO(nv.getChucVu().getId(), nv.getChucVu().getTenChucVu().getValue())
+        )).toList();
+
+        // Nhóm theo chức vụ
+        Map<String, List<NhanVienTheoChucVuDTO>> result = dsDTO.stream()
+                .collect(Collectors.groupingBy(dto -> dto.getChucVu().getTenChucVu()));
+
+        return ResponseEntity.ok(result);
     }
 
     // Lấy danh sách nhân viên theo chức vụ
