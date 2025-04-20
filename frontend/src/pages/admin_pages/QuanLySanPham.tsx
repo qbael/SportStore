@@ -93,7 +93,7 @@ const QuanLySanPham = () => {
 
                 const sanPhamData = await resSanPham.json();
                 const dsData = await resDs.json();
-
+                console.log(dsData);
                 dispatch({ type: 'SET_DS_SANPHAM', payload: sanPhamData.content || [] });
                 dispatch({ type: 'SET_TOTAL_PAGE', payload: sanPhamData.totalPages || 0 });
                 dispatch({ type: 'SET_CURRENT_PAGE', payload: sanPhamData.number || 0 });
@@ -483,6 +483,7 @@ const QuanLySanPham = () => {
                 dsThuongHieu={state.dsFull?.dsThuongHieu}
                 dsDanhMuc={state.dsFull?.dsDanhMuc}
                 dsBoMon={state.dsFull?.dsBoMon}
+                dsNhaCungCap={state.dsFull?.dsNhaCungCap}
             />
             <ModalSuaSanPham
                 show={state.showUpdateModal && state.selectedSanPham !== null}
@@ -495,6 +496,7 @@ const QuanLySanPham = () => {
                 dsDanhMuc={state.dsFull?.dsDanhMuc}
                 dsThuongHieu={state.dsFull?.dsThuongHieu}
                 dsBoMon={state.dsFull?.dsBoMon}
+                dsNhaCungCap={state.dsFull?.dsNhaCungCap}
             />
             <ModalChiTietSanPham
                 show={state.showDetailModal}

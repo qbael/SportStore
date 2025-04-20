@@ -140,7 +140,7 @@ public class SanPhamServiceImplement implements SanPhamService {
     }
 
     @Override
-    public int createSanPham(String tenSanPham, Integer giaNhap, Integer giaBan, String moTa, Integer thuongHieuId, Integer danhMucId, Integer boMonId, MultipartFile hinhAnh) {
+    public int createSanPham(String tenSanPham, Integer giaNhap, Integer giaBan, String moTa, Integer thuongHieuId, Integer danhMucId, Integer boMonId, MultipartFile hinhAnh, Integer nhaCungCapId) {
         try {
             String fileName = HashingName.generateImageName(tenSanPham, hinhAnh.getOriginalFilename());
             Path imagePath = Helper.getPath(fileName);
@@ -155,12 +155,14 @@ public class SanPhamServiceImplement implements SanPhamService {
             Optional<DanhMuc> dm = danhMucRepository.findById(danhMucId);
             Optional<BoMon> bm = boMonRepository.findById(boMonId);
             Optional<ThuongHieu> th = thuongHieuRepository.findById(thuongHieuId);
-            if (dm.isEmpty() || bm.isEmpty() || th.isEmpty()) {
-                throw new IllegalArgumentException("Invalid category, brand, or subject ID");
+            Optional<NhaCungCap> ncc = nhaCungCapRepository.findById(nhaCungCapId);
+            if (dm.isEmpty() || bm.isEmpty() || th.isEmpty() || ncc.isEmpty()) {
+                throw new IllegalArgumentException("Invalid category, brand, supplier or subject ID");
             }
             sp.setDanhMuc(dm.get());
             sp.setBoMon(bm.get());
             sp.setThuongHieu(th.get());
+            sp.setNhaCungCap(ncc.get());
 
             int id = sanPhamRepository.save(sp).getId();
 
@@ -178,7 +180,7 @@ public class SanPhamServiceImplement implements SanPhamService {
     }
 
     @Override
-    public int updateSanPham(Integer id, String tenSanPham, Integer giaNhap, Integer giaBan, String moTa, Integer thuongHieuId, Integer danhMucId, Integer boMonId, Boolean trangThai, MultipartFile hinhAnh) {
+    public int updateSanPham(Integer id, String tenSanPham, Integer giaNhap, Integer giaBan, String moTa, Integer thuongHieuId, Integer danhMucId, Integer boMonId, Boolean trangThai, MultipartFile hinhAnh, Integer nhaCungCapId) {
         try {
             Optional<SanPham> sp = sanPhamRepository.findById(id);
             if (sp.isEmpty()) {
@@ -193,12 +195,14 @@ public class SanPhamServiceImplement implements SanPhamService {
             Optional<DanhMuc> dm = danhMucRepository.findById(danhMucId);
             Optional<BoMon> bm = boMonRepository.findById(boMonId);
             Optional<ThuongHieu> th = thuongHieuRepository.findById(thuongHieuId);
-            if (dm.isEmpty() || bm.isEmpty() || th.isEmpty()) {
+            Optional<NhaCungCap> ncc = nhaCungCapRepository.findById(nhaCungCapId);
+            if (dm.isEmpty() || bm.isEmpty() || th.isEmpty() || ncc.isEmpty()) {
                 throw new IllegalArgumentException("Invalid category, brand, or subject ID");
             }
             sanPham.setDanhMuc(dm.get());
             sanPham.setBoMon(bm.get());
             sanPham.setThuongHieu(th.get());
+            sanPham.setNhaCungCap(ncc.get());
 
             String fileName = HashingName.generateImageName(tenSanPham, hinhAnh.getOriginalFilename());
             Path oldImagePath = Helper.getPath(sanPham.getHinhAnh());

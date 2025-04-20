@@ -3,7 +3,7 @@ import {
     Modal, Button, Form, Row, Col
 } from "react-bootstrap";
 
-import {BoMonType, DanhMucType, thuongHieuType} from "../../util/types/ProductTypes.tsx";
+import {BoMonType, DanhMucType, NhaCungCapType, thuongHieuType} from "../../util/types/ProductTypes.tsx";
 import {useNotification} from "../../hook/useNotification2.tsx";
 import ModalThemDanhMuc from "./ModalThemDanhMuc.tsx";
 import ModalThemThuongHieu from "./ModalThemThuongHieu.tsx";
@@ -16,7 +16,8 @@ type Props = {
     handleSave: (product: FormData) => void;
     dsThuongHieu: thuongHieuType[] | undefined;
     dsDanhMuc: DanhMucType[] | undefined;
-    dsBoMon: BoMonType[] | undefined;
+    dsBoMon: BoMonType[] | undefined,
+    dsNhaCungCap: NhaCungCapType[] | undefined;
 };
 
 const ModalThemSanPham = ({
@@ -25,7 +26,8 @@ const ModalThemSanPham = ({
                               handleSave,
                               dsThuongHieu,
                               dsDanhMuc,
-                              dsBoMon
+                              dsBoMon,
+                              dsNhaCungCap,
                           }: Props) => {
     const [tenSanPham, setTenSanPham] = useState("");
     const [giaNhap, setGiaNhap] = useState<number>(0);
@@ -35,6 +37,7 @@ const ModalThemSanPham = ({
     const [thuongHieuId, setThuongHieuId] = useState("");
     const [danhMucId, setDanhMucId] = useState("");
     const [boMonId, setBoMonId] = useState("");
+    const [nhaCungCapId, setNhaCungCapId] = useState("");
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const {showNotification} = useNotification()
 
@@ -43,7 +46,7 @@ const ModalThemSanPham = ({
     const [showModalBoMon, setShowModalBoMon] = useState(false);
 
     const handleSubmit = () => {
-        if(!tenSanPham || !giaNhap || !giaBan || !moTa || !thuongHieuId || !danhMucId || !boMonId || !hinhAnh) {
+        if(!tenSanPham || !giaNhap || !giaBan || !moTa || !thuongHieuId || !danhMucId || !boMonId || !hinhAnh || !nhaCungCapId) {
             showNotification("Vui lòng điền đầy đủ thông tin sản phẩm.", "error");
             return;
         }
@@ -64,6 +67,7 @@ const ModalThemSanPham = ({
         formData.append("thuongHieuId", thuongHieuId);
         formData.append("danhMucId", danhMucId);
         formData.append("boMonId", boMonId);
+        formData.append("nhaCungCapId", nhaCungCapId);
 
         handleSave(formData);
         handleClose();
@@ -80,6 +84,7 @@ const ModalThemSanPham = ({
         setDanhMucId("");
         setBoMonId("");
         setPreviewImage(null);
+        setNhaCungCapId("");
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,7 +204,6 @@ const ModalThemSanPham = ({
                         </div>
                     </Form.Group>
 
-
                     <Form.Group controlId="boMon" className="mb-3">
                         <Form.Label>Bộ môn</Form.Label>
                         <div className="d-flex gap-2">
@@ -211,6 +215,24 @@ const ModalThemSanPham = ({
                                 {dsBoMon?.map((item) => (
                                     <option key={item.id} value={item.id}>
                                         {item.tenBoMon}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                            <Button variant="outline-primary" onClick={() => setShowModalBoMon(true)}>+</Button>
+                        </div>
+                    </Form.Group>
+
+                    <Form.Group controlId="nhaCungCap" className="mb-3">
+                        <Form.Label>Nhà cung cấp</Form.Label>
+                        <div className="d-flex gap-2">
+                            <Form.Select
+                                value={nhaCungCapId}
+                                onChange={(e) => setNhaCungCapId(e.target.value)}
+                            >
+                                <option value="">Chọn nhà cung cấp</option>
+                                {dsNhaCungCap?.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.tenNCC}
                                     </option>
                                 ))}
                             </Form.Select>

@@ -77,8 +77,9 @@ public class SanPhamController {
                                            @RequestParam("thuongHieuId") Integer thuongHieuId,
                                            @RequestParam("danhMucId") Integer danhMucId,
                                            @RequestParam("boMonId") Integer boMonId,
-                                           @RequestParam("hinhAnh") MultipartFile hinhAnh) {
-        int id = sanPhamService.createSanPham(tenSanPham, giaNhap, giaBan, moTa, thuongHieuId, danhMucId, boMonId, hinhAnh);
+                                           @RequestParam("hinhAnh") MultipartFile hinhAnh,
+                                           @RequestParam("nhaCungCapId") Integer nhaCungCapId) {
+        int id = sanPhamService.createSanPham(tenSanPham, giaNhap, giaBan, moTa, thuongHieuId, danhMucId, boMonId, hinhAnh, nhaCungCapId);
         if (id > 0) {
             return ResponseEntity.ok(new savedSanPhamResponseDTO("Thêm sản phẩm thành công", id));
         } else {
@@ -96,8 +97,9 @@ public class SanPhamController {
                                            @RequestParam("danhMucId") Integer danhMucId,
                                            @RequestParam("boMonId") Integer boMonId,
                                            @RequestParam("trangThai") Boolean trangThai,
-                                           @RequestParam("hinhAnh") MultipartFile hinhAnh) {
-        int signal = sanPhamService.updateSanPham(id, tenSanPham, giaNhap, giaBan, moTa, thuongHieuId, danhMucId, boMonId, trangThai, hinhAnh);
+                                           @RequestParam("hinhAnh") MultipartFile hinhAnh,
+                                           @RequestParam("nhaCungCapId") Integer nhaCungCapId) {
+        int signal = sanPhamService.updateSanPham(id, tenSanPham, giaNhap, giaBan, moTa, thuongHieuId, danhMucId, boMonId, trangThai, hinhAnh, nhaCungCapId);
         if (signal > 0) {
             return ResponseEntity.ok(new savedSanPhamResponseDTO("Cập nhật sản phẩm thành công", signal));
         } else {
