@@ -51,4 +51,5 @@ public interface SanPhamService {
     int createBienTheSanPham(int sanPhamId, int mauId, int sizeId, int soLuong, MultipartFile hinhAnh);
     int updateBienTheSanPham(int id, String tenBienThe, int sanPhamId, int mauId, int sizeId, int soLuong, MultipartFile hinhAnh);
     int deleteBienTheSanPham(int id);
+    List<ChiTietSanPhamDTO> getallNhacungcap(int id);
 }

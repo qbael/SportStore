@@ -14,7 +14,7 @@ public class NhanVienDTO {
     private String diaChi;
     private String email;
     private int sdt;
-    private int chucVuId;
+    private Integer chucVuId;
     private String tenChucVu;
     private String password;
 }

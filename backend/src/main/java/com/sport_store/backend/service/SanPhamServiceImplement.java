@@ -155,7 +155,7 @@ public class SanPhamServiceImplement implements SanPhamService {
             Optional<DanhMuc> dm = danhMucRepository.findById(danhMucId);
             Optional<BoMon> bm = boMonRepository.findById(boMonId);
             Optional<ThuongHieu> th = thuongHieuRepository.findById(thuongHieuId);
-            Optional<NhaCungCap> ncc = nhaCungCapRepository.findById(nhaCungCapId);
+            Optional<NhaCungCap> ncc = nhaCungCapRepository.findById(nhaCungCapId.longValue());
             if (dm.isEmpty() || bm.isEmpty() || th.isEmpty() || ncc.isEmpty()) {
                 throw new IllegalArgumentException("Invalid category, brand, supplier or subject ID");
             }
@@ -195,7 +195,7 @@ public class SanPhamServiceImplement implements SanPhamService {
             Optional<DanhMuc> dm = danhMucRepository.findById(danhMucId);
             Optional<BoMon> bm = boMonRepository.findById(boMonId);
             Optional<ThuongHieu> th = thuongHieuRepository.findById(thuongHieuId);
-            Optional<NhaCungCap> ncc = nhaCungCapRepository.findById(nhaCungCapId);
+            Optional<NhaCungCap> ncc = nhaCungCapRepository.findById(nhaCungCapId.longValue());
             if (dm.isEmpty() || bm.isEmpty() || th.isEmpty() || ncc.isEmpty()) {
                 throw new IllegalArgumentException("Invalid category, brand, or subject ID");
             }
@@ -484,4 +484,21 @@ public class SanPhamServiceImplement implements SanPhamService {
             return -1;
         }
     }
+
+
+    // lấy tât cả sản phẩm theo nhà cung cấp
+    @Override
+    public List<ChiTietSanPhamDTO> getallNhacungcap(int idncc){
+        List<SanPham> sanPhamList = sanPhamRepository.findAll();
+        // lọc sản phẩm theo nhà cung cấp 
+        List<ChiTietSanPhamDTO> chiTietSanPhamDTOList = sanPhamList.stream()
+                .filter(sanPham -> sanPham.getNhaCungCap().getId() == idncc)
+                .map(sanPham -> {
+                    List<BienThe> bienTheList = bienTheRepository.findAllBySanPhamId(sanPham.getId());
+                    return new ChiTietSanPhamDTO(sanPham, bienTheList);
+                })
+                .toList();
+        return chiTietSanPhamDTOList;
+    }
+
 }

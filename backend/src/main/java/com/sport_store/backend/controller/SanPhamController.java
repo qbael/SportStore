@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -268,4 +269,12 @@ public class SanPhamController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi thêm màu");
         }
     }
+
+    // get nha cung c
+    @GetMapping("/nhacungcap/{idncc}")
+    public ResponseEntity<List<ChiTietSanPhamDTO>> getSanPhamTheoNhaCungCap(@PathVariable int idncc) {
+        List<ChiTietSanPhamDTO> result = sanPhamService.getallNhacungcap(idncc);
+        return ResponseEntity.ok(result);
+    }
+
 }

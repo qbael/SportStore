@@ -60,7 +60,7 @@ public class AuthService {
 
     @Transactional
     public LoginResponseDTO register(String username, String password, String email,
-                                     String hoTen, String diaChi, Integer sdt, Boolean isActive) {
+                                     String hoTen, String diaChi, String sdt, Boolean isActive) {
         try {
             // Kiểm tra đầu vào
             if (username == null || username.trim().isEmpty() ||

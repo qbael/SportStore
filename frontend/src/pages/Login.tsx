@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button, Card, Tabs, Tab, ListGroup } from 'r
 import '../css/Login.css';
 import { useNotification } from '../hook/useNotification2';
 import { useAuth } from '../hook/useAuth';
+import { HoaDon } from "../util/types/HoadonTypes"
 
 interface PurchaseItem {
   id: number;
@@ -47,7 +48,7 @@ const Login: React.FC = () => {
     diaChi: '',
     sdt: '',
   });
-  const [purchaseHistory, setPurchaseHistory] = useState<Purchase[]>([]);
+  const [purchaseHistory, setPurchaseHistory] = useState<HoaDon[]>([]);
   const [showHistory, setShowHistory] = useState<boolean>(false);
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,21 +140,17 @@ const Login: React.FC = () => {
       showNotification('Vui lòng đăng nhập để xem lịch sử mua hàng', 'error');
       return;
     }
+  
     try {
-      const response = await fetch('http://localhost:8080/api/hoadon', {
+      const response = await fetch(`http://localhost:8080/api/hoadon/user/${user.username}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          // Nếu API yêu cầu token, bỏ comment dòng sau và đảm bảo user.token tồn tại
-          // 'Authorization': `Bearer ${user.token}`,
-        },
       });
+  
       const result = await response.json();
-      if (response.ok && result.status === 200) {
-        const filteredPurchases = result.data.filter(
-          (purchase: any) => purchase.ttKhachHang.taiKhoan.username === user.username
-        );
-        setPurchaseHistory(filteredPurchases);
+      console.log(result);
+  
+      if (response.status === 200 && result) {
+        setPurchaseHistory(result); // Không cần filter nữa
         setShowHistory(true);
         showNotification('Lấy lịch sử mua hàng thành công!', 'success');
       } else {
@@ -163,6 +160,7 @@ const Login: React.FC = () => {
       showNotification('Có lỗi xảy ra khi lấy lịch sử mua hàng', 'error');
     }
   };
+  
 
   const getStatusText = (status: string) => {
     switch (status) {

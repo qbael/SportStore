@@ -1,14 +1,17 @@
 package com.sport_store.backend.repository;
 
 import com.sport_store.backend.entity.NhapHang;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface NhapHangRepository extends JpaRepository<NhapHang, Integer> {
+public interface NhapHangRepository extends JpaRepository<NhapHang, Integer>, JpaSpecificationExecutor<NhapHang> {
     @Query("SELECT MIN(n.ngay) FROM NhapHang n")
     LocalDate findMinNgay();
 

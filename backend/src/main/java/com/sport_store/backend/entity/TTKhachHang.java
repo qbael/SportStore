@@ -24,7 +24,7 @@ public class TTKhachHang {
     private String hoTen;
 
     @Column(name = "sdt")
-    private int sdt;
+    private String sdt;
 
     @Column(name = "diachi")
     private String diaChi;

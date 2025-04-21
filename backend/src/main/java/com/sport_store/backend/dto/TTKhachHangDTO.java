@@ -12,7 +12,7 @@ import lombok.Setter;
 public class TTKhachHangDTO {
     private int id;
     private String hoTen;
-    private int sdt;
+    private String sdt;
     private String diaChi;
     private int taiKhoanId;
 

@@ -10,41 +10,17 @@ export type CartItem = {
 };
 
 const useCart = () => {
-  const { user } = useAuth(); // Lấy thông tin user từ AuthContext
-  const { showNotification } = useNotification(); // Thêm thông báo
+  const { user, isLoading } = useAuth();
+  const { showNotification } = useNotification();
 
-  // Tạo key động dựa trên username, nếu không có user thì dùng key mặc định (cart_guest) luon = []
-  // const getCartKey = () => (user ? `cart_${user.username}` : 'cart_guest');
   const getCartKey = () => (user ? `cart_${user.username}` : 'cart_guest');
 
+  const [cart, setCart] = useState<CartItem[] | null>(null); // <-- null khi chưa load
 
-  // Load giỏ hàng từ localStorage khi khởi tạo
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    try {
-      const storedCart = localStorage.getItem(getCartKey());
-      return storedCart ? JSON.parse(storedCart) : [];
-    } catch (error) {
-      console.error('Lỗi khi đọc giỏ hàng từ localStorage:', error);
-      return [];
-    }
-  });
-
-  // Cập nhật giỏ hàng trong localStorage khi cart hoặc user thay đổi
+  // Chờ user load xong mới khởi tạo giỏ hàng
   useEffect(() => {
-    try {
-      if (user) {
-        localStorage.setItem(getCartKey(), JSON.stringify(cart));
-      } else {
-        // Nếu không có user, không lưu giỏ hàng (hoặc có thể lưu tạm cho guest)
-        localStorage.setItem('cart_guest', JSON.stringify(cart));
-      }
-    } catch (error) {
-      console.error('Lỗi khi lưu giỏ hàng vào localStorage:', error);
-    }
-  }, [cart, user]);
+    if (isLoading) return;
 
-  // Tải lại giỏ hàng khi user thay đổi (đăng nhập/đăng xuất)
-  useEffect(() => {
     try {
       const storedCart = localStorage.getItem(getCartKey());
       setCart(storedCart ? JSON.parse(storedCart) : []);
@@ -52,76 +28,92 @@ const useCart = () => {
       console.error('Lỗi khi đọc giỏ hàng từ localStorage:', error);
       setCart([]);
     }
-  }, [user]);
+  }, [user, isLoading]);
+
+  // Lưu vào localStorage khi cart thay đổi
+  useEffect(() => {
+    if (cart === null || isLoading) return;
+
+    try {
+      localStorage.setItem(getCartKey(), JSON.stringify(cart));
+    } catch (error) {
+      console.error('Lỗi khi lưu giỏ hàng vào localStorage:', error);
+    }
+  }, [cart, user, isLoading]);
+
+  const isReady = cart !== null && !isLoading;
 
   const addToCart = (item: CartItem) => {
-    if (!user) {
-      console.log('Vui lòng đăng nhập để thêm vào giỏ hàng');
-      // showNotification('Vui lòng đăng nhập để thêm vào giỏ hàng', 'error');
-      return; // Không thêm vào giỏ hàng nếu chưa đăng nhập
+    if (!user || !isReady) {
+      showNotification('Vui lòng đăng nhập để thêm vào giỏ hàng', 'error');
+      return;
     }
 
     if (!item.product || !item.bienthesp) {
-      console.log('Sản phẩm hoặc biến thể không hợp lệ.');
       showNotification('Sản phẩm không hợp lệ', 'error');
       return;
     }
 
-    setCart((prevCart) => {
-      const existingIndex = prevCart.findIndex(
+    setCart((prev) => {
+      if (!prev) return [item]; // phòng hờ
+      const existingIndex = prev.findIndex(
         (cartItem) => cartItem.bienthesp?.id === item.bienthesp?.id
       );
 
       if (existingIndex !== -1) {
-        const updatedCart = [...prevCart];
+        const updatedCart = [...prev];
         updatedCart[existingIndex].quantity += item.quantity;
         return updatedCart;
       }
-      console.log('Thêm sản phẩm vào giỏ hàng:', item);
-      return [...prevCart, item];
+
+      return [...prev, item];
     });
+
     showNotification('Thêm vào giỏ hàng thành công', 'success');
-    
   };
 
-  const removeFromCart = (Idbienthe: number) => {
-    if (!user) return; // Không cho phép xóa nếu chưa đăng nhập
-
-    setCart((prevCart) => prevCart.filter((item) => item.bienthesp?.id !== Idbienthe));
+  const removeFromCart = (id: number) => {
+    if (!isReady) return;
+    setCart((prev) => prev?.filter((item) => item.bienthesp?.id !== id) || []);
   };
 
-  const increaseQuantity = (Idbienthe: number) => {
-    if (!user) return; // Không cho phép tăng nếu chưa đăng nhập
-
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.bienthesp?.id === Idbienthe
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      )
+  const increaseQuantity = (id: number) => {
+    if (!isReady) return;
+    setCart((prev) =>
+      prev?.map((item) =>
+        item.bienthesp?.id === id && checkQuantity(item) ? { ...item, quantity: item.quantity + 1 } : item
+      ) || []
     );
   };
 
-  const decreaseQuantity = (Idbienthe: number) => {
-    if (!user) return; // Không cho phép giảm nếu chưa đăng nhập
-
-    setCart((prevCart) =>
-      prevCart
+  const decreaseQuantity = (id: number) => {
+    if (!isReady) return;
+    setCart((prev) =>
+      (prev || [])
         .map((item) =>
-          item.bienthesp?.id === Idbienthe
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
+          item.bienthesp?.id === id  ? { ...item, quantity: item.quantity - 1 } : item
         )
         .filter((item) => item.quantity > 0)
     );
   };
 
+  const checkQuantity = (item: CartItem) => {
+    if (!isReady) return 0;
+    if (item.quantity === item.bienthesp?.soLuongTon){
+      showNotification('Sản phẩm đã hết hàng', 'error');
+      return false;
+    }
+    return true;
+  };
+
   const getTotalQuantity = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
+    if (!isReady) return 0;
+    return cart!.reduce((total, item) => total + item.quantity, 0);
   };
 
   const getTotalPrice = () => {
-    return cart.reduce((total, item) => {
+    if (!isReady) return 0;
+    return cart!.reduce((total, item) => {
       if (item.product) {
         return total + (item.product.giaBan || 0) * item.quantity;
       }
@@ -139,12 +131,13 @@ const useCart = () => {
   };
 
   const resetCart = () => {
-    if (!user) return; // Không cho phép reset nếu chưa đăng nhập
+    if (!isReady) return;
     setCart([]);
   };
 
   return {
-    cart,
+    cart: cart || [],
+    isReady,
     addToCart,
     removeFromCart,
     increaseQuantity,
