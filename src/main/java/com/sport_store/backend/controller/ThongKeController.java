@@ -3,11 +3,11 @@ package com.sport_store.backend.controller;
 import com.sport_store.backend.dto.ThongKeSanPhamDTO;
 import com.sport_store.backend.service.ThongKeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,6 +24,21 @@ public class ThongKeController {
     @GetMapping("/san-pham/theo-gia-ban")
     public ResponseEntity<List<ThongKeSanPhamDTO>> thongKeSanPhamTheoGiaBan() {
         List<ThongKeSanPhamDTO> result = thongKeService.thongKeSanPhamTheoGiaBan();
+        return ResponseEntity.ok(result);
+    }
+    
+    @GetMapping("/san-pham/theo-gia-ban/ngay")
+    public ResponseEntity<List<ThongKeSanPhamDTO>> thongKeSanPhamTheoGiaBanVaNgay(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate tuNgay,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate denNgay) {
+        List<ThongKeSanPhamDTO> result = thongKeService.thongKeSanPhamTheoGiaBanVaNgay(tuNgay, denNgay);
+        return ResponseEntity.ok(result);
+    }
+    
+    @GetMapping("/san-pham/theo-gia-ban/danh-muc/{danhMucId}")
+    public ResponseEntity<List<ThongKeSanPhamDTO>> thongKeSanPhamTheoGiaBanVaDanhMuc(
+            @PathVariable int danhMucId) {
+        List<ThongKeSanPhamDTO> result = thongKeService.thongKeSanPhamTheoGiaBanVaDanhMuc(danhMucId);
         return ResponseEntity.ok(result);
     }
 }
