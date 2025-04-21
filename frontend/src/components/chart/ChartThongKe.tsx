@@ -20,11 +20,22 @@ const ChartThongKe = ( { dataChart }: ChartThongKeProps ) => {
 
     return (
         <Container className="w-100 h-100">
-            <Row className="mt-4">
-                <Col>
-                    {dataChart ? <Line data={dataChart} /> : <p>Vui lòng chọn ngày và nhấn "Thống kê".</p>}
-                </Col>
-            </Row>
+            {dataChart && (<>
+                    <Row className={"mt-2"}>
+                        <Col>
+                            <div className="d-flex justify-content-center">
+                                <h5 className={"w-25"}>Tổng doanh thu: {dataChart.tongDoanhThu.toLocaleString()}đ</h5>
+                                <h5 className={"w-25"}>Tổng lợi nhuận: {dataChart.tongLoiNhuan.toLocaleString()}đ</h5>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Line data={dataChart.data} />
+                        </Col>
+                    </Row>
+                </>
+            )}
         </Container>
     );
 };

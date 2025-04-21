@@ -5,20 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="Merge branch 'main' of https://github.com/qbael/SportStore into qbao&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/ThongKeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/chart/ChartThongKe.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/ThongKeKhachHangDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/ThongKeNhapHangDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/dto/ThongKeSanPhamDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/ThongKeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sport_store/backend/controller/ThongKeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sport_store/backend/dto/ThongKeSanPhamDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sport_store/backend/entity/Enum/TrangThaiHoaDon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sport_store/backend/repository/ThongKeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sport_store/backend/service/ThongKeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sport_store/backend/service/impl/ThongKeServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/ThongKeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/ThongKeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/CTHoaDonRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/CTHoaDonRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/HoaDonRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/HoaDonRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ProductDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/Admin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/Admin.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyQuyenHan.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyQuyenHan.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLySanPham.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLySanPham.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyTaiKhoan.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyTaiKhoan.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/NhapHangRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/NhapHangRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/chart/ChartThongKe.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/chart/ChartThongKe.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/hook/useCart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hook/useCart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Cart.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyThongKe.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyThongKe.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/util/Constant.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/util/Constant.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,13 +41,13 @@
         <option value="Enum" />
         <option value="com.intellij.jpb.JpaEntity" />
         <option value="com.intellij.jpb.JpaRepository" />
-        <option value="Interface" />
         <option value="com.intellij.jpb.NewClass" />
         <option value="CSS File" />
         <option value="Exception" />
         <option value="TypeScript File" />
-        <option value="Class" />
         <option value="TypeScript JSX File" />
+        <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -107,7 +114,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.BackendApplication.executor": "Run",
     "full.screen.before.presentation.mode": "false",
-    "git-widget-placeholder": "qbao",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "javascript.nodejs.core.library.configured.version": "22.14.0",
     "javascript.nodejs.core.library.typings.version": "22.14.1",
@@ -122,7 +129,7 @@
     "project.structure.last.edited": "Global Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "configurable.tailwindcss",
+    "settings.editor.selected.configurable": "editor.preferences.tabs",
     "ts.external.directory.path": "E:\\CODE\\Projects\\DoAnPTTK\\frontend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   },
@@ -328,6 +335,11 @@
       <workItem from="1745051153428" duration="5742000" />
       <workItem from="1745070318263" duration="20704000" />
       <workItem from="1745122873915" duration="4992000" />
+      <workItem from="1745165861790" duration="109000" />
+      <workItem from="1745167935712" duration="776000" />
+      <workItem from="1745215402293" duration="1414000" />
+      <workItem from="1745217043412" duration="6215000" />
+      <workItem from="1745223302056" duration="26003000" />
     </task>
     <servers />
   </component>

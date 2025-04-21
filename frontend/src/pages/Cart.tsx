@@ -14,6 +14,7 @@ function Cart() {
     decreaseQuantity,
     removeFromCart,
     getTotalPrice,
+    getTotalGiaNhap,
     getTotalQuantity,
     resetCart,
     isReady,
@@ -59,7 +60,7 @@ function Cart() {
     });
 
     const newHoaDon = {
-      tongGiaNhap: 0,
+      tongGiaNhap: getTotalGiaNhap(),
       tongGiaBan: getTotalPrice(),
       trangThai: 'Đang xử lý',
       ttKhachHang: { id: user?.profiles?.[0]?.id }, // Nên thay bằng id khách hàng thực tế từ user
