@@ -155,7 +155,7 @@ public class SanPhamServiceImplement implements SanPhamService {
             Optional<DanhMuc> dm = danhMucRepository.findById(danhMucId);
             Optional<BoMon> bm = boMonRepository.findById(boMonId);
             Optional<ThuongHieu> th = thuongHieuRepository.findById(thuongHieuId);
-            Optional<NhaCungCap> ncc = nhaCungCapRepository.findById(nhaCungCapId);
+            Optional<NhaCungCap> ncc = nhaCungCapRepository.findById(nhaCungCapId.longValue());
             if (dm.isEmpty() || bm.isEmpty() || th.isEmpty() || ncc.isEmpty()) {
                 throw new IllegalArgumentException("Invalid category, brand, supplier or subject ID");
             }
@@ -195,7 +195,7 @@ public class SanPhamServiceImplement implements SanPhamService {
             Optional<DanhMuc> dm = danhMucRepository.findById(danhMucId);
             Optional<BoMon> bm = boMonRepository.findById(boMonId);
             Optional<ThuongHieu> th = thuongHieuRepository.findById(thuongHieuId);
-            Optional<NhaCungCap> ncc = nhaCungCapRepository.findById(nhaCungCapId);
+            Optional<NhaCungCap> ncc = nhaCungCapRepository.findById(nhaCungCapId.longValue());
             if (dm.isEmpty() || bm.isEmpty() || th.isEmpty() || ncc.isEmpty()) {
                 throw new IllegalArgumentException("Invalid category, brand, or subject ID");
             }
