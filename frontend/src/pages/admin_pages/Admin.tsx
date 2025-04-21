@@ -1,7 +1,7 @@
 import AdminLogin from "./AdminLogin.tsx";
 import {useEffect, useState} from "react";
 import {Container, Row, Col} from "react-bootstrap";
-import {getIconFromChucNang, mapToHanhDong, mapToTenChucVu, TenChucNang} from "../../util/Enum.tsx";
+import {getIconFromChucNang, HanhDong, mapToHanhDong, mapToTenChucVu, TenChucNang} from "../../util/Enum.tsx";
 import logo from '../../assets/img/logo.jpg';
 import QuanLySanPham from "./QuanLySanPham.tsx";
 import {useAdminContext} from "../../hook/useAdminContext.tsx";
@@ -28,7 +28,7 @@ const Admin = () => {
             setListChucNang(listChucNangMap);
             const dsHanhDongTemp = taiKhoanNV?.chucVu.quyenList
                 .filter((item) => item.chucNang.tenChucNang === selectedChucNang)
-                .map((item) => mapToHanhDong(item.hanhDong));
+                .map((item) => mapToHanhDong(item.hanhDong.toString()));
             setDsHanhDong(dsHanhDongTemp)
         }
     }, [taiKhoanNV]);
@@ -37,7 +37,7 @@ const Admin = () => {
         if (selectedChucNang){
             const dsHanhDongTemp = taiKhoanNV?.chucVu.quyenList
                 .filter((item) => item.chucNang.tenChucNang === selectedChucNang)
-                .map((item) => mapToHanhDong(item.hanhDong));
+                .map((item) => mapToHanhDong(item.hanhDong.toString()));
             setDsHanhDong(dsHanhDongTemp)
         }
     }, [selectedChucNang]);
@@ -67,8 +67,7 @@ const Admin = () => {
     return (
         <>
             {taiKhoanNV ? (
-                <Container fluid
-                           style={{background: 'dark'}}>
+                <Container fluid>
                     <Row>
                         <Col className='admin-header'>
                             <div>

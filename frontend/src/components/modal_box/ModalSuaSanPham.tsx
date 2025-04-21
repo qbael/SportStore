@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import {ProductType, DanhMucType, thuongHieuType, BoMonType} from "../../util/types/ProductTypes";
+import {ProductType, DanhMucType, thuongHieuType, BoMonType, NhaCungCapType} from "../../util/types/ProductTypes";
 import {useNotification} from "../../hook/useNotification2";
 import {PRODUCT_IMAGE_BASE_PATH} from "../../util/Constant.tsx";
 
@@ -12,6 +12,7 @@ type Props = {
     dsDanhMuc: DanhMucType[] | undefined;
     dsThuongHieu: thuongHieuType[] | undefined;
     dsBoMon: BoMonType[] | undefined;
+    dsNhaCungCap: NhaCungCapType[] | undefined;
 };
 
 const ModalSuaSanPham = ({
@@ -22,6 +23,7 @@ const ModalSuaSanPham = ({
                              dsDanhMuc,
                              dsThuongHieu,
                              dsBoMon,
+                             dsNhaCungCap,
                          }: Props) => {
     const [form, setForm] = useState({
         id: 0,
@@ -34,7 +36,7 @@ const ModalSuaSanPham = ({
         thuongHieuId: "",
         boMonId: "",
         hinhAnh: null as File | null,
-        nhaCungCap: ""
+        nhaCungCapId: ""
     });
     const {showNotification} = useNotification();
     const [previewImage, setPreviewImage] = useState<string>("");
@@ -52,7 +54,7 @@ const ModalSuaSanPham = ({
                 thuongHieuId: sanPham.thuongHieu.id.toString(),
                 boMonId: sanPham.boMon.id.toString(),
                 hinhAnh: null,
-                nhaCungCap: sanPham.nhaCungCap.tenNCC
+                nhaCungCapId: sanPham.nhaCungCap.id.toString(),
             });
             const imageUrl = `${PRODUCT_IMAGE_BASE_PATH}${sanPham.hinhAnh}`;
             setPreviewImage(imageUrl);
@@ -106,6 +108,7 @@ const ModalSuaSanPham = ({
         formData.append("danhMucId", form.danhMucId);
         formData.append("thuongHieuId", form.thuongHieuId);
         formData.append("boMonId", form.boMonId);
+        formData.append("nhaCungCapId", form.nhaCungCapId);
         if (form.hinhAnh) {
             formData.append("hinhAnh", form.hinhAnh);
         } else {
@@ -219,13 +222,15 @@ const ModalSuaSanPham = ({
                     </Form.Group>
                     <Form.Group className="mb-2">
                         <Form.Label>Nhà cung cấp</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="id"
-                            disabled={true}
-                            value={form.nhaCungCap}
-                            readOnly
-                        />
+                        <Form.Select
+                            name="nhaCungCapId"
+                            value={form.nhaCungCapId}
+                            onChange={handleChange}
+                        >
+                            {dsNhaCungCap?.map(ncc => (
+                                <option key={ncc.id} value={ncc.id}>{ncc.tenNCC}</option>
+                            ))}
+                        </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-2">
                         <Form.Label>Hình ảnh</Form.Label>

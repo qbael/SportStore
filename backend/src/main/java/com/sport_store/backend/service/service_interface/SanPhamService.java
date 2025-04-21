@@ -17,11 +17,11 @@ public interface SanPhamService {
 
     int createSanPham(String tenSanPham, Integer giaNhap, Integer giaBan,
                       String moTa, Integer thuongHieuId, Integer danhMucId,
-                      Integer boMonId, MultipartFile hinhAnh);
+                      Integer boMonId, MultipartFile hinhAnh, Integer nhaCungCapId);
 
     int updateSanPham(Integer id, String tenSanPham, Integer giaNhap, Integer giaBan,
                       String moTa, Integer thuongHieuId, Integer danhMucId,
-                      Integer boMonId, Boolean trangThai, MultipartFile hinhAnh);
+                      Integer boMonId, Boolean trangThai, MultipartFile hinhAnh, Integer nhaCungCapId);
 
     int deleteSanPham(int id);
 

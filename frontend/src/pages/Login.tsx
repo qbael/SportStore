@@ -179,7 +179,9 @@ const Login: React.FC = () => {
 
   if (isAuthenticated && user) {
     return (
-      <Container className="my-5">
+      <Container className="mb-5"
+                 style={{marginTop: '100px'}}
+      >
         <Row className="justify-content-center">
           <Col md={8} lg={6}>
             <Card className="shadow-lg border-0">
@@ -242,7 +244,9 @@ const Login: React.FC = () => {
   }
 
   return (
-    <Container className="my-5">
+    <Container className="mb-5"
+               style={{marginTop: '100px'}}
+    >
       <Row className="justify-content-center">
         <Col md={8} lg={5}>
           <Card className="shadow-lg border-0">

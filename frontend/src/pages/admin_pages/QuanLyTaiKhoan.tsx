@@ -3,6 +3,7 @@ import { Container, Row, Col, Table, Button, Modal, Spinner, Alert, Form } from 
 import { useAdminContext } from '../../hook/useAdminContext.tsx'; // Import useAdminContext
 import { useNotification } from '../../hook/useNotification2';
 import { HanhDong, mapToTenChucVu } from '../../util/Enum.tsx';
+import {ChucVu} from "../../util/types/PhanQuyenTypes.tsx";
 
 interface NhanVien {
     id: number;
@@ -16,16 +17,12 @@ interface NhanVien {
     tenChucVu: string;
 }
 
-interface ChucVu {
-    id: number;
-    tenChucVu: string;
-}
 
 const QuanLyTaiKhoan: React.FC = () => {
     const { dsHanhDong } = useAdminContext(); // Lấy dsHanhDong từ context
     const { showNotification } = useNotification();
     const [nhanViens, setNhanViens] = useState<NhanVien[]>([]);
-    const [chucVus, setChucVus] = useState<ChuccoVu[]>([]);
+    const [chucVus, setChucVus] = useState<ChucVu[]>([]);
     const [selectedNhanVien, setSelectedNhanVien] = useState<NhanVien | null>(null);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);

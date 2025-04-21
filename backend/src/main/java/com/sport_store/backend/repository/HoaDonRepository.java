@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import com.sport_store.backend.entity.Enum.TrangThaiHoaDon;
 import java.time.LocalDate;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,4 +53,5 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
                         @Param("minTongGiaBan") Integer minTongGiaBan,
                         @Param("maxTongGiaBan") Integer maxTongGiaBan,
                         Pageable pageable);
+       List<HoaDon> findByNgayBetween(LocalDate from, LocalDate to);
 }
