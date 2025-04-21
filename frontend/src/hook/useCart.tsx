@@ -129,6 +129,15 @@ const useCart = () => {
     }, 0);
   };
 
+  const getTotalGiaNhap = () => {
+    return cart.reduce((total, item) => {
+      if (item.product) {
+        return total + (item.product.giaNhap || 0) * item.quantity;
+      }
+      return total;
+    }, 0);
+  };
+
   const resetCart = () => {
     if (!user) return; // Không cho phép reset nếu chưa đăng nhập
     setCart([]);
@@ -142,6 +151,7 @@ const useCart = () => {
     decreaseQuantity,
     getTotalQuantity,
     getTotalPrice,
+    getTotalGiaNhap,
     resetCart,
   };
 };
