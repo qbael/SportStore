@@ -18,6 +18,14 @@ type TaiKhoan = {
     username: string;
 };
 
+// trạng thái hóa đơn emun
+enum TrangThaiHoaDon {
+    DANGXULY = "Đang xử lý",
+    DANGGIAO = "Đang giao",
+    DAHUY = "Đã hủy",
+    DAGIAO = "Đã giao"
+}
+
 type ThongTinKhachHang = {
     id: number;
     hoTen: string;
@@ -47,4 +55,4 @@ type ApiResponse = {
   };
 
 
-export type { HoaDon, CTHoaDon, ThongTinKhachHang, TaiKhoan, ApiResponse };
+export type { HoaDon, CTHoaDon, ThongTinKhachHang, TaiKhoan, ApiResponse , TrangThaiHoaDon, BienThe};

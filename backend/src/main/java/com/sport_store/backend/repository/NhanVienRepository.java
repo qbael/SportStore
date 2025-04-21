@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
     @Query("SELECT nv FROM NhanVien nv JOIN nv.chucVu cv LEFT JOIN cv.quyenList WHERE nv.email = :email AND nv.password = :password")
     Optional<NhanVien> login(String email, String password);
+    List<NhanVien> findByChucVuId(Integer chucVuId);
 }

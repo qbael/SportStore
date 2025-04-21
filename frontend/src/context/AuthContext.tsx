@@ -11,6 +11,7 @@ interface User {
   username: string;
   email: string;
   profiles: Profile[];
+  is_active : boolean;
 }
 
 interface AuthContextType {
@@ -20,7 +21,7 @@ interface AuthContextType {
   login: (userData: User) => void;
   logout: () => void;
 }
- 
+
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {

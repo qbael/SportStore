@@ -23,4 +23,8 @@ public interface BienTheRepository extends JpaRepository<BienThe, Integer> {
     // get so luong 
     @Query(value = "SELECT b.soluongton FROM bienthe b WHERE b.id = :id", nativeQuery = true)
     int getSoLuong(@Param("id") int id);
+
+    boolean existsBySanPham_IdAndMau_IdAndSize_Id(int sanPhamId, int mauId, int sizeId);
+
+    boolean existsBySanPham_IdAndMau_Id(int sanPhamId, int mauId);
 }

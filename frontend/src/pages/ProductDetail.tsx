@@ -78,7 +78,6 @@ const ProductDetail: React.FC = () => {
           const colors = Array.from(
             new Map(chiTietSanPham.bienThe.map((bt) => [bt.mau!.id, bt.mau!])).values()
           ).sort((a, b) => a.id - b.id);
-          setSelectedColor(colors[0] || null);
           setProductImage(`${PRODUCT_IMAGE_BASE_PATH}${chiTietSanPham.sanPham?.hinhAnh}`);
           setUniqueColors(colors);
         }
@@ -95,7 +94,7 @@ const ProductDetail: React.FC = () => {
               ).values()
             ).sort((a, b) => a.id - b.id);
             setAvailableSizes(sizes);
-            setSelectedSize(sizes[0] || null);
+            setSelectedSize(null);
           } else {
             const bienthe = chiTietSanPham?.bienThe.find((bt) => bt.mau?.id === selectedColor.id);
             setSelectedBienThe(bienthe || null);
@@ -125,11 +124,12 @@ const ProductDetail: React.FC = () => {
       {chiTietSanPham.sanPham && (
         <Container fluid="xxl" className="my-5 product-detail-container">
           <Row>
-            <Col xs={10} md={5} className="position-relative">
+            <Col xs={10} md={5} className="position-relative text-center">
               <Image
-                src={productImage ? productImage : ''}
-                fluid
-                className="main-product-image border border-1"
+                  src={productImage ? productImage : ''}
+                  fluid
+                  className="main-product-image border border-1 w-100 h-100"
+                  style={{ maxHeight: '530px', maxWidth: '500px', objectFit: 'contain' }}
               />
             </Col>
 

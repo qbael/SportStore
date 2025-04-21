@@ -1,6 +1,7 @@
 package com.sport_store.backend.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,5 +101,33 @@ public class HoaDonService {
             Pageable pageable) {
         return hoaDonRepository.searchHoaDon(id, ngay, tenKhachHang, trangThai, soDienThoai, minTongGiaBan,
                 maxTongGiaBan, pageable);
+    }
+
+    @Transactional
+    public void deleteHoaDon(Integer id) {
+        Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(id);
+        if (hoaDonOptional.isPresent()) {
+            HoaDon hoaDon = hoaDonOptional.get();
+            // Xóa các chi tiết hóa đơn liên quan
+            ctHoaDonRepository.deleteAll(hoaDon.getDsCTHoaDon());
+            // Xóa hóa đơn
+            hoaDonRepository.delete(hoaDon);
+        }
+    }
+//  update trạng thái hóa đơn
+    @Transactional
+    public HoaDon updateHoaDonStatus(Integer id, TrangThaiHoaDon trangThai) {
+        Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(id);
+        if (hoaDonOptional.isPresent()) {
+            HoaDon hoaDon = hoaDonOptional.get();
+            hoaDon.setTrangThai(trangThai);
+            return hoaDonRepository.save(hoaDon);
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<HoaDonFullProjection> getbyUserID(String username){
+        return hoaDonRepository.findByIdKhachHang(username);
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import java.time.LocalDate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -134,5 +135,45 @@ public class HoaDonController {
         // Trả về kết quả với status 200 OK
         return ResponseEntity.ok(response);
     }
+    
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Map<String, Object>> deleteHoaDon(@PathVariable int id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            hoaDonService.deleteHoaDon(id);
+            response.put("message", "Xóa hóa đơn thành công");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "Lỗi khi xóa hóa đơn: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Map<String, Object>> updateHoaDonStatus(
+            @PathVariable int id, @RequestBody TrangThaiHoaDon trangThai) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            HoaDon updatedHoaDon = hoaDonService.updateHoaDonStatus(id, trangThai);
+            response.put("message", "Cập nhật trạng thái hóa đơn thành công");
+            // response.put("hoaDon", updatedHoaDon);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "Lỗi khi cập nhật trạng thái hóa đơn: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getbyUserID(@PathVariable String id){
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            List<HoaDonFullProjection> hoaDons = hoaDonService.getbyUserID(id);
+            return ResponseEntity.ok(hoaDons);   
+        } catch (Exception e) {
+            response.put("message", "Lỗi khi cập nhật trạng thái hóa đơn: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }

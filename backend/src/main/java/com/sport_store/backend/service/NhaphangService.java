@@ -111,6 +111,7 @@ public class NhaphangService {
             nhapHangDTO.setId(nhapHang.getId());
             nhapHangDTO.setNgay(nhapHang.getNgay());
             nhapHangDTO.setTongGiaNhap(nhapHang.getTongGiaNhap());
+            nhapHangDTO.setTrangThai(nhapHang.getTrangThai());
 
             // Ánh xạ NhanVienDTO
             if (nhapHang.getNhanVien() != null) {
@@ -118,9 +119,13 @@ public class NhaphangService {
                         nhapHang.getNhanVien().getId(),
                         nhapHang.getNhanVien().getHoTen(),
                         nhapHang.getNhanVien().getNgaySinh(),
+                        nhapHang.getNhanVien().isGioiTinh(),
                         nhapHang.getNhanVien().getDiaChi(),
                         nhapHang.getNhanVien().getEmail(),
-                        nhapHang.getNhanVien().getSdt()
+                        nhapHang.getNhanVien().getSdt(),
+                        nhapHang.getNhanVien().getChucVu().getId(),
+                        nhapHang.getNhanVien().getChucVu().getTenChucVu().toString(),
+                        nhapHang.getNhanVien().getPassword()
                 );
                 nhapHangDTO.setNhanVien(nhanVienDTO);
             }

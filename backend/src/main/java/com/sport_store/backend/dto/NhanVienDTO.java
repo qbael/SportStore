@@ -1,19 +1,20 @@
 package com.sport_store.backend.dto;
 
+import lombok.*;
+
 import java.time.LocalDate;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class NhanVienDTO {  
+@AllArgsConstructor
+public class NhanVienDTO {
     private int id;
     private String hoTen;
     private LocalDate ngaySinh;
+    private boolean gioiTinh;
     private String diaChi;
     private String email;
     private int sdt;
+    private Integer chucVuId;
+    private String tenChucVu;
+    private String password;
 }

@@ -14,4 +14,5 @@ public class NhaCungCapDTO {
     private String tenNhaCungCap;
     private String diaChi;
     private String sdt;
+    private String email;
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.sport_store.backend.entity.NhaCungCap;
+import com.sport_store.backend.entity.Enum.TrangThaiHoaDon;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,5 +19,6 @@ public class NhapHangDTO {  // dang nhap phan hoi
     private int tongGiaNhap;
     private NhanVienDTO nhanVien;
     private NhaCungCapDTO nhaCungCap;
+    private TrangThaiHoaDon trangThai;
     private List<CTNhapHangDTO> dsCTNhapHang;
 }

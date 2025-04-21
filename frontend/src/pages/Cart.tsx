@@ -1,6 +1,6 @@
 import "../css/Cart.css"
 import useCart from '../hook/useCart.tsx';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { formatPrice } from '../util/Helper.ts';
 import {PRODUCT_API_URL, PRODUCT_IMAGE_BASE_PATH, BASE_URL} from "../util/Constant.tsx";
 import { useAuth } from '../hook/useAuth.tsx'; // Thêm useAuth
@@ -19,12 +19,12 @@ function Cart() {
     isReady,
   } = useCart();
 
-  const { isAuthenticated, user , isLoading} = useAuth(); // Lấy thông tin xác thực từ AuthContext
+  const [showModal, setShowModal] = useState(false); // Trạng thái để hiển thị modal
+  const { isAuthenticated, user, isLoading } = useAuth(); // Lấy thông tin xác thực từ AuthContext
   const navigate = useNavigate(); // Để điều hướng đến trang đăng nhập
   const { showNotification } = useNotification(); // Để hiển thị thông báo
   
   useEffect(() => {
-
     // Nếu chưa đăng nhập, hiển thị thông báo và chuyển hướng
     console.log("isAuthenticated:", isAuthenticated);
     if (!isLoading && !isAuthenticated) {
@@ -89,9 +89,20 @@ function Cart() {
       .catch((err) => {
         console.error("Lỗi:", err);
         showNotification('Có lỗi xảy ra khi đặt hàng', 'error'); // Thêm thông báo lỗi
+      })
+      .finally(() => {
+        setShowModal(false); // Đóng modal trong mọi trường hợp (thành công hoặc thất bại)
       });
        // alert("Bạn đã đặt hàng thành công!");
-    // hoặc gọi API, xử lý logic đặt hàng tại đây
+    // hoặc gọi API, xử lý logic đặt hàng tại đây      
+             
+  };
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   if (isLoading || !isReady) {
@@ -100,9 +111,8 @@ function Cart() {
 
  // Render giao diện
  return (
-  // Nếu đã đăng nhập thì hiển thị giỏ hàng, nếu chưa thì không render gì (do đã điều hướng trong useEffect)
   isAuthenticated ? (
-    <div className="container" style={{ marginTop: "100px" }}>
+    <div className="container mb-5" style={{ marginTop: "100px" }}>
       <div className="header_name">
         <div>Giỏ hàng của bạn</div>
       </div>
@@ -118,7 +128,10 @@ function Cart() {
               item.bienthesp ? (
                 <div className="cart-item" key={item.bienthesp.id}>
                   <div className="cart-item-img">
-                    <img src={`${PRODUCT_IMAGE_BASE_PATH}${item.product?.hinhAnh}`} alt="" />
+                    <img
+                      src={`${PRODUCT_IMAGE_BASE_PATH}${item.product?.hinhAnh}`}
+                      alt=""
+                    />
                   </div>
                   <div className="cart-item-name">
                     <div>
@@ -128,10 +141,14 @@ function Cart() {
                     </div>
                     <div>
                       {item.bienthesp?.mau && (
-                        <span className="cart-item-bienthe">Màu: {item.bienthesp.mau.tenMau}</span>
+                        <span className="cart-item-bienthe">
+                          Màu: {item.bienthesp.mau.tenMau}
+                        </span>
                       )}
                       {item.bienthesp?.size && (
-                        <span className="cart-item-bienthe">Size: {item.bienthesp.size.size}</span>
+                        <span className="cart-item-bienthe">
+                          Size: {item.bienthesp.size.size}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -161,7 +178,14 @@ function Cart() {
             <div className="header_name">
               <span>Tóm tắt đơn hàng</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", margin: "10px", padding: "10px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                margin: "10px",
+                padding: "10px",
+              }}
+            >
               <div>
                 <span>Tổng ({getTotalQuantity()} sản phẩm)</span>
               </div>
@@ -170,13 +194,85 @@ function Cart() {
               </div>
             </div>
             <div className="f-center">
-              <button onClick={handleOrder} className="btn-dathang">Đặt hàng</button>
+              <button onClick={handleShowModal} className="btn-dathang">
+                Đặt hàng
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Modal xác nhận hóa đơn sử dụng Bootstrap */}
+      <div
+        className={`modal fade ${showModal ? 'show' : ''}`}
+        style={{ display: showModal ? 'block' : 'none' }}
+        tabIndex={-1}
+        role="dialog"
+      >
+        <div className="modal-dialog modal-lg" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Xác nhận hóa đơn</h5>
+              <button
+                type="button"
+                className="btn-close"
+                onClick={handleCloseModal}
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <h4>Thông tin đơn hàng</h4>
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Sản phẩm</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Giá</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cart.map((item) =>
+                    item.bienthesp ? (
+                      <tr key={item.bienthesp.id}>
+                        <td>
+                          {item.bienthesp.tenBienThe}
+                          {item.bienthesp?.mau && ` (Màu: ${item.bienthesp.mau.tenMau})`}
+                          {item.bienthesp?.size && ` (Size: ${item.bienthesp.size.size})`}
+                        </td>
+                        <td>{item.quantity}</td>
+                        <td>{formatPrice(item.product?.giaBan ?? 0)}</td>
+                      </tr>
+                    ) : null
+                  )}
+                </tbody>
+              </table>
+              <div className="text-end">
+                <strong>Tổng cộng: {formatPrice(getTotalPrice())}</strong>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleCloseModal}
+              >
+                Hủy
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleOrder} // Đặt hàng và đóng modal
+              >
+                Xác nhận đặt hàng
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Overlay cho modal */}
+      {showModal && <div className="modal-backdrop fade show"></div>}
     </div>
-  ) : null // Nếu chưa đăng nhập, không render gì (điều hướng đã xử lý trong useEffect)
+  ) : null
 );
 }
 

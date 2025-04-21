@@ -3,8 +3,11 @@ import '../../css/admin/hoadon.css'
 import { Badge } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import Chitiethoadon from '../../components/ui/Chitethoadon';
+import { useNotification } from '../../hook/useNotification2.tsx'
 
 import { HoaDon, ApiResponse } from '../../util/types/HoadonTypes'; // Đường dẫn đến file chứa định nghĩa kiểu HoaDon
+import { Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 // import { ApiResponse } from '../../types/HoaDon';
 
 // gọi api 
@@ -26,6 +29,9 @@ export default function QuanlyHoaDon() {
         }
     };
 
+    const {showNotification} = useNotification()
+    
+
     const [hoaDons, setHoaDons] = useState<HoaDon[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
@@ -37,6 +43,8 @@ export default function QuanlyHoaDon() {
     const [selectedColumn, setSelectedColumn] = useState("");
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
+
 
     const fetchHoaDon = async () => {
         setLoading(true);
@@ -83,6 +91,48 @@ export default function QuanlyHoaDon() {
         fetchHoaDon();
     }, [currentPage, pageSize]);
 
+    const capnhattrangthai = async (id :number, newStatus: String) => {
+        let status: string = "";
+        switch (newStatus) {
+            case "DAGIAO":
+                status = "Đã giao";     // xanh lá
+                break;  
+            case "DANGGIAO":
+                status = "Đang giao";     // xanh lá
+                break; 
+            case "DANGXULY":
+                status = "Đang xử lý";     // xanh lá
+                break;         // xanh dương
+            case "DAHUY":
+                status = "Đã hủy";     // xanh lá
+                break;      // đỏ
+             // xám
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/hoadon/update/${id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(status),
+            });
+            if (response){
+                showNotification("cập nhập trạng thái thành công", "info");
+                fetchHoaDon();
+            }
+            if (!response.ok) {
+              throw new Error("Lỗi từ server");
+            }
+        
+            // return convertStatusToText(newStatus);
+          } catch (error) {
+            console.error("Lỗi khi cập nhật trạng thái:", error);
+            throw new Error("Không thể cập nhật trạng thái");
+          }
+        
+    }
+
     const handleSearch = () => {
         setCurrentPage(0);
         fetchHoaDon();
@@ -93,9 +143,6 @@ export default function QuanlyHoaDon() {
         fetchHoaDon();
     };
 
-    const handleEdit = (id: number) => {
-        console.log("Sửa hóa đơn với ID:", id);
-    };
 
     const handleDelete = (id: number) => {
         console.log("Xóa hóa đơn với ID:", id);
@@ -105,6 +152,27 @@ export default function QuanlyHoaDon() {
         setSelectedHoaDon(hoaDon);
         setShowModal(true);
     };
+
+    const handleEdit = (id: number) => {
+        const hoaDon = hoaDons.find(h => h.id === id);
+        if (hoaDon) {
+            setSelectedHoaDon(hoaDon);
+            setShowUpdateModal(true);
+        }
+    };
+
+    const isDisabledOption = (currentStatus: string, optionValue: string): boolean => {
+        const transitions: Record<string, string[]> = {
+            DANGXULY: ["DANGGIAO", "DAHUY"],
+            DANGGIAO: ["DAGIAO"],
+            DAGIAO: [],
+            DAHUY: [],
+        };
+
+        // Nếu optionValue không nằm trong danh sách cho phép thì disable
+        return !transitions[currentStatus]?.includes(optionValue) && currentStatus !== optionValue;
+    };
+
 
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -125,7 +193,33 @@ export default function QuanlyHoaDon() {
     //     };
 
     //     fetchData();
-    // }, [currentPage, pageSize]); // Chỉ gọi API khi currentPage hoặc pageSize thay đổi
+
+    const Check = (s1: string, s2: string) => {
+        if (s1 === "DANGXULY") {
+            if (s2 === "DANGXULY") {
+                return "selected";
+            }
+            if (s2 === "DAGIAO") {
+                return "disabled";
+            }
+        } else
+            if (s1 === "DANGGIAO") {
+                if (s2 === "DANGXULY" || s2 === "DAHUY") {
+                    return "disabled";
+                }
+                if (s2 === "DANGGIAO") {
+                    return "selected";
+                }
+            } else
+                if (s1 === "DAHUY" || s1 === "DAGIAO") {
+                    if (s2 === "DANGXULY" || s2 === "DANGGIAO" || s2 === "DAGIAO") {
+                        return "disabled";
+                    }
+                    if (s2 === s1) {
+                        return "selected";
+                    }
+                }
+    }
 
     useEffect(() => {
         if (hoaDons.length > 0) {
@@ -155,24 +249,24 @@ export default function QuanlyHoaDon() {
                             }
                             )}
                         </select>
-                        <input type="text" placeholder="Tìm kiếm" value={searchText} onChange={(e) => setSearchText(e.target.value)}/>
+                        <input type="text" placeholder="Tìm kiếm" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
                         <button className="btn btn--primary" onClick={handleSearch}>Tìm kiếm</button>
                     </div>
                     <div className="boloc">
-                    <input
-                        type="date"
-                        value={fromDate}
-                        onChange={(e) => setFromDate(e.target.value)}
-                    />
-                    <input
-                        type="date"
-                        value={toDate}
-                        onChange={(e) => setToDate(e.target.value)}
-                    />
-                    <button className="btn btn--primary" onClick={handleFilterDate}>
-                        Áp dụng
-                    </button>
-                </div>
+                        <input
+                            type="date"
+                            value={fromDate}
+                            onChange={(e) => setFromDate(e.target.value)}
+                        />
+                        <input
+                            type="date"
+                            value={toDate}
+                            onChange={(e) => setToDate(e.target.value)}
+                        />
+                        <button className="btn btn--primary" onClick={handleFilterDate}>
+                            Áp dụng
+                        </button>
+                    </div>
                 </div>
             </div>
             <div className="content">
@@ -278,6 +372,85 @@ export default function QuanlyHoaDon() {
                 onClose={() => setShowModal(false)}
                 hoaDon={selectedHoaDon}
             />
+            {/* cập nhập trạng thái modal */}
+            <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Cập nhật trạng thái</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {selectedHoaDon && (
+                        <div>
+                            <p>ID hóa đơn: {selectedHoaDon.id}</p>
+                            <p>Khách hàng: {selectedHoaDon.ttKhachHang.hoTen}</p>
+                            <p>Trạng thái hiện tại: {selectedHoaDon.trangThai}</p>
+                            <label htmlFor="trangThai">Cập nhật trạng thái:</label>
+                            <select
+                                id="trangThai"
+                                onChange={(e) => {
+                                    // thay value thành
+                                }}
+                                className="form-select mt-2"
+                            >
+                                <option
+                                    value="DANGXULY"
+                                    disabled={isDisabledOption(selectedHoaDon.trangThai, "DANGXULY")}
+                                >
+                                    Đang xử lý
+                                </option>
+                                <option
+                                    value="DANGGIAO"
+                                    disabled={isDisabledOption(selectedHoaDon.trangThai, "DANGGIAO")}
+                                >
+                                    Đang giao
+                                </option>
+                                <option
+                                    value="DAHUY"
+                                    disabled={isDisabledOption(selectedHoaDon.trangThai, "DAHUY")}
+                                >
+                                    Đã hủy
+                                </option>
+                                <option
+                                    value="DAGIAO"
+                                    disabled={isDisabledOption(selectedHoaDon.trangThai, "DAGIAO")}
+                                >
+                                    Đã giao
+                                </option>
+                            </select>
+                        </div>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowUpdateModal(false)}>
+                        Hủy
+                    </Button>
+                    <Button
+                        variant="primary"
+                        onClick={() => {
+                            // 👉 TODO: Gọi API cập nhật trạng thái tại đây
+                            // 
+                            // console.log("Cập nhật trạng thái:", selectedHoaDon);
+                            // lấy value thay đổi
+
+                            const newStatus = (document.getElementById("trangThai") as HTMLSelectElement)?.value || "";
+                            if (newStatus ==="" || newStatus === selectedHoaDon?.trangThai){
+                                // xuát thống báo 
+
+                                return;
+                            }
+
+                            if (selectedHoaDon?.id !== undefined) {
+                                    capnhattrangthai(selectedHoaDon.id, newStatus);
+                              } else {
+                                console.error("ID hóa đơn không hợp lệ");
+                              }
+                            setShowUpdateModal(false);
+                        }}
+                    >
+                        Xác nhận
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
 
     );

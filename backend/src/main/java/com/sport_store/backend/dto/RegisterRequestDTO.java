@@ -14,4 +14,5 @@ public class RegisterRequestDTO {// dien cai form dang ky
     private String hoTen;
     private String diaChi;
     private String sdt;
+    private Boolean is_active;
 }
