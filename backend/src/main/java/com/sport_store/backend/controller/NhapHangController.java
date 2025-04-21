@@ -1,6 +1,7 @@
 package com.sport_store.backend.controller;
 
 import com.sport_store.backend.dto.NhapHangDTO;
+import com.sport_store.backend.dto.NhapHangRequestDTO;
 import com.sport_store.backend.entity.HoaDon;
 import com.sport_store.backend.entity.NhapHang;
 import com.sport_store.backend.projection.HoaDonFullProjection;
@@ -35,7 +36,7 @@ public class NhapHangController {
     
     // tạo nhập hàng 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createNhapHang(@RequestBody NhapHang nhapHang) {
+    public ResponseEntity<Map<String, Object>> createNhapHang(@RequestBody NhapHangRequestDTO nhapHang) {
         Map<String, Object> res = new HashMap<>();
         try {
             NhapHang createdNhapHang = nhapHangService.createNhapHang(nhapHang);
@@ -81,5 +82,27 @@ public class NhapHangController {
                 startDate, endDate, filterField, filterValue, pageable);
 
         return ResponseEntity.ok(result);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Map<String, Object>> updateNhapHang(
+            @PathVariable int id,
+            @RequestBody TrangThaiHoaDon status) {
+        Map<String, Object> res = new HashMap<>();
+        try {
+            boolean isUpdated = nhapHangService.updatestatus(id, status);
+            if (isUpdated) {
+                res.put("status", 200);
+                res.put("message", "Thành công sản phẩm được cập nhập trạng thái");
+            } else {
+                res.put("status", 404);
+                res.put("message", "Nhập hàng không tồn tại");
+            }
+            return ResponseEntity.ok(res);
+        } catch (Exception e) {
+            res.put("status", 500);
+            res.put("message", "Lỗi: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+        }
     }
 }

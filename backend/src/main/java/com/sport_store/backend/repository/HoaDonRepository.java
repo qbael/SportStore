@@ -39,6 +39,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
                         "JOIN h.ttKhachHang kh " +
                         "WHERE (:id IS NULL OR h.id = :id) " +
                         "AND (:ngay IS NULL OR h.ngay = :ngay) " +
+                        "AND (:ngayTu IS NULL OR h.ngay >= :ngayTu) " +
+                        "AND (:ngayDen IS NULL OR h.ngay <= :ngayDen) " +
                         "AND (:tenKhachHang IS NULL OR LOWER(kh.hoTen) LIKE LOWER(CONCAT('%', :tenKhachHang, '%'))) " +
                         "AND (:trangThai IS NULL OR h.trangThai = :trangThai) " +
                         "AND (:soDienThoai IS NULL OR kh.sdt LIKE CONCAT('%', :soDienThoai, '%')) " +
@@ -47,11 +49,14 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
         Page<HoaDonFullProjection> searchHoaDon(
                         @Param("id") Integer id,
                         @Param("ngay") LocalDate ngay,
+                        @Param("ngayTu") LocalDate ngayTu,
+                        @Param("ngayDen") LocalDate ngayDen,
                         @Param("tenKhachHang") String tenKhachHang,
                         @Param("trangThai") TrangThaiHoaDon trangThai,
                         @Param("soDienThoai") String soDienThoai,
                         @Param("minTongGiaBan") Integer minTongGiaBan,
                         @Param("maxTongGiaBan") Integer maxTongGiaBan,
                         Pageable pageable);
+
        List<HoaDon> findByNgayBetween(LocalDate from, LocalDate to);
 }

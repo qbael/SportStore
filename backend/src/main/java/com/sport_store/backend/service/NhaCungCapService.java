@@ -30,6 +30,7 @@ public class NhaCungCapService {
             String likeKeyword = "%" + keyword.toLowerCase() + "%";
 
             return cb.or(
+                    cb.like(cb.lower(root.get("id").as(String.class)), likeKeyword),
                     cb.like(cb.lower(root.get("tenNCC")), likeKeyword),
                     cb.like(cb.lower(root.get("diaChi")), likeKeyword),
                     cb.like(cb.lower(root.get("sdt")), likeKeyword),
@@ -50,6 +51,7 @@ public class NhaCungCapService {
     }
 
     // lấy tất cả sản phẩm không phân trang 
+    @Transactional
     public List<NhaCungCapDTO> getAllNhaCungCap() {
         return nhaCungCapRepository.findAll().stream().map(nhaCungCap -> {
             NhaCungCapDTO dto = new NhaCungCapDTO();
@@ -60,6 +62,38 @@ public class NhaCungCapService {
             dto.setEmail(nhaCungCap.getEmail());
             return dto;
         }).toList();
+    }
+
+    @Transactional
+    public NhaCungCapDTO createNhaCungCap(NhaCungCapDTO nhaCungCapDTO) {
+        NhaCungCap nhaCungCap = new NhaCungCap();
+
+        nhaCungCap.setTenNCC(nhaCungCapDTO.getTenNhaCungCap());
+        nhaCungCap.setDiaChi(nhaCungCapDTO.getDiaChi());
+        nhaCungCap.setSdt(nhaCungCapDTO.getSdt());
+        nhaCungCap.setEmail(nhaCungCapDTO.getEmail());
+
+        NhaCungCap savedNhaCungCap = nhaCungCapRepository.save(nhaCungCap);
+        return new NhaCungCapDTO(savedNhaCungCap.getId(), savedNhaCungCap.getTenNCC(), savedNhaCungCap.getDiaChi(),
+                savedNhaCungCap.getSdt(), savedNhaCungCap.getEmail());
+    }
+
+    @Transactional
+    public NhaCungCapDTO updateNhaCungCap(long id, NhaCungCapDTO nhaCungCapDTO) {
+        Optional<NhaCungCap> optionalNhaCungCap = nhaCungCapRepository.findById(id);
+        if (optionalNhaCungCap.isPresent()) {
+            NhaCungCap nhaCungCap = optionalNhaCungCap.get();
+            nhaCungCap.setTenNCC(nhaCungCapDTO.getTenNhaCungCap());
+            nhaCungCap.setDiaChi(nhaCungCapDTO.getDiaChi());
+            nhaCungCap.setSdt(nhaCungCapDTO.getSdt());
+            nhaCungCap.setEmail(nhaCungCapDTO.getEmail());
+
+            NhaCungCap updatedNhaCungCap = nhaCungCapRepository.save(nhaCungCap);
+            return new NhaCungCapDTO(updatedNhaCungCap.getId(), updatedNhaCungCap.getTenNCC(),
+                    updatedNhaCungCap.getDiaChi(), updatedNhaCungCap.getSdt(), updatedNhaCungCap.getEmail());
+        } else {
+            return null; // Hoặc ném ngoại lệ nếu không tìm thấy
+        }
     }
 
 }

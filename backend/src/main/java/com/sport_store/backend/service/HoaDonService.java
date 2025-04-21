@@ -93,15 +93,21 @@ public class HoaDonService {
     public Page<HoaDonFullProjection> searchHoaDons(
             Integer id,
             LocalDate ngay,
+            LocalDate ngayTu,
+            LocalDate ngayDen,
             String tenKhachHang,
             TrangThaiHoaDon trangThai,
             String soDienThoai,
             Integer minTongGiaBan,
             Integer maxTongGiaBan,
             Pageable pageable) {
-        return hoaDonRepository.searchHoaDon(id, ngay, tenKhachHang, trangThai, soDienThoai, minTongGiaBan,
-                maxTongGiaBan, pageable);
+    
+        return hoaDonRepository.searchHoaDon(
+                id, ngay, ngayTu, ngayDen, tenKhachHang,
+                trangThai, soDienThoai, minTongGiaBan, maxTongGiaBan, pageable
+        );
     }
+    
 
     @Transactional
     public void deleteHoaDon(Integer id) {

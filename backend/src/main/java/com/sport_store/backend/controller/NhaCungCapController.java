@@ -49,4 +49,24 @@ public class NhaCungCapController {
     public ResponseEntity<?> getAllNhaCungCap() {
         return ResponseEntity.ok(nhaCungCapService.getAllNhaCungCap());
     }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createNhaCungCap(@RequestBody NhaCungCapDTO nhaCungCapDTO) {
+        try {
+            NhaCungCapDTO createdNhaCungCap = nhaCungCapService.createNhaCungCap(nhaCungCapDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Nha cung cap created with ID: " + createdNhaCungCap.getId());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateNhaCungCap(@PathVariable long id, @RequestBody NhaCungCapDTO nhaCungCapDTO) {
+        try {
+            NhaCungCapDTO updatedNhaCungCap = nhaCungCapService.updateNhaCungCap(id, nhaCungCapDTO);
+            return ResponseEntity.ok("Nha cung cap updated with ID: " + updatedNhaCungCap.getId());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
 }

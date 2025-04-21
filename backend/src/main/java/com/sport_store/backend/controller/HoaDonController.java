@@ -101,40 +101,38 @@ public class HoaDonController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Map<String, Object>> searchHoaDons(
-            @RequestParam(required = false) Integer id,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngay,
-            @RequestParam(required = false) String tenKhachHang,
-            @RequestParam(required = false) TrangThaiHoaDon trangThai,
-            @RequestParam(required = false) String soDienThoai,
-            @RequestParam(required = false) Integer minTongGiaBan,
-            @RequestParam(required = false) Integer maxTongGiaBan,
-            @RequestParam(required = false, defaultValue = "id") String sort, // Default sort field
-            @RequestParam(required = false, defaultValue = "DESC") String sortDir, // Default sort direction
-            @PageableDefault(size = 10) Pageable pageable) {
+public ResponseEntity<Map<String, Object>> searchHoaDons(
+        @RequestParam(required = false) Integer id,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngay,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayTu,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayDen,
+        @RequestParam(required = false) String tenKhachHang,
+        @RequestParam(required = false) TrangThaiHoaDon trangThai,
+        @RequestParam(required = false) String soDienThoai,
+        @RequestParam(required = false) Integer minTongGiaBan,
+        @RequestParam(required = false) Integer maxTongGiaBan,
+        @RequestParam(required = false, defaultValue = "id") String sort,
+        @RequestParam(required = false, defaultValue = "DESC") String sortDir,
+        @PageableDefault(size = 10) Pageable pageable) {
 
-        // Tạo Sort từ tham số sort và sortDir từ request
-        Sort sortOrder = Sort.by(
-                sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sort);
+    Sort sortOrder = Sort.by(
+            sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sort);
+    Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
 
-        // Tạo Pageable với Sort dynamic
-        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
+    Page<HoaDonFullProjection> page = hoaDonService.searchHoaDons(
+            id, ngay, ngayTu, ngayDen, tenKhachHang, trangThai, soDienThoai,
+            minTongGiaBan, maxTongGiaBan, sortedPageable);
 
-        // Gọi phương thức tìm kiếm hóa đơn với Pageable
-        Page<HoaDonFullProjection> page = hoaDonService.searchHoaDons(
-                id, ngay, tenKhachHang, trangThai, soDienThoai, minTongGiaBan, maxTongGiaBan, sortedPageable);
+    Map<String, Object> response = new HashMap<>();
+    response.put("data", page.getContent());
+    response.put("totalElements", page.getTotalElements());
+    response.put("totalPages", page.getTotalPages());
+    response.put("currentPage", page.getNumber());
+    response.put("pageSize", page.getSize());
 
-        // Tạo map trả về kết quả
-        Map<String, Object> response = new HashMap<>();
-        response.put("data", page.getContent()); // Danh sách hóa đơn
-        response.put("totalElements", page.getTotalElements());
-        response.put("totalPages", page.getTotalPages());
-        response.put("currentPage", page.getNumber());
-        response.put("pageSize", page.getSize());
+    return ResponseEntity.ok(response);
+}
 
-        // Trả về kết quả với status 200 OK
-        return ResponseEntity.ok(response);
-    }
     
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Map<String, Object>> deleteHoaDon(@PathVariable int id) {

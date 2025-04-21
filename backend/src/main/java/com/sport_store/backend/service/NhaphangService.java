@@ -1,14 +1,17 @@
 package com.sport_store.backend.service;
 
 import com.sport_store.backend.dto.CTNhapHangDTO;
+import com.sport_store.backend.dto.CTNhapHangRequestDTO;
 import com.sport_store.backend.dto.ChiTietSanPhamDTO;
 import com.sport_store.backend.dto.NhaCungCapDTO;
 import com.sport_store.backend.dto.NhanVienDTO;
 import com.sport_store.backend.dto.NhapHangDTO;
+import com.sport_store.backend.dto.NhapHangRequestDTO;
 import com.sport_store.backend.entity.BienThe;
 import com.sport_store.backend.entity.CTNhapHang;
 import com.sport_store.backend.entity.NhapHang;
 import com.sport_store.backend.entity.SanPham;
+import com.sport_store.backend.entity.Enum.TrangThaiHoaDon;
 import com.sport_store.backend.repository.BienTheRepository;
 import com.sport_store.backend.repository.NhapHangRepository;
 import com.sport_store.backend.repository.SanPhamRepository;
@@ -34,18 +37,53 @@ public class NhaphangService {
     @Autowired
     private NhapHangRepository nhapHangRepository;
 
+    @Autowired
+    private SanPhamRepository sanPhamRepository;
+
+    @Autowired
+    private BienTheRepository bienTheRepository;
+
     @Transactional
-    public NhapHang createNhapHang(NhapHang nhapHang) {
+    public NhapHang createNhapHang(NhapHangRequestDTO nhapHang) {
+        
+        NhapHang nhapHangEntity = new NhapHang();
+        nhapHangEntity.setTongGiaNhap(nhapHang.getTongGiaNhap());
+        nhapHangEntity.setTrangThai(nhapHang.getTrangThai());
+        nhapHangEntity.setNhaCungCap(nhapHang.getNhaCungCap());
+        nhapHangEntity.setNhanVien(nhapHang.getNhanVien());
+        
         if (nhapHang.getNgay() == null) {
             nhapHang.setNgay(LocalDate.now());
         }
-
+        nhapHangEntity.setNgay(nhapHang.getNgay());
+        int tongGiaNhap = 0;
+        List<CTNhapHang> dsCTNhapHang = new ArrayList<>();
         if (nhapHang.getDsCTNhapHang() != null) {
-            for (CTNhapHang ct : nhapHang.getDsCTNhapHang()) {
-                ct.setNhapHang(nhapHang);
+            for (CTNhapHangRequestDTO ct : nhapHang.getDsCTNhapHang()) {
+                CTNhapHang ctNhapHang = new CTNhapHang();
+                ctNhapHang.setSoLuong(ct.getSoLuong());
+                ctNhapHang.setGiaNhap(ct.getGiaNhap());
+                tongGiaNhap += ct.getSoLuong() * ct.getGiaNhap();
+        
+                // Fetch biến thể từ DB
+                BienThe bienThe = bienTheRepository.findById(ct.getBienThe().getId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy biến thể"));
+        
+                // Gán lại biến thể đã đầy đủ vào chi tiết nhập hàng
+                ctNhapHang.setBienThe(bienThe);
+                ctNhapHang.setNhapHang(nhapHangEntity);
+                dsCTNhapHang.add(ctNhapHang);
+        
+                // Cập nhật giá nhập cho sản phẩm tương ứng
+                SanPham sanPham = bienThe.getSanPham();
+                sanPham.setGiaNhap(ct.getGiaNhap());
+                sanPhamRepository.save(sanPham);
             }
         }
-        return nhapHangRepository.save(nhapHang);
+        // tính tổng giá nhập
+        nhapHangEntity.setTongGiaNhap(tongGiaNhap);
+        nhapHangEntity.setDsCTNhapHang(dsCTNhapHang);
+        return nhapHangRepository.save(nhapHangEntity);
     }
 
     public List<NhapHang> getAllNhapHang() {
@@ -155,6 +193,24 @@ public class NhaphangService {
             nhapHangDTO.setDsCTNhapHang(ctNhapHangDTOs);
             return nhapHangDTO;
         });
+    }
+
+    @Transactional 
+    public boolean updatestatus(int id, TrangThaiHoaDon status) {
+        NhapHang nhapHang = nhapHangRepository.findById(id).orElse(null);
+        if (nhapHang != null) {
+            nhapHang.setTrangThai(status);
+            nhapHangRepository.save(nhapHang);
+            if (nhapHang.getTrangThai() == TrangThaiHoaDon.DAGIAO) {
+                for (CTNhapHang ct : nhapHang.getDsCTNhapHang()) {
+                    BienThe bienThe = ct.getBienThe();
+                    // SanPham sanPham = bienThe.getSanPham();
+                    bienThe.setSoLuongTon(bienThe.getSoLuongTon() + ct.getSoLuong());
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     

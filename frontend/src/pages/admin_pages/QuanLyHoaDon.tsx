@@ -194,32 +194,7 @@ export default function QuanlyHoaDon() {
 
     //     fetchData();
 
-    const Check = (s1: string, s2: string) => {
-        if (s1 === "DANGXULY") {
-            if (s2 === "DANGXULY") {
-                return "selected";
-            }
-            if (s2 === "DAGIAO") {
-                return "disabled";
-            }
-        } else
-            if (s1 === "DANGGIAO") {
-                if (s2 === "DANGXULY" || s2 === "DAHUY") {
-                    return "disabled";
-                }
-                if (s2 === "DANGGIAO") {
-                    return "selected";
-                }
-            } else
-                if (s1 === "DAHUY" || s1 === "DAGIAO") {
-                    if (s2 === "DANGXULY" || s2 === "DANGGIAO" || s2 === "DAGIAO") {
-                        return "disabled";
-                    }
-                    if (s2 === s1) {
-                        return "selected";
-                    }
-                }
-    }
+   
 
     useEffect(() => {
         if (hoaDons.length > 0) {
@@ -242,6 +217,7 @@ export default function QuanlyHoaDon() {
                 <div className="header__search">
                     <div>
                         <select name="" id="column_select" value={selectedColumn} onChange={(e) => setSelectedColumn(e.target.value)}>
+                            <option value="">reset</option>
                             {header_arr.map((item, index) => {
                                 return (
                                     <option key={index} value={item}>{item}</option>
