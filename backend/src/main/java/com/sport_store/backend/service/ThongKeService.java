@@ -72,11 +72,11 @@ public class ThongKeService {
 
         List<Object[]> rawData = hoaDonRepository.thongKeKhachHangTheoTienMua(from, to);
 
-        return rawData.stream().map(obj -> {
+        return rawData.stream().map(obj -> {;
             ThongKeKhachHangDTO dto = new ThongKeKhachHangDTO();
             dto.setId((Integer) obj[0]);
             dto.setHoTen((String) obj[1]);
-            dto.setSdt((Integer) obj[2]);
+            dto.setSdt((String) obj[2]);
             dto.setEmail((String) obj[3]);
             dto.setSoDonHang(((Number) obj[4]).intValue());
             dto.setTongTienMua(((Number) obj[5]).intValue());

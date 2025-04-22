@@ -10,7 +10,7 @@ import lombok.*;
 public class ThongKeKhachHangDTO {
     private Integer id;
     private String hoTen;
-    private Integer sdt;
+    private String sdt;
     private String email;
     private Integer soDonHang;
     private Integer tongTienMua;

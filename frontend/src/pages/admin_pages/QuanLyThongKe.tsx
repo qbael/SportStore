@@ -77,7 +77,6 @@ const QuanLyThongKe = () => {
         let url = `${BASE_URL}/thongke/sanpham`;
         url += `?from=${fromDate}&to=${toDate}&sortBy=${sortBy}&sortDir=${sortOrder}`;
 
-        console.log(url);
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -141,6 +140,114 @@ const QuanLyThongKe = () => {
                 break;
         }
     }, [loaiThongKe, fromDate, toDate, sortBy, sortOrder]);
+
+    const exportSanPham = async () => {
+        try {
+            // Build query params
+            let apiUrl = `${BASE_URL}/export/san-pham`;
+            apiUrl += `?fromDate=${fromDate}&toDate=${toDate}&sortBy=${sortBy}&sortDir=${sortOrder}`;
+
+            // Make request
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch PDF');
+            }
+
+            // Get the blob and create an object URL
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            // Open PDF in new tab or download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'thong-ke-san-pham.pdf';
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Error exporting PDF:', error);
+        }
+    };
+
+    const exportKhachHang = async () => {
+        try {
+            // Build query params
+            let apiUrl = `${BASE_URL}/export/khach-hang`;
+            apiUrl += `?fromDate=${fromDate}&toDate=${toDate}`;
+
+            // Make request
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch PDF');
+            }
+
+            // Get the blob and create an object URL
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            // Open PDF in new tab or download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'thong-ke-khach-hang.pdf';
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Error exporting PDF:', error);
+        }
+    };
+
+    const exportNhapHang = async () => {
+        try {
+            let apiUrl = `${BASE_URL}/export/nhap-hang`;
+            apiUrl += `?fromDate=${fromDate}&toDate=${toDate}&sortBy=${sortBy}&sortDir=${sortOrder}`;
+
+            // Make request
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch PDF');
+            }
+
+            // Get the blob and create an object URL
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            // Open PDF in new tab or download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'thong-ke-nhap-hang.pdf';
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Error exporting PDF:', error);
+        }
+    };
+
+    useEffect(() => {
+        setFromDate("");
+        setToDate("");
+        setSortBy("");
+        setSortOrder("");
+    }, [loaiThongKe]);
 
     const renderContent = () => {
         switch (loaiThongKe) {
@@ -309,11 +416,11 @@ const QuanLyThongKe = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col md={3}>
+                    <Col md={2}>
                         <Form.Label>Từ ngày</Form.Label>
                         <Form.Control type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
                     </Col>
-                    <Col md={3}>
+                    <Col md={2}>
                         <Form.Label>Đến ngày</Form.Label>
                         <Form.Control type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
                     </Col>
@@ -323,7 +430,7 @@ const QuanLyThongKe = () => {
                         )}
                         {loaiThongKe === LOAI_THONG_KE.SANPHAM && (
                             <>
-                                <Col md={6} className={"mx-2"}>
+                                <Col md={5} className={"mx-2"}>
                                     <Form.Label>Sắp xếp theo</Form.Label>
                                     <Form.Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                                         <option value={""}>-Chọn-</option>
@@ -333,7 +440,7 @@ const QuanLyThongKe = () => {
                                         <option value={"phanTramLoiNhuan"}>Phần trăm lợi nhuận</option>
                                     </Form.Select>
                                 </Col>
-                                <Col md={6}>
+                                <Col md={5}>
                                     <Form.Label>Thứ tự</Form.Label>
                                     <Form.Select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
                                         <option value={""}>-Chọn-</option>
@@ -341,11 +448,19 @@ const QuanLyThongKe = () => {
                                         <option value={"DESC"}>Giảm dần</option>
                                     </Form.Select>
                                 </Col>
+                                <Col md={5} className={"mx-2 d-flex align-items-center"}>
+                                    <Button className={"mt-4"} variant={'primary'} onClick={exportSanPham}>In PDF</Button>
+                                </Col>
                             </>
+                        )}
+                        {loaiThongKe === LOAI_THONG_KE.KHACHHANG && (
+                            <Col md={5} className={"mx-2 d-flex align-items-center"}>
+                                <Button className={"mt-4"} variant={'primary'} onClick={exportKhachHang}>In PDF</Button>
+                            </Col>
                         )}
                         {loaiThongKe === LOAI_THONG_KE.NHAPHANG && (
                             <>
-                                <Col md={6} className={"mx-2"}>
+                                <Col md={5} className={"mx-2"}>
                                     <Form.Label>Sắp xếp theo</Form.Label>
                                     <Form.Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                                         <option value={""}>-Chọn-</option>
@@ -354,13 +469,16 @@ const QuanLyThongKe = () => {
                                         <option value={"tongSoTienNhap"}>Tổng số lượng nhập</option>
                                     </Form.Select>
                                 </Col>
-                                <Col md={6}>
+                                <Col md={5} className={"mx-2"}>
                                     <Form.Label>Thứ tự</Form.Label>
                                     <Form.Select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
                                         <option value={""}>-Chọn-</option>
                                         <option value={"ASC"}>Tăng dần</option>
                                         <option value={"DESC"}>Giảm dần</option>
                                     </Form.Select>
+                                </Col>
+                                <Col md={5} className={"mx-2 d-flex align-items-center"}>
+                                    <Button className={"mt-4"} variant={'primary'} onClick={exportNhapHang}>In PDF</Button>
                                 </Col>
                             </>
                         )}

@@ -5,7 +5,6 @@ import com.sport_store.backend.dto.ThongKeNhapHangDTO;
 import com.sport_store.backend.dto.ThongKeSanPhamDTO;
 import com.sport_store.backend.entity.HoaDon;
 import com.sport_store.backend.repository.HoaDonRepository;
-import com.sport_store.backend.repository.NhapHangRepository;
 import com.sport_store.backend.service.ThongKeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
