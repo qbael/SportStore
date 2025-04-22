@@ -39,6 +39,7 @@ public class PdfExportController {
 
             return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
         } catch (DocumentException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -58,6 +59,7 @@ public class PdfExportController {
 
             return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
         } catch (DocumentException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -79,6 +81,7 @@ public class PdfExportController {
 
             return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
         } catch (DocumentException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
