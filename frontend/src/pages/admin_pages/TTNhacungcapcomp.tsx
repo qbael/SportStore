@@ -110,6 +110,12 @@ export default function TTNhaCungCapComp({ filterField, filterValue, modaladd, o
             email: (document.getElementById('email') as HTMLInputElement).value,
             diaChi: (document.getElementById('diaChi') as HTMLInputElement).value,
         };
+
+        if (!newNCC.tenNhaCungCap || !newNCC.sdt || !newNCC.email || !newNCC.diaChi) {
+            alert('Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+
         await fetchCreateNCC(newNCC);
         onclose();
         dsNhacungcap();
@@ -123,6 +129,13 @@ export default function TTNhaCungCapComp({ filterField, filterValue, modaladd, o
             email: (document.getElementById('emailedit') as HTMLInputElement).value,
             diaChi: (document.getElementById('diaChiedit') as HTMLInputElement).value,
         };
+
+        
+        if (!updatedNCC.tenNhaCungCap || !updatedNCC.sdt || !updatedNCC.email || !updatedNCC.diaChi) {
+            alert('Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+
         await fetchUpdateNCC(updatedNCC);
         setModalEdit(false);
         dsNhacungcap();

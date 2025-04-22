@@ -152,8 +152,14 @@ public ResponseEntity<Map<String, Object>> searchHoaDons(
             @PathVariable int id, @RequestBody TrangThaiHoaDon trangThai) {
         Map<String, Object> response = new HashMap<>();
         try {
-            HoaDon updatedHoaDon = hoaDonService.updateHoaDonStatus(id, trangThai);
-            response.put("message", "Cập nhật trạng thái hóa đơn thành công");
+            boolean updatedHoaDon = hoaDonService.updateHoaDonStatus(id, trangThai);
+            if (updatedHoaDon) {
+                response.put("message", "Cập nhật trạng thái hóa đơn thành công");
+                response.put("hoaDonId", id);
+                response.put("trangThai", trangThai);
+            } else {
+                response.put("message", "Không tìm thấy hóa đơn với ID: " + id);
+            }
             // response.put("hoaDon", updatedHoaDon);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
