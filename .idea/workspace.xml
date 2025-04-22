@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="Merge branch 'main' of https://github.com/qbael/SportStore into qbao&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/PdfExportController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/PdfExportService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/utils/exportPdf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/sport_store/backend/controller/PdfExportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/ThongKeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/ThongKeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyHoaDon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyHoaDon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyThongKe.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLyThongKe.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/PdfExportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/PdfExportController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +54,7 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\Program Files\php-8.4.4-nts-Win32-vs17-x64\php.exe" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -118,7 +111,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Global Libraries",
+    "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "com.github.copilot.settings.ApplicationConfigurable",
@@ -336,7 +329,7 @@
       <workItem from="1745311892446" duration="467000" />
       <workItem from="1745312373059" duration="4064000" />
       <workItem from="1745320172510" duration="141000" />
-      <workItem from="1745331013955" duration="9990000" />
+      <workItem from="1745331013955" duration="12474000" />
     </task>
     <servers />
   </component>
