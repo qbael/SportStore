@@ -268,29 +268,26 @@ export default function QuanlyHoaDon() {
                                         </Badge>
                                     </td>
                                     <td>
-                                        <td>
-                                            <button
-                                                className="btn btn-info"
-                                                style={{ marginRight: '5px' }}
-                                                onClick={() => handleViewDetail(item)}
-                                            >
-                                                Xem chi tiết
-                                            </button>
-                                            {/* <button
-                                                className="btn btn-warning"
-                                                style={{ marginRight: '5px' }}
-                                                onClick={() => handleEdit(item.id)}
-                                            >
-                                                Sửa
-                                            </button> */}
-                                            <button
-                                                className="btn btn-danger"
-                                                onClick={() => handleEdit(item.id)}
-                                            >
-                                                Cập nhật trạng thái
-                                            </button>
-                                        </td>
-
+                                        <button
+                                            className="btn btn-info"
+                                            style={{ marginRight: '5px' }}
+                                            onClick={() => handleViewDetail(item)}
+                                        >
+                                            Xem chi tiết
+                                        </button>
+                                        {/* <button
+                                            className="btn btn-warning"
+                                            style={{ marginRight: '5px' }}
+                                            onClick={() => handleEdit(item.id)}
+                                        >
+                                            Sửa
+                                        </button> */}
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={() => handleEdit(item.id)}
+                                        >
+                                            Cập nhật trạng thái
+                                        </button>
                                     </td>
                                     {/* thêm các hành động như sửa, xóa ở đây */}
                                 </tr>
