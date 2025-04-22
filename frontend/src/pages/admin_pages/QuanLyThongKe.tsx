@@ -77,7 +77,6 @@ const QuanLyThongKe = () => {
         let url = `${BASE_URL}/thongke/sanpham`;
         url += `?from=${fromDate}&to=${toDate}&sortBy=${sortBy}&sortDir=${sortOrder}`;
 
-        console.log(url);
         try {
             const response = await fetch(url);
             if (!response.ok) {
