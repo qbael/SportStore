@@ -119,4 +119,6 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
         List<Object[]> thongKeKhachHangTheoTienMua(
                         @Param("from") LocalDate from,
                         @Param("to") LocalDate to);
+
+        List<HoaDon> findByNgayBetweenAndTrangThai(LocalDate from, LocalDate to, TrangThaiHoaDon trangThaiHoaDon);
 }
