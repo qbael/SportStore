@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="Merge branch 'main' of https://github.com/qbael/SportStore into qbao&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/PdfExportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/PdfExportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/ThongKeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/ThongKeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/HoaDonRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/repository/HoaDonRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/PdfExportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/service/PdfExportService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -333,7 +331,7 @@
       <workItem from="1745320172510" duration="141000" />
       <workItem from="1745331013955" duration="12474000" />
       <workItem from="1745344037349" duration="475000" />
-      <workItem from="1745367918099" duration="2333000" />
+      <workItem from="1745367918099" duration="4486000" />
     </task>
     <servers />
   </component>
