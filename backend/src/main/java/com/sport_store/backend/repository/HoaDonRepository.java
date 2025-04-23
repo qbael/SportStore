@@ -28,6 +28,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
         List<HoaDonFullProjection> findAllBy();
 
         Optional<HoaDonFullProjection> findById(int id);
+        Optional<HoaDon> findByid(int id);
 
         // tìm hóa đơn theo id khách hàng
         @Query("SELECT h FROM HoaDon h " +
