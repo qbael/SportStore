@@ -122,14 +122,22 @@ public class HoaDonService {
     }
 //  update trạng thái hóa đơn
     @Transactional
-    public HoaDon updateHoaDonStatus(Integer id, TrangThaiHoaDon trangThai) {
+    public boolean updateHoaDonStatus(Integer id, TrangThaiHoaDon trangThai) {
         Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(id);
         if (hoaDonOptional.isPresent()) {
             HoaDon hoaDon = hoaDonOptional.get();
             hoaDon.setTrangThai(trangThai);
-            return hoaDonRepository.save(hoaDon);
+            hoaDonRepository.save(hoaDon);
+            if (trangThai == TrangThaiHoaDon.DAHUY) {
+                // Trả lại số lượng hàng hóa nếu hóa đơn bị hủy
+                for (CTHoaDon ct : hoaDon.getDsCTHoaDon()) {
+                    int sl = bienTheRepository.getSoLuong(ct.getBienThe().getId()) + ct.getSoLuong();
+                    bienTheRepository.updateSoLuong(ct.getBienThe().getId(), sl);
+                }
+            }
+            return true;
         }
-        return null;
+        return false;
     }
 
     @Transactional
