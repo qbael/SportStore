@@ -101,39 +101,38 @@ public class HoaDonController {
     }
 
     @GetMapping("/search")
-public ResponseEntity<Map<String, Object>> searchHoaDons(
-        @RequestParam(required = false) Integer id,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngay,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayTu,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayDen,
-        @RequestParam(required = false) String tenKhachHang,
-        @RequestParam(required = false) TrangThaiHoaDon trangThai,
-        @RequestParam(required = false) String soDienThoai,
-        @RequestParam(required = false) Integer minTongGiaBan,
-        @RequestParam(required = false) Integer maxTongGiaBan,
-        @RequestParam(required = false, defaultValue = "id") String sort,
-        @RequestParam(required = false, defaultValue = "DESC") String sortDir,
-        @PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<Map<String, Object>> searchHoaDons(
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngay,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayTu,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayDen,
+            @RequestParam(required = false) String tenKhachHang,
+            @RequestParam(required = false) TrangThaiHoaDon trangThai,
+            @RequestParam(required = false) String soDienThoai,
+            @RequestParam(required = false) Integer minTongGiaBan,
+            @RequestParam(required = false) Integer maxTongGiaBan,
+            @RequestParam(required = false, defaultValue = "id") String sort,
+            @RequestParam(required = false, defaultValue = "DESC") String sortDir,
+            @PageableDefault(size = 10) Pageable pageable) {
 
-    Sort sortOrder = Sort.by(
-            sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sort);
-    Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
+        Sort sortOrder = Sort.by(
+                sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sort);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
 
-    Page<HoaDonFullProjection> page = hoaDonService.searchHoaDons(
-            id, ngay, ngayTu, ngayDen, tenKhachHang, trangThai, soDienThoai,
-            minTongGiaBan, maxTongGiaBan, sortedPageable);
+        Page<HoaDonFullProjection> page = hoaDonService.searchHoaDons(
+                id, ngay, ngayTu, ngayDen, tenKhachHang, trangThai, soDienThoai,
+                minTongGiaBan, maxTongGiaBan, sortedPageable);
 
-    Map<String, Object> response = new HashMap<>();
-    response.put("data", page.getContent());
-    response.put("totalElements", page.getTotalElements());
-    response.put("totalPages", page.getTotalPages());
-    response.put("currentPage", page.getNumber());
-    response.put("pageSize", page.getSize());
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", page.getContent());
+        response.put("totalElements", page.getTotalElements());
+        response.put("totalPages", page.getTotalPages());
+        response.put("currentPage", page.getNumber());
+        response.put("pageSize", page.getSize());
 
-    return ResponseEntity.ok(response);
-}
+        return ResponseEntity.ok(response);
+    }
 
-    
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Map<String, Object>> deleteHoaDon(@PathVariable int id) {
         Map<String, Object> response = new HashMap<>();
@@ -152,8 +151,14 @@ public ResponseEntity<Map<String, Object>> searchHoaDons(
             @PathVariable int id, @RequestBody TrangThaiHoaDon trangThai) {
         Map<String, Object> response = new HashMap<>();
         try {
-            HoaDon updatedHoaDon = hoaDonService.updateHoaDonStatus(id, trangThai);
-            response.put("message", "Cập nhật trạng thái hóa đơn thành công");
+            boolean updatedHoaDon = hoaDonService.updateHoaDonStatus(id, trangThai);
+            if (updatedHoaDon) {
+                response.put("message", "Cập nhật trạng thái hóa đơn thành công");
+                response.put("hoaDonId", id);
+                response.put("trangThai", trangThai);
+            } else {
+                response.put("message", "Không tìm thấy hóa đơn với ID: " + id);
+            }
             // response.put("hoaDon", updatedHoaDon);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -163,12 +168,12 @@ public ResponseEntity<Map<String, Object>> searchHoaDons(
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<?> getbyUserID(@PathVariable String id){
+    public ResponseEntity<?> getbyUserID(@PathVariable String id) {
         Map<String, Object> response = new HashMap<>();
 
         try {
             List<HoaDonFullProjection> hoaDons = hoaDonService.getbyUserID(id);
-            return ResponseEntity.ok(hoaDons);   
+            return ResponseEntity.ok(hoaDons);
         } catch (Exception e) {
             response.put("message", "Lỗi khi cập nhật trạng thái hóa đơn: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

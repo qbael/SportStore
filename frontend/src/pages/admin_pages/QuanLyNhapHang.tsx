@@ -557,11 +557,11 @@ export default function QuanLyNhapHang() {
                                 <button
                                     type="button"
                                     className="btn-close"
-                                    onClick={() => setShowModalNCC(false)}
+                                    onClick={() => setModalAdd(true)}
                                 ></button>
                             </div>
                             <div className="modal-body">
-                                <p>Form thêm nhà cung cấp (chưa triển khai).</p>
+                                {/* <p>Form thêm nhà cung cấp (chưa triển khai).</p> */}
                             </div>
                             <div className="modal-footer">
                                 <button
