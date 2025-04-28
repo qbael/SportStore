@@ -241,6 +241,7 @@ public class SanPhamServiceImplement implements SanPhamService {
             Path oldImagePath = Helper.getPath(oldFileName);
             Files.deleteIfExists(oldImagePath);
             sanPhamRepository.delete(sp.get());
+            bienTheRepository.deleteAllBySanPham_Id(id);
             return id;
         } catch (Exception e) {
             e.printStackTrace();
