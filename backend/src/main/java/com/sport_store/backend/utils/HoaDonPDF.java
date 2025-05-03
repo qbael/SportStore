@@ -51,7 +51,7 @@ public class HoaDonPDF {
             document.add(new Paragraph("Họ tên: " + khachHang.getHoTen(), fontNormal));
             document.add(new Paragraph("Địa chỉ: " + khachHang.getDiaChi(), fontNormal));
             document.add(new Paragraph("SĐT: " + khachHang.getSdt(), fontNormal));
-            document.add(new Paragraph("Tài khoản: " + khachHang.getTaiKhoan().getUsername(), fontNormal));
+            // document.add(new Paragraph("Tài khoản: " + khachHang.getTaiKhoan().getUsername(), fontNormal));
             document.add(new Paragraph(" "));
 
             // Bảng chi tiết hóa đơn

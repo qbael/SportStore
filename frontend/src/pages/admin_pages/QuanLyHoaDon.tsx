@@ -29,8 +29,8 @@ export default function QuanlyHoaDon() {
         }
     };
 
-    const {showNotification} = useNotification()
-    
+    const { showNotification } = useNotification()
+
 
     const [hoaDons, setHoaDons] = useState<HoaDon[]>([]);
     const [loading, setLoading] = useState(true);
@@ -91,46 +91,46 @@ export default function QuanlyHoaDon() {
         fetchHoaDon();
     }, [currentPage, pageSize]);
 
-    const capnhattrangthai = async (id :number, newStatus: String) => {
+    const capnhattrangthai = async (id: number, newStatus: String) => {
         let status: string = "";
         switch (newStatus) {
             case "DAGIAO":
                 status = "Đã giao";     // xanh lá
-                break;  
+                break;
             case "DANGGIAO":
                 status = "Đang giao";     // xanh lá
-                break; 
+                break;
             case "DANGXULY":
                 status = "Đang xử lý";     // xanh lá
                 break;         // xanh dương
             case "DAHUY":
                 status = "Đã hủy";     // xanh lá
                 break;      // đỏ
-             // xám
+            // xám
         }
 
         try {
             const response = await fetch(`http://localhost:8080/api/hoadon/update/${id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(status),
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(status),
             });
-            if (response){
+            if (response) {
                 showNotification("cập nhập trạng thái thành công", "info");
                 fetchHoaDon();
             }
             if (!response.ok) {
-              throw new Error("Lỗi từ server");
+                throw new Error("Lỗi từ server");
             }
-        
+
             // return convertStatusToText(newStatus);
-          } catch (error) {
+        } catch (error) {
             console.error("Lỗi khi cập nhật trạng thái:", error);
             throw new Error("Không thể cập nhật trạng thái");
-          }
-        
+        }
+
     }
 
     const handleSearch = () => {
@@ -194,7 +194,30 @@ export default function QuanlyHoaDon() {
 
     //     fetchData();
 
-   
+
+    const handINhoadon = async (id: number) => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/invoices/${id}/download-pdf`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/pdf",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Lỗi khi in hóa đơn");
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `hoadon_${id}.pdf`;
+            a.click();
+        } catch (error) {
+            console.error("Lỗi khi in hóa đơn:", error);
+        }
+    }
 
     useEffect(() => {
         if (hoaDons.length > 0) {
@@ -267,27 +290,36 @@ export default function QuanlyHoaDon() {
                                             {item.trangThai}
                                         </Badge>
                                     </td>
-                                    <td>
-                                        <button
-                                            className="btn btn-info"
-                                            style={{ marginRight: '5px' }}
-                                            onClick={() => handleViewDetail(item)}
-                                        >
-                                            Xem chi tiết
-                                        </button>
-                                        {/* <button
+                                    <td className='max-w-min'>
+                                        <div className='d-flex justify-content-center'>
+                                            <button
+                                                className="btn btn-info"
+                                                style={{ marginRight: '5px' }}
+                                                onClick={() => handleViewDetail(item)}
+                                            >
+                                                Xem chi tiết
+                                            </button>
+                                            {/* <button
                                             className="btn btn-warning"
                                             style={{ marginRight: '5px' }}
                                             onClick={() => handleEdit(item.id)}
                                         >
                                             Sửa
                                         </button> */}
-                                        <button
-                                            className="btn btn-danger"
-                                            onClick={() => handleEdit(item.id)}
-                                        >
-                                            Cập nhật trạng thái
-                                        </button>
+                                            <button
+                                                className="btn btn-danger"
+                                                style={{ marginRight: '5px' }}
+                                                onClick={() => handleEdit(item.id)}
+                                            >
+                                                Cập nhật trạng thái
+                                            </button>
+                                            <button
+                                                className="btn btn-info"
+                                                onClick={() => handINhoadon(item.id)}
+                                            >
+                                                In hóa đơn (PDF)
+                                            </button>
+                                        </div>
                                     </td>
                                     {/* thêm các hành động như sửa, xóa ở đây */}
                                 </tr>
@@ -405,17 +437,17 @@ export default function QuanlyHoaDon() {
                             // lấy value thay đổi
 
                             const newStatus = (document.getElementById("trangThai") as HTMLSelectElement)?.value || "";
-                            if (newStatus ==="" || newStatus === selectedHoaDon?.trangThai){
+                            if (newStatus === "" || newStatus === selectedHoaDon?.trangThai) {
                                 // xuát thống báo 
 
                                 return;
                             }
 
                             if (selectedHoaDon?.id !== undefined) {
-                                    capnhattrangthai(selectedHoaDon.id, newStatus);
-                              } else {
+                                capnhattrangthai(selectedHoaDon.id, newStatus);
+                            } else {
                                 console.error("ID hóa đơn không hợp lệ");
-                              }
+                            }
                             setShowUpdateModal(false);
                         }}
                     >
