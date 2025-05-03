@@ -193,7 +193,10 @@ const QuanLySanPham = () => {
                 <Form className="d-flex flex-wrap gap-2">
                     <Form.Group controlId="selectSearchType">
                         <Form.Select
-                            onChange={(e) => dispatch({ type: 'SET_SEARCH_TYPE', payload: e.target.value })}
+                            onChange={(e) => {
+                                dispatch({type: 'SET_SEARCH_TYPE', payload: e.target.value})
+                                dispatch({type: 'SET_KEYWORD', payload: ""})
+                            }}
                             defaultValue={state.searchType}
                         >
                             <option value="tenSanPham">Tên sản phẩm</option>

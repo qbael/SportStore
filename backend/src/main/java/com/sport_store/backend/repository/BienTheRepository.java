@@ -2,7 +2,6 @@ package com.sport_store.backend.repository;
 
 import com.sport_store.backend.entity.BienThe;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +26,6 @@ public interface BienTheRepository extends JpaRepository<BienThe, Integer> {
     boolean existsBySanPham_IdAndMau_IdAndSize_Id(int sanPhamId, int mauId, int sizeId);
 
     boolean existsBySanPham_IdAndMau_Id(int sanPhamId, int mauId);
+
+    void deleteAllBySanPham_Id(int sanPhamId);
 }

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -19,9 +20,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PdfExportService {
 
-    private static final Font TITLE_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-    private static final Font HEADER_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
-    private static final Font NORMAL_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+    private static final BaseFont   bf;
+
+    static {
+        try {
+            bf = BaseFont.createFont("fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        } catch (DocumentException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static final Font TITLE_FONT = new Font(bf, 18, Font.BOLD);
+    private static final Font HEADER_FONT = new Font(bf, 10, Font.BOLD);
+    private static final Font NORMAL_FONT = new Font(bf, 10, Font.NORMAL);
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private final ThongKeService thongKeService;
@@ -35,7 +46,7 @@ public class PdfExportService {
         try {
             PdfWriter.getInstance(document, out);
             document.open();
-            addMetadata(document, "Thong ke san pham");
+            addMetadata(document, "Thống kê sản phẩm");
 
 
             if (fromDate == null) {
@@ -45,14 +56,14 @@ public class PdfExportService {
                 toDate = LocalDate.now();
             }
             // Title
-            addTitle(document, "Thong ke san pham ban chay", fromDate, toDate);
+            addTitle(document, "THỐNG KÊ SẢN PHẨM BÁN CHẠY", fromDate, toDate);
 
             // Sort info
             if (sortBy != null && !sortBy.isEmpty()) {
                 String sortLabel = getSortByLabel(sortBy);
-                String sortDirLabel = "ASC".equals(sortDir) ? "tang dan" : "giam dan";
+                String sortDirLabel = "ASC".equals(sortDir) ? "tăng dần" : "giảm dần";
                 Paragraph sortInfo = new Paragraph(
-                        "Sap xep theo: " + sortLabel + " (" + sortDirLabel + ")",
+                        "Sắp xếp theo: " + sortLabel + " (" + sortDirLabel + ")",
                         NORMAL_FONT
                 );
                 sortInfo.setSpacingAfter(10f);
@@ -70,9 +81,9 @@ public class PdfExportService {
 
             // Headers
             addTableHeader(table, new String[]{
-                    "Ma SP", "Ma BT", "Ten san pham", "Gia nhap (VND)",
-                    "Gia ban (VND)", "SL ban", "Tong tien nhap (VND)",
-                    "Tong tien ban (VND)", "% Loi nhuan"
+                    "Mã SP", "Mã BT", "Tên sản phẩm", "Giá nhập (VND)",
+                    "Giá bán (VND)", "SL bán", "Tổng tiền nhập (VND)",
+                    "Tổng tiền bán (VND)", "% Lợi nhuận"
             });
 
             // Data rows
@@ -105,7 +116,7 @@ public class PdfExportService {
         try {
             PdfWriter.getInstance(document, out);
             document.open();
-            addMetadata(document, "Thong ke khach hang");
+            addMetadata(document, "Thống kê khách hàng");
 
             if (fromDate == null) {
                 fromDate = hoaDonRepository.findMinNgay();
@@ -114,7 +125,7 @@ public class PdfExportService {
                 toDate = LocalDate.now();
             }
             // Title
-            addTitle(document, "Thong ke khach hang theo tong tien mua", fromDate, toDate);
+            addTitle(document, "THỐNG KÊ KHÁCH HÀNG THEO TỔNG TIỀN MUA", fromDate, toDate);
 
             // Table
             PdfPTable table = new PdfPTable(6);
@@ -127,7 +138,7 @@ public class PdfExportService {
 
             // Headers
             addTableHeader(table, new String[]{
-                    "STT", "Ho ten", "SDT", "Email", "So don hang", "Tong tien mua (VND)"
+                    "STT", "Họ tên", "SĐT", "Email", "Số đơn hàng", "Tổng tiền mua (VND)"
             });
 
             // Data rows
@@ -158,7 +169,7 @@ public class PdfExportService {
         try {
             PdfWriter.getInstance(document, out);
             document.open();
-            addMetadata(document, "Thong ke nhap hang");
+            addMetadata(document, "Thống kê nhập hàng");
 
             if (fromDate == null) {
                 fromDate = nhapHangRepository.findMinNgay();
@@ -167,14 +178,14 @@ public class PdfExportService {
                 toDate = LocalDate.now();
             }
             // Title
-            addTitle(document, "Thong ke nhap hang", fromDate, toDate);
+            addTitle(document, "THỐNG KÊ NHẬP HÀNG", fromDate, toDate);
 
             // Sort info
             if (sortBy != null && !sortBy.isEmpty()) {
                 String sortLabel = getSortByLabelNhapHang(sortBy);
-                String sortDirLabel = "ASC".equals(sortDir) ? "tang dan" : "giam dan";
+                String sortDirLabel = "ASC".equals(sortDir) ? "tăng dần" : "giảm dần";
                 Paragraph sortInfo = new Paragraph(
-                        "Sap xep theo: " + sortLabel + " (" + sortDirLabel + ")",
+                        "Sắp xếp theo: " + sortLabel + " (" + sortDirLabel + ")",
                         NORMAL_FONT
                 );
                 sortInfo.setSpacingAfter(10f);
@@ -192,8 +203,8 @@ public class PdfExportService {
 
             // Headers
             addTableHeader(table, new String[]{
-                    "Ma SP", "Ma Bien The", "Ten Bien The",
-                    "Gia nhap (VND)", "Tong SL nhap", "Tong tien nhap (VND)"
+                    "Mã SP", "Mã Biến Thể", "Tên Biến Thể",
+                    "Giá nhập (VND)", "Tổng SL nhập", "Tổng tiền nhập (VND)"
             });
 
             // Data rows
@@ -228,9 +239,9 @@ public class PdfExportService {
 
         String dateRange;
         if (fromDate != null && toDate != null) {
-            dateRange = "Tu ngay " + fromDate.format(DATE_FORMATTER) + " den ngay " + toDate.format(DATE_FORMATTER);
+            dateRange = "Từ ngày " + fromDate.format(DATE_FORMATTER) + " đến ngày " + toDate.format(DATE_FORMATTER);
         } else {
-            dateRange = "Tat ca thoi gian";
+            dateRange = "Tất cả thời gian";
         }
 
         Paragraph dateParagraph = new Paragraph(dateRange, HEADER_FONT);
@@ -257,19 +268,19 @@ public class PdfExportService {
 
     private String getSortByLabel(String sortBy) {
         return switch (sortBy) {
-            case "tongSoLuongBan" -> "So luong ban";
-            case "tongSoTienNhap" -> "Tong tien nhap";
-            case "tongSoTienBan" -> "Tong tien ban";
-            case "phanTramLoiNhuan" -> "Phan tram loi nhuan";
+            case "tongSoLuongBan" -> "Số lượng bán";
+            case "tongSoTienNhap" -> "Tổng tiền nhập";
+            case "tongSoTienBan" -> "Tổng tiền bán";
+            case "phanTramLoiNhuan" -> "Phần trăm lợi nhuận";
             default -> sortBy;
         };
     }
 
     private String getSortByLabelNhapHang(String sortBy) {
         return switch (sortBy) {
-            case "giaNhap" -> "Gia nhap";
-            case "tongSoLuongNhap" -> "Tong so luong nhap";
-            case "tongSoTienNhap" -> "Tong tien nhap";
+            case "giaNhap" -> "Giá nhập";
+            case "tongSoLuongNhap" -> "Tổng số lượng nhập";
+            case "tongSoTienNhap" -> "Tổng tiền nhập";
             default -> sortBy;
         };
     }

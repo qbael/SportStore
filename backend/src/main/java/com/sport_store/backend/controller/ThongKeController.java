@@ -3,6 +3,7 @@ package com.sport_store.backend.controller;
 import com.sport_store.backend.dto.ThongKeKhachHangDTO;
 import com.sport_store.backend.dto.ThongKeNhapHangDTO;
 import com.sport_store.backend.dto.ThongKeSanPhamDTO;
+import com.sport_store.backend.entity.Enum.TrangThaiHoaDon;
 import com.sport_store.backend.entity.HoaDon;
 import com.sport_store.backend.repository.HoaDonRepository;
 import com.sport_store.backend.service.ThongKeService;
@@ -30,7 +31,7 @@ public class ThongKeController {
     ) {
         List<HoaDon> hoaDons;
         if (from != null && to != null) {
-            hoaDons = hoaDonRepository.findByNgayBetween(from, to);
+            hoaDons = hoaDonRepository.findByNgayBetweenAndTrangThai(from, to, TrangThaiHoaDon.DAGIAO);
         } else {
             hoaDons = hoaDonRepository.findAll();
         }

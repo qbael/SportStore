@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61850d85-88e8-49a2-b672-9a107e48f8db" name="Changes" comment="Merge branch 'main' of https://github.com/qbael/SportStore into qbao&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/PdfExportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/sport_store/backend/controller/PdfExportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLySanPham.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/admin_pages/QuanLySanPham.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -330,7 +330,11 @@
       <workItem from="1745312373059" duration="4064000" />
       <workItem from="1745320172510" duration="141000" />
       <workItem from="1745331013955" duration="12474000" />
-      <workItem from="1745344037349" duration="370000" />
+      <workItem from="1745344037349" duration="475000" />
+      <workItem from="1745367918099" duration="4486000" />
+      <workItem from="1745376850847" duration="1078000" />
+      <workItem from="1745739712054" duration="9726000" />
+      <workItem from="1745821270758" duration="46000" />
     </task>
     <servers />
   </component>
