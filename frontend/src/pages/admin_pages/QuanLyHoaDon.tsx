@@ -8,6 +8,8 @@ import { useNotification } from '../../hook/useNotification2.tsx'
 import { HoaDon, ApiResponse } from '../../util/types/HoadonTypes'; // Đường dẫn đến file chứa định nghĩa kiểu HoaDon
 import { Modal } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import { useAdminContext } from '../../hook/useAdminContext.tsx';
+import { HanhDong } from '../../util/Enum.tsx';
 // import { ApiResponse } from '../../types/HoaDon';
 
 // gọi api 
@@ -31,7 +33,6 @@ export default function QuanlyHoaDon() {
 
     const { showNotification } = useNotification()
 
-
     const [hoaDons, setHoaDons] = useState<HoaDon[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
@@ -45,6 +46,12 @@ export default function QuanlyHoaDon() {
     const [toDate, setToDate] = useState("");
     const [showUpdateModal, setShowUpdateModal] = useState(false);
 
+
+    const { dsHanhDong } = useAdminContext();
+
+    const hasPermission = (action: HanhDong) => {
+        return dsHanhDong?.includes(action);
+    }
 
     const fetchHoaDon = async () => {
         setLoading(true);

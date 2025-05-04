@@ -7,6 +7,8 @@ import Select, { ActionMeta, InputActionMeta, MultiValue } from 'react-select';
 import { NhaCungCap } from '../../util/types/NhapHangType';
 import { BienTheType } from '../../util/types/ProductTypes';
 import { useNotification } from '../../hook/useNotification2.tsx'
+import { useAdminContext } from '../../hook/useAdminContext.tsx';
+import { HanhDong } from '../../util/Enum.tsx';
 
 
 
@@ -29,7 +31,10 @@ interface BienThe extends BienTheType {
 }
 
 export default function QuanLyNhapHang() {
-    const {showNotification} = useNotification()
+
+    const { dsHanhDong } = useAdminContext();
+    const { showNotification } = useNotification();
+
     const [showModalNCC, setShowModalNCC] = useState(false);
     const [showModalYeuCau, setShowModalYeuCau] = useState(false);
     const [activeTab, setActiveTab] = useState<'ncc' | 'yeucau'>('ncc');
@@ -46,6 +51,11 @@ export default function QuanLyNhapHang() {
     const [loadingsp, setLoadingsp] = useState(false);
     const [selectedSuppliers, setSelectedSuppliers] = useState<{ val: BienThe, sl: number }[]>([]);
     const [modaladd, setModalAdd] = useState(false);
+
+    const hasPermission = (action: HanhDong) => {
+        return dsHanhDong?.includes(action);
+    }
+
 
 
     const fetchCreateRequest = async () => {
@@ -74,7 +84,7 @@ export default function QuanLyNhapHang() {
                 },
                 body: JSON.stringify(buildRequestData()),
             });
-            if (response.ok){
+            if (response.ok) {
                 showNotification("Tạo đơn hàng thành công", "info");
 
             }
@@ -380,12 +390,14 @@ export default function QuanLyNhapHang() {
                 >
                     Thông tin HD nhập hàng
                 </button>
-                <button
-                    className="btn btn-info me-3"
-                    onClick={() => setModalAdd(true)}
-                >
-                    Thêm nhà cung cấp
-                </button>
+                {(hasPermission(HanhDong.THEM)) && (activeTab === 'ncc') && (
+                    <button
+                        className="btn btn-info me-3"
+                        onClick={() => setModalAdd(true)}
+                    >
+                        Thêm nhà cung cấp
+                    </button>
+                )}
                 <button
                     className="btn btn-warning"
                     onClick={() => setShowModalYeuCau(true)}
@@ -580,7 +592,7 @@ export default function QuanLyNhapHang() {
                 </div>
             )}
 
-            
+
         </div>
     );
 }

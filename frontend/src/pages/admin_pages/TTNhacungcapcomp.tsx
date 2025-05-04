@@ -182,7 +182,7 @@ export default function TTNhaCungCapComp({ filterField, filterValue, modaladd, o
                             <td>{item.diaChi || 'N/A'}</td>
                             <td>
                                 <button onClick={() => { setSp(item); setModalEdit(true) }} className="btn btn-sm btn-info me-2">Sửa</button>
-                                <button className="btn btn-sm btn-danger">xóa</button>
+                                {/* <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item.id)}>xóa</button> */}
 
                             </td>
                         </tr>

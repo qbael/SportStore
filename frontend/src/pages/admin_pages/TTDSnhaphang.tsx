@@ -4,6 +4,8 @@ import { fetchNhapHang } from '../../hook/nhapHangApi';
 import { Badge, Button, Modal } from 'react-bootstrap';
 import Chitienhaphang from '../../components/ui/Chitienhaphang';
 import { useNotification } from '../../hook/useNotification2.tsx'
+import { useAdminContext } from '../../hook/useAdminContext.tsx';
+import { HanhDong } from '../../util/Enum.tsx';
 
 
 type Props = {
@@ -16,6 +18,13 @@ type Props = {
 
 
 export default function TTDSNhapHang({ startDate, endDate, filterField, filterValue }: Props) {
+
+    const { dsHanhDong } = useAdminContext();
+
+    const hasPermission = (action: HanhDong) => {
+        return dsHanhDong?.includes(action);
+    }
+
     const { showNotification } = useNotification();
     const [data, setData] = useState<NhapHang[]>([]);
     const [loading, setLoading] = useState(false);
@@ -79,46 +88,46 @@ export default function TTDSNhapHang({ startDate, endDate, filterField, filterVa
         }
     };
 
-    const capnhattrangthai = async (id :number, newStatus: String) => {
+    const capnhattrangthai = async (id: number, newStatus: String) => {
         let status: string = "";
         switch (newStatus) {
             case "DAGIAO":
                 status = "Đã giao";     // xanh lá
-                break;  
+                break;
             case "DANGGIAO":
                 status = "Đang giao";     // xanh lá
-                break; 
+                break;
             case "DANGXULY":
                 status = "Đang xử lý";     // xanh lá
                 break;         // xanh dương
             case "DAHUY":
                 status = "Đã hủy";     // xanh lá
                 break;      // đỏ
-             // xám
+            // xám
         }
 
         try {
             const response = await fetch(`http://localhost:8080/api/nhaphang/update/${id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(status),
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(status),
             });
-            if (response){
+            if (response) {
                 showNotification("cập nhập trạng thái thành công", "info");
                 loadData();
             }
             if (!response.ok) {
-              throw new Error("Lỗi từ server");
+                throw new Error("Lỗi từ server");
             }
-        
+
             // return convertStatusToText(newStatus);
-          } catch (error) {
+        } catch (error) {
             console.error("Lỗi khi cập nhật trạng thái:", error);
             throw new Error("Không thể cập nhật trạng thái");
-          }
-        
+        }
+
     }
 
     const handupdatestatus = (item: NhapHang) => {
@@ -176,7 +185,9 @@ export default function TTDSNhapHang({ startDate, endDate, filterField, filterVa
                             </td>
                             <td>
                                 <button onClick={() => handxemchitiet(item)} className="btn btn-sm btn-info me-2">Xem</button>
-                                <button onClick={() => handupdatestatus(item)} className="btn btn-sm btn-danger">Cập nhập trạng thái</button>
+                                {hasPermission(HanhDong.SUA) && (
+                                    <button onClick={() => handupdatestatus(item)} className="btn btn-sm btn-danger">Cập nhập trạng thái</button>
+                                )}
                             </td>
                         </tr>
                     ))}
