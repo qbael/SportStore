@@ -31,7 +31,10 @@ export default function QuanlyHoaDon() {
         }
     };
 
-    const { showNotification } = useNotification()
+    const {showNotification} = useNotification()
+
+    const { dsHanhDong } = useAdminContext()
+    
 
     const [hoaDons, setHoaDons] = useState<HoaDon[]>([]);
     const [loading, setLoading] = useState(true);
@@ -45,9 +48,6 @@ export default function QuanlyHoaDon() {
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
     const [showUpdateModal, setShowUpdateModal] = useState(false);
-
-
-    const { dsHanhDong } = useAdminContext();
 
     const hasPermission = (action: HanhDong) => {
         return dsHanhDong?.includes(action);
@@ -297,8 +297,8 @@ export default function QuanlyHoaDon() {
                                             {item.trangThai}
                                         </Badge>
                                     </td>
-                                    <td className='max-w-min'>
-                                        <div className='d-flex justify-content-center'>
+                                    <td>
+                                        {hasPermission(HanhDong.XEM) && (
                                             <button
                                                 className="btn btn-info"
                                                 style={{ marginRight: '5px' }}
@@ -306,27 +306,22 @@ export default function QuanlyHoaDon() {
                                             >
                                                 Xem chi tiết
                                             </button>
-                                            {/* <button
+                                        )}
+                                        {/* <button
                                             className="btn btn-warning"
                                             style={{ marginRight: '5px' }}
                                             onClick={() => handleEdit(item.id)}
                                         >
                                             Sửa
                                         </button> */}
+                                        {hasPermission(HanhDong.SUA) && (
                                             <button
                                                 className="btn btn-danger"
-                                                style={{ marginRight: '5px' }}
                                                 onClick={() => handleEdit(item.id)}
                                             >
                                                 Cập nhật trạng thái
                                             </button>
-                                            <button
-                                                className="btn btn-info"
-                                                onClick={() => handINhoadon(item.id)}
-                                            >
-                                                In hóa đơn (PDF)
-                                            </button>
-                                        </div>
+                                        )}
                                     </td>
                                     {/* thêm các hành động như sửa, xóa ở đây */}
                                 </tr>

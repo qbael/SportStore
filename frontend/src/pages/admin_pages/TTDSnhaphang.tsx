@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { NhapHang, NhapHangResponse } from '../../util/types/NhapHangType';
-import { fetchNhapHang } from '../../hook/nhapHangApi';
-import { Badge, Button, Modal } from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {NhapHang, NhapHangResponse} from '../../util/types/NhapHangType';
+import {fetchNhapHang} from '../../hook/nhapHangApi';
+import {Badge, Button, Modal} from 'react-bootstrap';
 import Chitienhaphang from '../../components/ui/Chitienhaphang';
 import { useNotification } from '../../hook/useNotification2.tsx'
 import { useAdminContext } from '../../hook/useAdminContext.tsx';
@@ -37,6 +37,11 @@ export default function TTDSNhapHang({ startDate, endDate, filterField, filterVa
     const [selectedNhapHang, setSelectedNhapHang] = useState<NhapHang | null>(null);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [selectedHoaDon, setSelectedHoaDon] = useState<NhapHang | null>(null);
+    // const { dsHanhDong } = useAdminContext();
+
+    // const hasPermission = (action: HanhDong) => {
+    //     return dsHanhDong?.includes(action);
+    // }
 
     const getStatusColor = (status: string): string => {
         switch (status.toUpperCase()) {
@@ -184,10 +189,10 @@ export default function TTDSNhapHang({ startDate, endDate, filterField, filterVa
                                 </Badge>
                             </td>
                             <td>
-                                <button onClick={() => handxemchitiet(item)} className="btn btn-sm btn-info me-2">Xem</button>
-                                {hasPermission(HanhDong.SUA) && (
-                                    <button onClick={() => handupdatestatus(item)} className="btn btn-sm btn-danger">Cập nhập trạng thái</button>
-                                )}
+                                {hasPermission(HanhDong.XEM) && (<button onClick={() => handxemchitiet(item)}
+                                         className="btn btn-sm btn-info me-2">Xem</button>)}
+                                {hasPermission(HanhDong.SUA) && (<button onClick={() => handupdatestatus(item)} className="btn btn-sm btn-danger">Cập
+                                    nhập trạng thái</button>)}
                             </td>
                         </tr>
                     ))}

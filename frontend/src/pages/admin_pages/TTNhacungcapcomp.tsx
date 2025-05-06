@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { NhaCungCap, NhaCungCapResponse } from '../../util/types/NhapHangType';
-import { fetchNhaCungCap } from '../../hook/nhapHangApi';
-import { Modal } from 'react-bootstrap';
-import { ScaleLoader } from 'react-spinners';
+import React, {useEffect, useState} from 'react';
+import {NhaCungCap} from '../../util/types/NhapHangType';
+import {fetchNhaCungCap} from '../../hook/nhapHangApi';
+import {Modal} from 'react-bootstrap';
+import {ScaleLoader} from 'react-spinners';
+import {useAdminContext} from "../../hook/useAdminContext.tsx";
+import {HanhDong} from "../../util/Enum.tsx";
 
 type Props = {
     filterField?: string;
@@ -21,7 +23,12 @@ export default function TTNhaCungCapComp({ filterField, filterValue, modaladd, o
     const [sortDirection, setSortDirection] = useState<'ASC' | 'DESC'>('DESC');
     const [modaleidt, setModalEdit] = useState(false);
     const [sp, setSp] = useState<NhaCungCap | null>(null);
+    const {dsHanhDong} = useAdminContext();
     // const [modaladd , setModalAdd] = useState(false);
+
+    const hasPermission = (action: HanhDong) => {
+        return dsHanhDong?.includes(action);
+    }
 
     const dsNhacungcap = async () => {
         try {
@@ -181,8 +188,11 @@ export default function TTNhaCungCapComp({ filterField, filterValue, modaladd, o
                             <td>{item.email || 'N/A'}</td>
                             <td>{item.diaChi || 'N/A'}</td>
                             <td>
-                                <button onClick={() => { setSp(item); setModalEdit(true) }} className="btn btn-sm btn-info me-2">Sửa</button>
-                                {/* <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item.id)}>xóa</button> */}
+                                {hasPermission(HanhDong.SUA) && (<button onClick={() => {
+                                    setSp(item);
+                                    setModalEdit(true)
+                                }} className="btn btn-sm btn-info me-2">Sửa</button>)}
+                                {hasPermission(HanhDong.XOA) && (<button className="btn btn-sm btn-danger">xóa</button>)}
 
                             </td>
                         </tr>

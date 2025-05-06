@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Modal } from 'react-bootstrap';
+import {Button, Modal} from 'react-bootstrap';
 import TTDSNhapHang from '../../pages/admin_pages/TTDSnhaphang';
 import TTNhaCungCapComp from '../../pages/admin_pages/TTNhacungcapcomp';
-import Select, { ActionMeta, InputActionMeta, MultiValue } from 'react-select';
-import { NhaCungCap } from '../../util/types/NhapHangType';
-import { BienTheType } from '../../util/types/ProductTypes';
-import { useNotification } from '../../hook/useNotification2.tsx'
-import { useAdminContext } from '../../hook/useAdminContext.tsx';
-import { HanhDong } from '../../util/Enum.tsx';
-
-
+import Select, {ActionMeta, InputActionMeta, MultiValue} from 'react-select';
+import {NhaCungCap} from '../../util/types/NhapHangType';
+import {BienTheType} from '../../util/types/ProductTypes';
+import {useNotification} from '../../hook/useNotification2.tsx'
+import {useAdminContext} from "../../hook/useAdminContext.tsx";
+import {HanhDong} from "../../util/Enum.tsx";
 
 
 type Params = {
@@ -51,12 +49,17 @@ export default function QuanLyNhapHang() {
     const [loadingsp, setLoadingsp] = useState(false);
     const [selectedSuppliers, setSelectedSuppliers] = useState<{ val: BienThe, sl: number }[]>([]);
     const [modaladd, setModalAdd] = useState(false);
+    // const {dsHanhDong} = useAdminContext();
+
+    // const hasPermission = (action: HanhDong) => {
+    //     return dsHanhDong?.includes(action);
+    // }
+
+
 
     const hasPermission = (action: HanhDong) => {
         return dsHanhDong?.includes(action);
     }
-
-
 
     const fetchCreateRequest = async () => {
 
@@ -378,32 +381,32 @@ export default function QuanLyNhapHang() {
 
             {/* Nút điều khiển */}
             <div className="d-flex justify-content-start mb-3">
-                <button
+                {hasPermission(HanhDong.XEM) && (<button
                     className="btn btn-primary me-3"
                     onClick={() => setActiveTab('ncc')}
                 >
                     Thông tin nhà cung cấp
-                </button>
-                <button
+                </button>)}
+                {hasPermission(HanhDong.XEM) && (<button
                     className="btn btn-success me-3"
                     onClick={() => setActiveTab('yeucau')}
                 >
                     Thông tin HD nhập hàng
-                </button>
-                {(hasPermission(HanhDong.THEM)) && (activeTab === 'ncc') && (
-                    <button
-                        className="btn btn-info me-3"
-                        onClick={() => setModalAdd(true)}
-                    >
-                        Thêm nhà cung cấp
-                    </button>
-                )}
-                <button
+                </button>)}
+
+                {hasPermission(HanhDong.THEM) && (<button
+                    className="btn btn-info me-3"
+                    onClick={() => setModalAdd(true)}
+                >
+                    Thêm nhà cung cấp
+                </button>)}
+                
+                {hasPermission(HanhDong.THEM) && (<button
                     className="btn btn-warning"
                     onClick={() => setShowModalYeuCau(true)}
                 >
                     Tạo yêu cầu nhập hàng
-                </button>
+                </button>)}
             </div>
 
             {/* Hiển thị bảng theo tab */}
